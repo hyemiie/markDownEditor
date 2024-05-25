@@ -1,7 +1,8 @@
 // index.js
 const express = require('express');
 const cors = require('cors');
-const { getText } = require('./content.controller');
+const { getText } = require('./controller/content.controller');
+
 
 const app = express();
 
