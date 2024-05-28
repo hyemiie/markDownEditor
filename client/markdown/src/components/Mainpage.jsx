@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./mainpage.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleDoubleRight, faBold, faCalendar, faCalendarAlt, faCode, faCoffee, faItalic, faLink, faListDots, faListNumeric, faQuoteLeft, faTable } from '@fortawesome/free-solid-svg-icons';
+import { faAngleDoubleRight, faBold, faCalendar, faCalendarAlt, faCode, faCoffee, faImagePortrait, faItalic, faLink, faListDots, faListNumeric, faQuoteLeft, faTable } from '@fortawesome/free-solid-svg-icons';
 
 const Mainpage = () => {
   const [htmlResponse, setHtmlResponse] = useState("");
@@ -122,6 +122,7 @@ const Mainpage = () => {
         <button className="flex pe-10 pt-3" onClick={handleCodeClick}><FontAwesomeIcon icon={faCode} /></button>{" "}
         <button className="flex pe-10 pt-3" onClick={handleTableClick}><FontAwesomeIcon icon={faTable} /></button>{" "}
         <button className="flex pe-10 pt-3" onClick={handleLinkClick}><FontAwesomeIcon icon={faLink} /></button>
+        <button className="flex pe-10 pt-3" onClick={handleLinkClick}><FontAwesomeIcon icon={faImagePortrait} /></button>
       </p>
       <div className="flex">
         <textarea
