@@ -2,7 +2,9 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./mainpage.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleDoubleRight, faBold, faCalendar, faCalendarAlt, faCode, faCoffee, faImagePortrait, faItalic, faLink, faListDots, faListNumeric, faQuoteLeft, faTable } from '@fortawesome/free-solid-svg-icons';
+import { faAngleDoubleRight, faArrowDown, faBold, faCalendar, faCalendarAlt, faCode, faCoffee, faImagePortrait, faItalic, faLink, faListDots, faListNumeric, faQuoteLeft, faTable } from '@fortawesome/free-solid-svg-icons';
+import Login from "./Login/Login";
+import Register from "./Register/Register";
 
 const Mainpage = () => {
   const [htmlResponse, setHtmlResponse] = useState("");
@@ -65,6 +67,7 @@ const Mainpage = () => {
     }
   };
 
+
   const handleListClick = () => {
     if (highlightedText) {
       const List = highlightedText.split('\n').map(line => `<li>${line.trim()}</li>`).join('');
@@ -111,6 +114,29 @@ const Mainpage = () => {
     }
   };
 
+  const handleDownload =async() =>{
+    const userDownload = document.getElementById('htmlResponse').innerHTML;
+    console.log(userDownload)
+    try {
+      const response = await axios.post("http://localhost:5000/downloadFile", {
+        userContent: userDownload,
+        fileName:'First Download'
+      });
+      alert('File Downloaded');
+
+  
+      // Access the html property from the response
+    } 
+    catch(error){
+      console.log(error)
+    }
+
+  }
+
+ 
+
+
+
   return (
     <div className="overflow-hidden">
       <p className="flex bg-black text-gray-50 w-screen h-10 px-7 overflow-hidden">
@@ -122,7 +148,7 @@ const Mainpage = () => {
         <button className="flex pe-10 pt-3" onClick={handleCodeClick}><FontAwesomeIcon icon={faCode} /></button>{" "}
         <button className="flex pe-10 pt-3" onClick={handleTableClick}><FontAwesomeIcon icon={faTable} /></button>{" "}
         <button className="flex pe-10 pt-3" onClick={handleLinkClick}><FontAwesomeIcon icon={faLink} /></button>
-        <button className="flex pe-10 pt-3" onClick={handleLinkClick}><FontAwesomeIcon icon={faImagePortrait} /></button>
+        <button className="flex pe-10 pt-3" onClick={handleDownload}><FontAwesomeIcon icon={faArrowDown} /></button>
       </p>
       <div className="flex">
         <textarea
@@ -138,6 +164,8 @@ const Mainpage = () => {
           dangerouslySetInnerHTML={{ __html: htmlResponse }}
         />
       </div>
+      <Login/>
+      <Register/>
     </div>
   );
 };
