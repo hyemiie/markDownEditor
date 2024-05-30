@@ -1,5 +1,6 @@
 /* eslint-disable no-undef */
 const mongoose = require("mongoose");
+const Content = require("./content.model");
 
 const UserSchema = mongoose.Schema({
   username: {
@@ -14,7 +15,7 @@ const UserSchema = mongoose.Schema({
     type: String,
     required: [true, "Please enter your password"],
   },
-
+Content:[]
 });
 
 const User = mongoose.model("User", UserSchema);

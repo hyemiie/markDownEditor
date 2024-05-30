@@ -1,9 +1,9 @@
 // index.js
 const express = require('express');
 const cors = require('cors');
-const { getText, downloadFile } = require('./controller/content.controller');
+const { getText, downloadFile, getAllFiles, createContent, updateFile , viewFile} = require('./controller/content.controller');
 const mongoose = require('mongoose')
-const {Login, Register, getCurrentUser} = require('./controller/user.controller')
+const {Login, Register, getCurrentUser,} = require('./controller/user.controller')
 
 
 const app = express();
@@ -17,6 +17,10 @@ app.post('/downloadFile', downloadFile);
 app.post('/login', Login);
 app.post('/register', Register);
 app.post('/currentUser', getCurrentUser);
+app.get('/getFiles', getAllFiles);
+app.post('/createContent', createContent);
+app.post('/updateFile', updateFile);
+app.post('/viewFile', viewFile);
 
 mongoose
   .connect(

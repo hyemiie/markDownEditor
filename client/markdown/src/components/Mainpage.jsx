@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./mainpage.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleDoubleRight, faArrowDown, faBold, faCalendar, faCalendarAlt, faCode, faCoffee, faImagePortrait, faItalic, faLink, faListDots, faListNumeric, faQuoteLeft, faTable } from '@fortawesome/free-solid-svg-icons';
+import { faAngleDoubleRight, faArrowDown, faBold, faCalendar, faCalendarAlt, faCode, faCoffee, faFile, faImagePortrait, faItalic, faLink, faListDots, faListNumeric, faPencil, faQuoteLeft, faTable } from '@fortawesome/free-solid-svg-icons';
 import Login from "./Login/Login";
 import Register from "./Register/Register";
 
@@ -10,6 +10,8 @@ const Mainpage = () => {
   const [htmlResponse, setHtmlResponse] = useState("");
   const [highlightedText, setHighlightedText] = useState('');
   const [userInput, setUserInput] = useState('');
+  const [userFile, setUserFile] = useState([]);
+  const [selectedID, setSelectedID] = useState([]);
 
   const getUserInput = async (inputText) => {
     try {
@@ -47,8 +49,11 @@ const Mainpage = () => {
     const inputText = e.target.value;
     setUserInput(inputText);
     getUserInput(inputText);
+    console.log('inputText', userInput)
   };
 
+  
+  
   const handleBoldClick = () => {
     if (highlightedText) {
       const boldedText = `<b>${highlightedText}</b>`;
@@ -133,8 +138,78 @@ const Mainpage = () => {
 
   }
 
- 
 
+  const newFile =async() =>{
+    // const userDownload = document.getElementById('htmlResponse').innerHTML;
+    try {
+      const response = await axios.post("http://localhost:5000/createContent", {
+        userContent: 'Hello',
+        fileName:'First Download'
+      });
+      alert('File Created');
+    } 
+    catch(error){
+      console.log(error)
+    }
+
+  }
+
+  const editFile = async()=>{
+    const userEdit = userInput
+    const fileID = selectedID
+    console.log(fileID)
+    try{
+      const response = await axios.post("http://localhost:5000/updateFile", {
+        userEdit:userEdit,
+        selectedID:selectedID
+      }
+
+      )
+    }
+      catch(error){
+        console.log(error)
+      }
+    
+    }
+  
+
+ 
+  const getFiles =async()=>{
+
+      try{
+        const response = await axios.get("http://localhost:5000/getFiles", )
+        console.log(response)
+        setUserFile(response.data)
+
+        console.log('userFile', userFile)
+      }
+      catch(error){
+        console.log(error)
+      }
+    }
+
+    const viewFile =async()=>{
+
+      try{
+        const response = await axios.post("http://localhost:5000/viewFile",
+          {"selectedID":selectedID}
+         )
+         const fileText = response.data.file.userInput
+        console.log(response.data.file.userInput)
+        setUserInput(fileText)
+        // console.log('userFile', userFile)
+      }
+      catch(error){
+        console.log(error)
+      }
+    }
+  
+  
+    const getFileId = (fileId)=>{
+setSelectedID(fileId)
+console.log('done', selectedID)
+    }
+ 
 
 
   return (
@@ -149,6 +224,9 @@ const Mainpage = () => {
         <button className="flex pe-10 pt-3" onClick={handleTableClick}><FontAwesomeIcon icon={faTable} /></button>{" "}
         <button className="flex pe-10 pt-3" onClick={handleLinkClick}><FontAwesomeIcon icon={faLink} /></button>
         <button className="flex pe-10 pt-3" onClick={handleDownload}><FontAwesomeIcon icon={faArrowDown} /></button>
+        <button className="flex pe-10 pt-3" onClick={newFile}><FontAwesomeIcon icon={faFile} /></button>
+        <button className="flex pe-10 pt-3" onClick={editFile}><FontAwesomeIcon icon={faPencil} /></button>
+        <button className="flex pe-10 pt-3" onClick={getFiles}><FontAwesomeIcon icon={faPencil} /></button>
       </p>
       <div className="flex">
         <textarea
@@ -156,17 +234,35 @@ const Mainpage = () => {
           placeholder="start writing here"
           id="userInput"
           value={userInput}
-          onChange={handleUserInputChange}
-        />
+          onChange={(e) => {
+  handleUserInputChange(e);
+  editFile();
+}}        />
         <div
           className="bg-slate-300 h-screen w-[50%] outline-none p-10"
           id="htmlResponse"
           dangerouslySetInnerHTML={{ __html: htmlResponse }}
         />
       </div>
+      
+      <div >
+  <h2>hello</h2>
+  {userFile.map(file => (
+<div key={file._id} onClick={() => getFileId(file._id) }> {file.userInput}
+<div onClick={viewFile}>hi</div>
+</div>
+
+
+  ))}
+</div>
       <Login/>
       <Register/>
+
+
+
     </div>
+
+
   );
 };
 
