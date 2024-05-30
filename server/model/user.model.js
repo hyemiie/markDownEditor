@@ -15,7 +15,7 @@ const UserSchema = mongoose.Schema({
     type: String,
     required: [true, "Please enter your password"],
   },
-Content:[]
+// Content:[]
 });
 
 const User = mongoose.model("User", UserSchema);
