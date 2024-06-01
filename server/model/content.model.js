@@ -1,20 +1,27 @@
 /* eslint-disable no-undef */
-const { Timestamp } = require("mongodb");
 const mongoose = require("mongoose");
+const User = require('./user.model')
 
-const ContentSchema = mongoose.Schema({
-  fileName:{
-    type:String
-
+const ContentSchema = new mongoose.Schema({
+  fileName: {
+    type: String,
+    required: [true, "Please provide the file name"],
+  },
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
   },
   userInput: {
-    type:String
+    type: String,
+    // required: [true, "Please provide the user input"],
   },
-
- 
-
+  date: {
+    type: Date,
+    default: Date.now,
+  }
 });
 
-const Content = mongoose.model("ContentSchema", ContentSchema);
+const Content = mongoose.model("Content", ContentSchema);
 
 module.exports = Content;

@@ -16,7 +16,11 @@ const Login = () => {
         try{
 
         
-const response = axios.post('http://localhost:5000/login', data )
+const response =await axios.post('http://localhost:5000/login', data 
+)
+console.log("response", response)
+localStorage.setItem('token', response.data.token)
+
     }
     catch(error){
 console.log(error)
