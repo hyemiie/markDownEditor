@@ -332,7 +332,7 @@ const Mainpage = () => {
               getCurrentFile(file.fileName);
               viewFile();
             }}
-            className=" mb-7 hover:bg-gray-500 text-gray-100 w-56 h-8 "
+            className=" mb-7 hover:bg-gray-600 text-gray-100 w-56 h-8 "
           >
             <FontAwesomeIcon icon={faFile} onClick={viewFile} /> {file.fileName}
             {/* <div onClick={viewFile}>hi</div> */}
