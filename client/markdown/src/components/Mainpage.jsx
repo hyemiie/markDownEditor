@@ -264,9 +264,10 @@ const Mainpage = () => {
   };
 
   return (
-    <div className="flex flex-row-reverse overflow-hidden">
+    <div className="flex overflow-hidden">
       <div className="w-full">
-        <p className="flex bg-black text-gray-50 w-screen h-10 px-7 overflow-hidden">
+        <p className="flex flex-wrap bg-black text-gray-50 w-screen h-10 ">
+        <div className="flex pl-12 w-screen overflow-auto">
           <button
             className="flex pe-10 pt-3 hover:bg-slate-500 w-7"
             onClick={() => {
@@ -387,6 +388,7 @@ const Mainpage = () => {
             <FontAwesomeIcon icon={faPencil} className="justify-center pl-2" />
             {hoveredButton == "Edit" ? <p>Edit File</p> : ""}
           </button>
+          </div>
         </p>
 
         <div className="flex items-center justify-between w-full  flex-wrap bg-slate-500">
