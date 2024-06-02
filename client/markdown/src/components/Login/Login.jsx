@@ -31,7 +31,7 @@ const Login = () => {
                     <p className="text-sm">Don't have an account yet? 
                     <ul>
         <li className='underline'>
-        {/* <Link to="/about">Sign up here</Link> */}
+        <Link to="/about">Sign up here</Link>
         </li>
     </ul></p>
                 </div>
