@@ -69,3 +69,16 @@ text-decoration: underline;
     font-weight: normal;
     border-radius: 3px;
   }
+
+  @media only screen and (max-width:770px) {
+
+    
+    #htmlResponse{
+        display: none;
+        /* background-color: yellow; */
+    }
+
+    #userInput{
+        width: 100%;
+    }
+  }

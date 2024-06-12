@@ -266,10 +266,10 @@ const Mainpage = () => {
   return (
     <div className="flex overflow-hidden">
       <div className="w-full">
-        <p className="flex flex-wrap bg-black text-gray-50 w-screen h-10 ">
-        <div className="flex pl-12 w-screen overflow-auto">
+        <p className="flex flex-wrap bg-black text-gray-50 w-screen h-10  ">
+        <div className="flex pl-12 w-screen overflow-auto ">
           <button
-            className="flex pe-10 pt-3 hover:bg-slate-500 w-7"
+            className="flex pe-10 pt-3 hover:bg-slate-500 w-7 "
             onClick={() => {
               getFiles();
               viewStatusTrue();
@@ -391,21 +391,22 @@ const Mainpage = () => {
           </div>
         </p>
 
-        <div className="flex items-center justify-between w-full  flex-wrap bg-slate-500">
+        <div className="flex items-center justify-between  flex-wrap bg-slate-500 ">
           <p className=" text-gray-300 text-3xl ml-4 font-bold font-serif">{currentFile}</p>
           <div className="flex items-center">
             <button
               onClick={editFile}
-              className="text-center bg-cyan-600 text-white hover:text-gray-100 p-2 rounded"
+              className="text-center bg-cyan-600 text-white hover:text-gray-100 p-2 rounded mr-8 "
+              
             >
               Save File
             </button>
           </div>
         </div>
 
-        <div className="flex">
+        <div className="flex w-auto">
           <textarea
-            className="bg-slate-300 h-screen w-[50%] border-r-4 border-b-cyan-500 outline-none pl-12 pt-5"
+            className="bg-slate-300 h-screen w-[50%] border-r-4 border-b-cyan-500 outline-none pl-12 pt-5 "
             placeholder="start writing here"
             id="userInput"
             value={userInput}
