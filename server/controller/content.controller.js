@@ -5,6 +5,7 @@ const url = require("url");
 const { open } = require("fs/promises");
 const Content = require("../model/content.model");
 const User = require("../model/user.model")
+const download = require('download');
 const jwt = require('jsonwebtoken')
 
 const secretKey = "thisisthesecretkey";
@@ -21,30 +22,65 @@ const getText = (req, res) => {
   res.status(200).json({ html });
 };
 
+
 const createFile = async (fileName, data) => {
-  
   try {
-    const file = await open(fileName, "w");
-    await file.write(data);
-    console.log(`Opened file ${fileName}`);
+    await fs.writeFile(fileName, data);
+    console.log(`Created file ${fileName}`);
   } catch (error) {
-    console.error(`Got an error trying to open the file: {error.message}`);
+    console.error(`Got an error trying to create the file: ${error.message}`);
+    throw error;
   }
 };
 
-const downloadFile = async(req, res) => {
-  const { userContent, fileName } = req.body;
- 
 
-  const downloadsPath = path.join(__dirname, "../../../../Downloads", fileName);
-  createFile(downloadsPath, userContent);
-  fs.open(downloadsPath, function (err) {
-    console.log(err);
-  });
+const downloadFile = async (req, res) => {
+  console.log('Download function called');
+  console.log('Request body:', req.body);
+
+  try {
+    const { userContent, fileName } = req.body;
+
+    if (!userContent || !fileName) {
+      throw new Error('Missing userContent or fileName in request body');
+    }
+
+    console.log('userContent:', userContent);
+    console.log('fileName:', fileName);
+
+    // Create a temporary file
+    const tempDir = path.join(__dirname, 'temp');
+    await fs.mkdir(tempDir, { recursive: true });
+    const filePath = path.join(tempDir, fileName);
+
+    // Write content to the file
+    await fs.writeFile(filePath, userContent);
+
+    // Send the file as a download
+    res.download(filePath, fileName, (err) => {
+      if (err) {
+        console.error(`Error sending file: ${err.message}`);
+        if (!res.headersSent) {
+          res.status(500).send('Error downloading file');
+        }
+      }
+      // Delete the temporary file after sending
+      fs.unlink(filePath).catch(unlinkErr => {
+        console.error(`Error deleting temporary file: ${unlinkErr.message}`);
+      });
+    });
+   
+  } catch (error) {
+    console.error(`Error in downloadFile: ${error.message}`);
+    res.status(500).json({ error: error.message });
+  }
 };
+
+
 
 const createContent = async(req, res)=>{
   let { userContent, fileName, token } = req.body;
+  console.log(req.body)
 
   const decodedToken = jwt.verify(token, secretKey);
   const userId = decodedToken.userId
@@ -60,6 +96,10 @@ const createContent = async(req, res)=>{
     
   })
   console.log(newFile);
+  const Chats = await User.findById(userId); 
+  console.log(Chats.content);
+  res.status(200).json(Chats); 
+
 
   const user = await User.findById(userId)
 
@@ -72,6 +112,9 @@ const createContent = async(req, res)=>{
     console.log('done', user)
     return 'Done'
   }
+
+ 
+
 
  
 
@@ -124,6 +167,30 @@ const _id =selectedID
   }
 }
 
+const deleteFile = async (req, res) => {
+  const { selectedID } = req.body;
+  console.log('selectedId', selectedID);
+
+
+  try {
+    const result = await Content.deleteOne({ _id: selectedID });
+    
+    if (result.deletedCount === 0) {
+      return res.status(404).json({ error: 'File not found' });
+    }
+    
+    console.log('File deleted successfully');
+    res.status(200).json({ message: 'File deleted successfully' });
+    
+    // Log remaining contents
+    const remainingContents = await Content.find({});
+    console.log("Remaining contents:", remainingContents);
+    
+  } catch (error) {
+    console.error('Error deleting file:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
 const viewFile = async(req, res) =>{
   const { userEdit, selectedID } = req.body;
   const _id =selectedID 
@@ -131,7 +198,6 @@ const viewFile = async(req, res) =>{
     const file = await Content.findById(
       { _id: _id }, // Filter by _id
     );
-    console.log("newFile", file);
     res.status(200).json({file})
   } catch (error) {
     console.log(error);
@@ -145,4 +211,4 @@ const viewFile = async(req, res) =>{
 // click to view and edit file
 
 // update file
-module.exports = { getText, downloadFile, getAllFiles ,createContent, updateFile, viewFile};
+module.exports = { getText, downloadFile, getAllFiles ,createContent, updateFile, viewFile, deleteFile};

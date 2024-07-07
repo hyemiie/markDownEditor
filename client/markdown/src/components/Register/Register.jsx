@@ -1,7 +1,10 @@
 import React from "react";
 import axios from "axios";
+import { useNavigate } from "react-router";
 
 const Register = () => {
+
+  const navigate = useNavigate();
   const handleRegister = async (e) => {
     e.preventDefault();
     const username = document.getElementById("username").value;
@@ -13,7 +16,8 @@ const Register = () => {
     try {
       const response = await axios.post("http://localhost:5000/register", data);
       console.log("response", response);
-      // Handle successful registration, such as redirecting to another page
+      navigate('/Login')
+
     } catch (error) {
       console.log(error);
       // Handle error, such as displaying an error message to the user

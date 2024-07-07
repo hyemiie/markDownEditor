@@ -25,9 +25,12 @@ import {
   faQuoteLeft,
   faTable,
   faTimes,
+  faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import Login from "./Login/Login";
 import Register from "./Register/Register";
+import { saveAs } from 'file-saver';
+
 
 const Mainpage = () => {
   const [htmlResponse, setHtmlResponse] = useState("");
@@ -41,6 +44,7 @@ const Mainpage = () => {
   const [fileListStatus, setFileListStatus] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [hoveredButton, setHoveredButton] = useState(null);
+
 
   const handleMouseEnter = (buttonName) => {
     setHoveredButton(buttonName);
@@ -153,7 +157,7 @@ const Mainpage = () => {
     }
   };
 
-  const handleDownload = async () => {
+  const handleDownloads = async () => {
     const userDownload = document.getElementById("htmlResponse").innerHTML;
     console.log(userDownload);
     try {
@@ -167,11 +171,20 @@ const Mainpage = () => {
     }
   };
 
+  const handleDownload = () => {
+    const userDownload = document.getElementById("htmlResponse").innerHTML;
+
+    const blob = new Blob([userDownload], { type: 'text/markdown;charset=utf-8' });
+    saveAs(blob, 'document.md');
+    alert('file Downloaded')
+  };
+
+
   const newFile = async () => {
     const token = localStorage.getItem("token");
     const Filename = fileName;
     if (userInput.length > 0) {
-      userInput = "Update your file ";
+      userInput = "Update your file"; // Now okay to reassign with let
     }
     console.log(token);
     try {
@@ -180,7 +193,11 @@ const Mainpage = () => {
         fileName: Filename,
         token: token,
       });
+      setUserFile(response.data.content);
       alert("FILE CREATED");
+      console.log(response)
+      setUserFile(response.data.content);
+
     } catch (error) {
       console.log(error);
     }
@@ -200,6 +217,22 @@ const Mainpage = () => {
       console.log(error);
     }
   };
+
+
+  const deleteFile = async () => {
+  const fileID = selectedID;
+  console.log("fileID", fileID); 
+  try {
+    const response = await axios.post("http://localhost:5000/deleteFile", {
+        selectedID: fileID,
+    });
+    console.log("Delete response:", response.data); 
+  } catch (error) {
+    console.error("Error deleting file:", error); // Log any errors to the console
+    // Handle error: display a message to the user or perform other actions
+  }
+};
+
 
   const getFiles = async () => {
     const token = localStorage.getItem("token");
@@ -432,20 +465,23 @@ const Mainpage = () => {
           {userFile.map((file) => (
             <div
               key={file._id}
-              onClick={() => {
+             
+              className="mb-7 hover:bg-gray-600 text-gray-100 w-56 h-8 flex justify-between align-middle"
+            >
+            <ul  onClick={() => {
                 getFileId(file._id);
                 getCurrentFile(file.fileName);
                 viewFile();
-              }}
-              className="mb-7 hover:bg-gray-600 text-gray-100 w-56 h-8"
-            >
-              <FontAwesomeIcon icon={faFile} /> {file.fileName}
+              }}> 
+            <li>               {file.fileName}
+</li></ul>
+              <FontAwesomeIcon icon={faTrash} onClick={deleteFile} className=" mt-2"/> 
             </div>
           ))}
           <div>
             {fileStatus && (
               <div className="flex mb-7 text-gray-100 w-48">
-                <FontAwesomeIcon icon={faFile} />
+                <FontAwesomeIcon icon={faFile}  onClick={newFile}/>
                 <input
                   placeholder="File name"
                   id="fileName"
@@ -459,7 +495,6 @@ const Mainpage = () => {
             <button
               className="bg-slate-50 w-42 mr-auto pr-5 h-10"
               onClick={() => {
-                newFile();
                 togglenewFile();
               }}
             >

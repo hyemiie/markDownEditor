@@ -1,8 +1,11 @@
 import axios from 'axios';
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
+    const navigate = useNavigate();
+
     const handleLogin = async (e) => {
         e.preventDefault();
         const userMail = document.getElementById('email').value;
@@ -17,6 +20,10 @@ const Login = () => {
             const response = await axios.post('http://localhost:5000/login', data);
             console.log("response", response);
             localStorage.setItem('token', response.data.token);
+
+            alert('Login Successful')
+            navigate('/mainpage')
+
         } catch (error) {
             console.log(error);
         }
@@ -31,6 +38,11 @@ const Login = () => {
                     <p className="text-sm">Don't have an account yet? 
                     <ul>
         <li className='underline'>
+       
+            <a href="/Register" className="underline">
+               Register here
+            </a>
+         
         {/* <Link to="/about">Sign up here</Link> */}
         </li>
     </ul></p>
