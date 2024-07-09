@@ -44,6 +44,8 @@ const Mainpage = () => {
   const [fileListStatus, setFileListStatus] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [hoveredButton, setHoveredButton] = useState(null);
+  const [messageID, setMessageID] = useState(null);
+  const [currentUserID, setCurrentUserID] = useState(null);
 
 
   const handleMouseEnter = (buttonName) => {
@@ -232,7 +234,28 @@ const Mainpage = () => {
     // Handle error: display a message to the user or perform other actions
   }
 };
+const deleteChat = async () => {
+  if (!messageID) return;
+  try {
+    const response = await axios.delete('http://localhost:5000/deleteFile', {
+      params: { messageID, currentUserID },
+    });
+    console.log("Response:", response.data);
+    alert("Message deleted");
+    setMessageID(null);
+    setUserFile(response.data.updatedChat);
+  } catch (error) {
+    console.error("Error deleting message:", error.response?.data || error.message);
+    alert("Failed to delete message");
+  }
 
+};
+
+useEffect(() => {
+  if(messageID){
+    deleteChat();
+  }
+}, [messageID]);
 
   const getFiles = async () => {
     const token = localStorage.getItem("token");
@@ -244,7 +267,7 @@ const Mainpage = () => {
         },
       });
       console.log(response);
-      setUserFile(response.data.content);
+      setUserFile(response.data);
 
       console.log("userFile", userFile);
     } catch (error) {
@@ -475,8 +498,15 @@ const Mainpage = () => {
               }}> 
             <li>               {file.fileName}
 </li></ul>
-              <FontAwesomeIcon icon={faTrash} onClick={deleteFile} className=" mt-2"/> 
-            </div>
+  <FontAwesomeIcon
+                icon={faTrash}
+                onClick={() => {
+                  if (window.confirm("Are you sure you want to delete this message?")) {
+                    setMessageID(file._id);
+                    setCurrentUserID(file.userId);
+                  }
+                }}
+              />            </div>
           ))}
           <div>
             {fileStatus && (

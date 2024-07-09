@@ -141,11 +141,12 @@ console.log(userToken.userId)
 const userId = userToken.userId
 
   try {
-    const Chats = await User.findById(userId); // Use await and directly pass the id
-   
+    // const Chats = await User.findById(userId); // Use await and directly pass the id
+    const updatedChat = await Content.find({ }).sort({ createdAt: 1 });
 
-    console.log(Chats.content);
-    res.status(200).json(Chats); 
+
+    console.log("updatedChat", updatedChat);
+    res.status(200).json(updatedChat); 
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Server Error' }); // Send an error response
@@ -167,30 +168,67 @@ const _id =selectedID
   }
 }
 
-const deleteFile = async (req, res) => {
-  const { selectedID } = req.body;
-  console.log('selectedId', selectedID);
+// const deleteFile = async (req, res) => {
+//   const { selectedID } = req.body;
+//   console.log('selectedId', selectedID);
 
+
+//   try {
+//     const result = await Content.deleteOne({ _id: selectedID });
+    
+//     if (result.deletedCount === 0) {
+//       return res.status(404).json({ error: 'File not found' });
+//     }
+    
+//     console.log('File deleted successfully');
+//     res.status(200).json({ message: 'File deleted successfully' });
+    
+//     // Log remaining contents
+//     const remainingContents = await Content.find({});
+//     console.log("Remaining contents:", remainingContents);
+    
+//   } catch (error) {
+//     console.error('Error deleting file:', error);
+//     res.status(500).json({ error: 'Internal server error' });
+//   }
+// };
+
+const deleteFile = async (req, res) => {
+  const messageId = req.query.messageID;
+  const userID = req.query.userID;
+  console.log("teamId", userID)
+  console.log("Attempting to delete message with ID:", messageId);
 
   try {
-    const result = await Content.deleteOne({ _id: selectedID });
+    const result = await Content.deleteOne({ _id: messageId });
+
+    // if (result.deletedCount !== 1) {
+      console.log("Message deleted successfully");
+      
     
-    if (result.deletedCount === 0) {
-      return res.status(404).json({ error: 'File not found' });
-    }
-    
-    console.log('File deleted successfully');
-    res.status(200).json({ message: 'File deleted successfully' });
-    
-    // Log remaining contents
-    const remainingContents = await Content.find({});
-    console.log("Remaining contents:", remainingContents);
+      const updatedChat = await Content.find({ }).sort({ createdAt: 1 });
+      // const updatedChat = await Content.find({});
+      console.log('updatedChat', updatedChat)
+      
+      res.status(200).json({ 
+        message: "Chat deleted successfully",
+        updatedChat: updatedChat
+      });
+      console.log("Done");
+
+    // // } else {
+    //   console.log("Message not found");
+    //   res.status(404).json({ error: "Message not found" });
     
   } catch (error) {
-    console.error('Error deleting file:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    console.log('Error deleting message:', error);
+    res.status(500).json({ error: "Error deleting chat", details: error.message });
   }
 };
+
+
+
+
 const viewFile = async(req, res) =>{
   const { userEdit, selectedID } = req.body;
   const _id =selectedID 
@@ -203,8 +241,9 @@ const viewFile = async(req, res) =>{
     console.log(error);
   }
 
-
 }
+
+
 
 // render all the files
 // get the file id

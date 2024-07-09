@@ -21,7 +21,7 @@ app.get('/getFiles', getAllFiles);
 app.post('/createContent', createContent);
 app.post('/updateFile', updateFile);
 app.post('/viewFile', viewFile);
-app.post('/deleteFile', deleteFile);
+app.delete('/deleteFile', deleteFile);
 
 mongoose
   .connect(
