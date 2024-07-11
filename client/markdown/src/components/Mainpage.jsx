@@ -196,7 +196,7 @@ const Mainpage = () => {
           fileName: fileName,
           token: token,
         });
-        console.log("Successful", fileNam, token, userInput);
+        console.log("Successful", fileName, token, userInput);
         alert("File created")
         console.log('new file response', response)
         setUserFile(response.data)
