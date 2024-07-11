@@ -78,47 +78,40 @@ const downloadFile = async (req, res) => {
 
 
 
-const createContent = async(req, res)=>{
-  let { userContent, fileName, token } = req.body;
-  console.log(req.body)
+const createContent = async (req, res) => {
+  try {
+    let { userContent, fileName, token } = req.body;
+    console.log("req.body", req.body);
 
-  const decodedToken = jwt.verify(token, secretKey);
-  const userId = decodedToken.userId
+    const decodedToken = jwt.verify(token, secretKey);
+    const userId = decodedToken.userId;
 
-  if (userContent.length > 0){
-    userContent = "Update your file "
+    const newFile = await Content.create({
+      fileName,
+      userId,
+      userInput: userContent,
+    });
+    console.log("newFile", newFile);
+
+    const user = await User.findById(userId);
+
+    if (!user) {
+      console.log('No user found');
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    user.content.push(newFile._id);
+    await user.save();
+
+    const chats = await Content.find({ userId }).sort({ createdAt: 1 });
+    res.status(200).json(chats);
+
+    console.log("New file added");
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
   }
-
-   const newFile =  await Content.create({
-    fileName:fileName,
-    userId,
-    userInput: userContent,
-    
-  })
-  console.log(newFile);
-  const Chats = await User.findById(userId); 
-  console.log(Chats.content);
-  res.status(200).json(Chats); 
-
-
-  const user = await User.findById(userId)
-
-  if(!user){
-    console.log('No user found')
-  }
-  {
-   user.content.push(newFile)
-   await user.save();
-    console.log('done', user)
-    return 'Done'
-  }
-
- 
-
-
- 
-
-}
+};
 
 // const getAllFiles = async (req, res) => {
 //   try {
@@ -140,12 +133,12 @@ const userToken = jwt.verify(token, secretKey)
 console.log(userToken.userId)
 const userId = userToken.userId
 
+
   try {
     // const Chats = await User.findById(userId); // Use await and directly pass the id
-    const updatedChat = await Content.find({ }).sort({ createdAt: 1 });
+    const updatedChat = await Content.find({userId }).sort({ createdAt: 1 });
 
 
-    console.log("updatedChat", updatedChat);
     res.status(200).json(updatedChat); 
   } catch (error) {
     console.error(error);
@@ -195,8 +188,8 @@ const _id =selectedID
 
 const deleteFile = async (req, res) => {
   const messageId = req.query.messageID;
-  const userID = req.query.userID;
-  console.log("teamId", userID)
+  const userId = req.query.currentUserID;
+  console.log("teamId", userId)
   console.log("Attempting to delete message with ID:", messageId);
 
   try {
@@ -206,9 +199,10 @@ const deleteFile = async (req, res) => {
       console.log("Message deleted successfully");
       
     
-      const updatedChat = await Content.find({ }).sort({ createdAt: 1 });
+      // const updatedChat = await Content.find({userId:userID }).sort({ createdAt: 1 });
+        const updatedChat = await Content.find({userId }).sort({ createdAt: 1 });
+
       // const updatedChat = await Content.find({});
-      console.log('updatedChat', updatedChat)
       
       res.status(200).json({ 
         message: "Chat deleted successfully",
