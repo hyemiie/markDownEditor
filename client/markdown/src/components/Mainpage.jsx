@@ -193,7 +193,7 @@ const Mainpage = () => {
     try {
         const response = await axios.post("http://localhost:5000/createContent", {
           userContent: userInput,
-          fileName: fileNam,
+          fileName: fileName,
           token: token,
         });
         console.log("Successful", fileName, token, userInput);
