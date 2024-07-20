@@ -330,10 +330,10 @@ const Mainpage = () => {
   };
 
   return (
-    <div className="flex overflow-hidden">
-      <div className="w-full">
-        <p className="flex flex-wrap bg-black text-gray-50 w-screen h-10  ">
-          <div className="flex pl-12 w-screen overflow-auto ">
+    <div className="flex overflow-hidden bg-yellow-200">
+      <div className="w-full bg-yellow-200">
+        <p className="flex flex-wrap bg-black text-gray-50 w-screen h-10 ">
+          <div className="flex pl-12 w-screen overflow-auto fixed top-0 bg-black">
             <button
               className="flex pe-10 pt-3 hover:bg-slate-500 w-7 "
               onClick={() => {
@@ -463,7 +463,7 @@ const Mainpage = () => {
           </div>
         </p>
 
-        <div className="flex items-center justify-between  flex-wrap bg-slate-500 ">
+        <div className="flex items-center justify-between  flex-wrap bg-slate-500">
           <p className=" text-gray-300 text-3xl ml-4 font-bold font-serif">
             {currentFile}
           </p>
