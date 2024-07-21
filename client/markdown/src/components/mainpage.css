@@ -25,7 +25,7 @@
 }
 
 #htmlResponse code{
-    background-color: rgb(216, 216, 216);
+    background-color: rgb(186, 190, 199);
     font-family: 'Courier New', Courier, monospace;
     padding: 5px;
     font-size: 15px;
@@ -51,8 +51,8 @@ text-decoration: underline;
     color: blueviolet;
 }
 
-#htmlResponse li li{
-    list-style:circle;
+#htmlResponse ul li{
+    list-style:decimal;
     margin-left: 10px;
 }
 
@@ -70,15 +70,48 @@ text-decoration: underline;
     border-radius: 3px;
   }
 
+
+  .responsiveView{
+    display: none;
+  }
+
+  .buttonContainer{
+    display: none;
+  }
+
+/* 
+.topHeading{
+    background-color: yellow;
+    height: 300px;
+    position: absolute;
+    z-index: 0;
+    top:0;
+} */
+
+
   @media only screen and (max-width:770px) {
 
     
-    #htmlResponse{
+   .show{
+        /* display: none; */
+        width: 100%;
+        position: absolute;
+    }
+
+.hide{
         display: none;
-        /* background-color: yellow; */
+
     }
 
     #userInput{
         width: 100%;
     }
+
+    .responsiveView{
+        display: block;
+      }
+
+      .buttonContainer{
+        display: block;
+      }
   }

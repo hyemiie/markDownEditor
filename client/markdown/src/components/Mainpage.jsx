@@ -14,6 +14,7 @@ import {
   faCode,
   faCoffee,
   faCross,
+  faEye,
   faFile,
   faFileArchive,
   faImagePortrait,
@@ -22,6 +23,7 @@ import {
   faList12,
   faListDots,
   faListNumeric,
+  faPenAlt,
   faPencil,
   faQuoteLeft,
   faTable,
@@ -46,6 +48,7 @@ const Mainpage = () => {
   const [hoveredButton, setHoveredButton] = useState(null);
   const [messageID, setMessageID] = useState(null);
   const [currentUserID, setCurrentUserID] = useState(null);
+  const [smallScreen, setSmallScreen] = useState(null);
 
   const handleMouseEnter = (buttonName) => {
     setHoveredButton(buttonName);
@@ -124,12 +127,16 @@ const Mainpage = () => {
 
   const handleSubListClick = () => {
     if (highlightedText) {
-      const subList = `<li> <li>${highlightedText}</li></l1>`;
+      const subList = `<ul>${highlightedText
+        .split("\n")
+        .map((line) => `<li>${line.trim()}</li>`)
+        .join("")}</ul>`;
       const newText = userInput.replace(highlightedText, subList);
       setUserInput(newText);
       setHtmlResponse(newText);
     }
   };
+  
 
   const handleCodeClick = () => {
     if (highlightedText) {
@@ -301,6 +308,7 @@ const Mainpage = () => {
   const getFileId = (fileId) => {
     setSelectedID(fileId);
     console.log("done", selectedID);
+    setUserInput('')
   };
 
   const getCurrentFile = (fileName) => {
@@ -329,13 +337,51 @@ const Mainpage = () => {
     setFileListStatus(true);
   };
 
+  const checkSmallScreen = () =>{
+    
+    setSmallScreen(prevState => !prevState);
+    if(smallScreen){ 
+    console.log(' small screen true')
+    } 
+    else{
+      console.log(' small screen false')
+
+    }
+  }
+  useEffect(() => {
+    if (selectedID.length < 1) {
+      setUserInput(`Hello, I am your first markdown file.I'm here to guide you on the features of this app.
+  
+  ## Text Formatting
+  
+  ### Basic Styling
+  - **Bold** text: Use \`**\` or \`__\` around your text
+  - *Italic* text: Use \`*\` or \`_\` around your text
+  - Use # for H1, ## for H2, and so on.
+  
+  ## Code
+  
+  ### Inline Code
+  Use backticks(\`) for inline code.
+  
+  ### Code Blocks
+  \`\`\`python
+  def hello_world():
+      print("Hello, World!")
+  \`\`\`
+  
+  To start working, click on the file icon at the far right to choose or create files. Cheers!!!!`);
+    }
+  }, [selectedID]);
   return (
-    <div className="flex overflow-hidden bg-yellow-200">
-      <div className="w-full bg-yellow-200">
-        <p className="flex flex-wrap bg-black text-gray-50 w-screen h-10 ">
-          <div className="flex pl-12 w-screen overflow-auto fixed top-0 bg-black">
+    <div className="flex bg-yellow-600 overflow-x-hidden overflow-y-hidden">
+      <div className="w-full ">
+      <div className="topHeading">
+      <p className="flex flex-wrap  text-gray-50 w-screen h-10 ">
+
+          <div className="flex pl-12 w-screen overflow-auto  bg-black">
             <button
-              className="flex pe-10 pt-3 hover:bg-slate-500 w-7 "
+              className="flex pe-10 pt-2 pl-4 hover:bg-slate-500 w-7  "
               onClick={() => {
                 getFiles();
                 viewStatusTrue();
@@ -345,7 +391,7 @@ const Mainpage = () => {
             >
               <FontAwesomeIcon
                 icon={faFileArchive}
-                className="flex text-2xl text-cyan-600"
+                className=" text-2xl text-cyan-600 "
               />
               {/* text-indigo-600 */}
 
@@ -418,7 +464,7 @@ const Mainpage = () => {
               <FontAwesomeIcon icon={faCode} className="justify-center pl-2" />
               {hoveredButton == "Code" ? <p>Code</p> : ""}
             </button>
-            <button
+            {/* <button
               className="flex pe-10 pt-3 hover:bg-slate-500 w-7"
               onClick={handleTableClick}
               onMouseEnter={() => handleMouseEnter("Table")}
@@ -426,7 +472,7 @@ const Mainpage = () => {
             >
               <FontAwesomeIcon icon={faTable} className="justify-center pl-2" />
               {hoveredButton == "Table" ? <p>Table</p> : ""}
-            </button>
+            </button> */}
             <button
               className="flex pe-10 pt-3 hover:bg-slate-500 w-7"
               onClick={handleLinkClick}
@@ -464,10 +510,12 @@ const Mainpage = () => {
         </p>
 
         <div className="flex items-center justify-between  flex-wrap bg-slate-500">
-          <p className=" text-gray-300 text-3xl ml-4 font-bold font-serif">
+          <p className=" text-gray-300 text-3xl ml-4 font-bold font-serif ">
             {currentFile}
           </p>
-          <div className="flex items-center">
+
+          <div className="flex">
+
             <button
               onClick={editFile}
               className="text-center bg-cyan-600 text-white hover:text-gray-100 p-2 rounded mr-8 "
@@ -476,26 +524,48 @@ const Mainpage = () => {
             </button>
           </div>
         </div>
+       </div>
 
         <div className="flex w-auto">
-          <textarea
-            className="bg-slate-300 h-screen w-[50%] border-r-4 border-b-cyan-500 outline-none pl-12 pt-5 "
-            placeholder="start writing here"
-            id="userInput"
-            value={userInput}
-            onChange={(e) => {
-              handleUserInputChange(e);
-            }}
-          />
+        {!currentFile.length < 1 ? (
+  <textarea
+    className="bg-slate-300 h-screen w-[50%] border-r-4 border-b-cyan-500 outline-none pl-12 pt-5 overflow-y-scroll"
+    placeholder="start writing here"
+    id="userInput"
+    value={userInput}
+    onChange={(e) => {
+      handleUserInputChange(e);
+    }}
+  />
+) : (
+  <textarea
+      className="bg-slate-300 h-screen w-[50%] border-r-4 border-b-cyan-500 outline-none pl-12 pt-5 overflow-y-scroll"
+      placeholder="start writing here"
+      id="userInput"
+      value={userInput}
+      onChange={handleUserInputChange}
+      
+     />
+)}
           <div
-            className="bg-slate-300 h-screen w-[50%] outline-none p-10"
-            id="htmlResponse"
+className={`bg-slate-300 h-screen overflow-y-scroll w-[50%] outline-none p-10 ${smallScreen ? 'show' : 'hide'}`}            id="htmlResponse"
             dangerouslySetInnerHTML={{ __html: htmlResponse }}
           />
+
+          <div className=" bg-slate-200 buttonContainer"><button className="responsiveView flex ml-auto text-gray-400 p-2 w-12 text-center items-center justify-center border-radius cur"  onClick={checkSmallScreen}> {!smallScreen? <FontAwesomeIcon
+                icon={faEye}
+                className="justify-center"
+              />:<FontAwesomeIcon
+                icon={faPenAlt}
+                className="justify-center text-xl"
+              />}</button>
+</div>
+
         </div>
+
       </div>
       {fileListStatus && (
-        <div className="bg-slate-500 py-3.5 pl-4 w-max h-screen flex flex-col absolute overflow-y-scroll">
+        <div className="bg-slate-500 py-3.5 pl-4 w-max h-screen flex flex-col overflow-y-scroll fixed">
           <FontAwesomeIcon
             icon={faArrowLeft}
             onClick={viewStatusFalse}
@@ -515,13 +585,14 @@ const Mainpage = () => {
                 }}
               >
                 <li> {file.fileName}</li>
+
               </ul>
               <FontAwesomeIcon
                 icon={faTrash}
                 onClick={() => {
                   if (
                     window.confirm(
-                      "Are you sure you want to delete this message?"
+                      "Are you sure you want to delete this file?"
                     )
                   ) {
                     setMessageID(file._id);
@@ -564,7 +635,6 @@ const Mainpage = () => {
         </div>
       )}
 
-      <Login />
     </div>
   );
 };
