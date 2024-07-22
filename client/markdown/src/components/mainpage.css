@@ -3,12 +3,14 @@
     color: black;
     font-weight: bold;
     text-transform: capitalize;
+    margin-bottom: 30px;
 }
 
 #htmlResponse h2{
     font-size: 25px;
     color: black;
     font-weight: bold;
+    margin-bottom: 15px;
 }
 
 #htmlResponse h3{
@@ -22,6 +24,7 @@
     font-size: 30px;
     color: black;
     font-weight: bold;
+    margin-bottom: 10px;
 }
 
 #htmlResponse code{
@@ -29,6 +32,8 @@
     font-family: 'Courier New', Courier, monospace;
     padding: 5px;
     font-size: 15px;
+    margin-bottom:120px ;
+    margin-top: 20px;
 }
 
 #htmlResponse em{
@@ -56,11 +61,15 @@ text-decoration: underline;
     margin-left: 10px;
 }
 
+#htmlResponse p {
+    margin-top: 20px;
+}
+
 /* mainpage.css */
 
 
   button p{
-    background-color: rgb(184, 103, 103);
+    background-color: rgb(218, 218, 218);
     margin-top: 25px;
     position: absolute;
     width: fit-content;
@@ -79,14 +88,14 @@ text-decoration: underline;
     display: none;
   }
 
-/* 
+
 .topHeading{
-    background-color: yellow;
-    height: 300px;
-    position: absolute;
-    z-index: 0;
-    top:0;
-} */
+    /* background-color: yellow;
+    height: 100px; */
+    /* position: absolute; */
+    /* z-index: 1;
+    top:0; */
+} 
 
 
   @media only screen and (max-width:770px) {
@@ -94,8 +103,10 @@ text-decoration: underline;
     
    .show{
         /* display: none; */
-        width: 100%;
+        /* width: 100%; */
         position: absolute;
+        width: 100vw;
+        background-color: aqua;
     }
 
 .hide{

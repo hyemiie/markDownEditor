@@ -24,11 +24,12 @@ const email= userMail;
       return res.status(401).json({ error: "Invalid password" });
     }
 
-    // Generate JWT token
     const token = jwt.sign({ userId: user._id, email: user.email }, secretKey);
+    // console.log('user', user.)
+    const userName = user.username
 
     // Return token as response
-    res.status(200).json({ token });
+    res.status(200).json({ token, userName });
   } catch (error) {
     console.error("Login error:", error);
     res.status(500).json({ error: "Internal server error" });

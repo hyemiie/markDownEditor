@@ -43,6 +43,7 @@ const Mainpage = () => {
   const [fileStatus, setFileStatus] = useState(false);
   const [fileName, setFileName] = useState("");
   const [currentFile, setCurrentFile] = useState("");
+  const [currentUserName, setCurrentUserName] = useState("");
   const [fileListStatus, setFileListStatus] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [hoveredButton, setHoveredButton] = useState(null);
@@ -136,7 +137,6 @@ const Mainpage = () => {
       setHtmlResponse(newText);
     }
   };
-  
 
   const handleCodeClick = () => {
     if (highlightedText) {
@@ -196,29 +196,24 @@ const Mainpage = () => {
       setUserInput("Update your file");
       console.log("Set User Input");
     }
-    
-    try {
-        const response = await axios.post("http://localhost:5000/createContent", {
-          userContent: userInput,
-          fileName: fileName,
-          token: token,
-        });
-        console.log("Successful", fileName, token, userInput);
-        alert("File created")
-        console.log('new file response', response)
-        setUserFile(response.data)
-        setFileStatus(false);
 
-       
+    try {
+      const response = await axios.post("http://localhost:5000/createContent", {
+        userContent: userInput,
+        fileName: fileName,
+        token: token,
+      });
+      console.log("Successful", fileName, token, userInput);
+      alert("File created");
+      console.log("new file response", response);
+      setUserFile(response.data);
+      setFileStatus(false);
     } catch (error) {
       console.error("An error occurred:", error);
     }
-    
+
     console.log("Function ended");
   };
-  
-
-  
 
   const editFile = async () => {
     const userEdit = userInput;
@@ -308,7 +303,7 @@ const Mainpage = () => {
   const getFileId = (fileId) => {
     setSelectedID(fileId);
     console.log("done", selectedID);
-    setUserInput('')
+    setUserInput("");
   };
 
   const getCurrentFile = (fileName) => {
@@ -337,17 +332,14 @@ const Mainpage = () => {
     setFileListStatus(true);
   };
 
-  const checkSmallScreen = () =>{
-    
-    setSmallScreen(prevState => !prevState);
-    if(smallScreen){ 
-    console.log(' small screen true')
-    } 
-    else{
-      console.log(' small screen false')
-
+  const checkSmallScreen = () => {
+    setSmallScreen((prevState) => !prevState);
+    if (smallScreen) {
+      console.log(" small screen true");
+    } else {
+      console.log(" small screen false");
     }
-  }
+  };
   useEffect(() => {
     if (selectedID.length < 1) {
       setUserInput(`Hello, I am your first markdown file.I'm here to guide you on the features of this app.
@@ -373,98 +365,110 @@ const Mainpage = () => {
   To start working, click on the file icon at the far right to choose or create files. Cheers!!!!`);
     }
   }, [selectedID]);
+
+  useEffect(() => {
+    const userName = localStorage.getItem("currentUser");
+    setCurrentUserName(userName);
+
+    return () => {};
+  }, []);
+
   return (
-    <div className="flex bg-yellow-600 overflow-x-hidden overflow-y-hidden">
+    <div className="flex overflow-x-hidden overflow-y-hidden">
       <div className="w-full ">
-      <div className="topHeading">
-      <p className="flex flex-wrap  text-gray-50 w-screen h-10 ">
+      <div className="sticky top-0 bg-red-400 ">          <p className="flex flex-wrap  text-gray-50 w-screen h-10 ">
+            <div className="flex pl-12 w-screen overflow-auto bg-slate-200 h-12">
+              <button
+                className="flex pe-10 pt-2 pl-4 hover:bg-slate-500 w-7  "
+                onClick={() => {
+                  getFiles();
+                  viewStatusTrue();
+                }}
+                onMouseEnter={() => handleMouseEnter("fileArchive")}
+                onMouseLeave={handleMouseLeave}
+              >
+                <FontAwesomeIcon
+                  icon={faFileArchive}
+                  className=" text-2xl text-cyan-600 "
+                />
+                {/* text-indigo-600 */}
 
-          <div className="flex pl-12 w-screen overflow-auto  bg-black">
-            <button
-              className="flex pe-10 pt-2 pl-4 hover:bg-slate-500 w-7  "
-              onClick={() => {
-                getFiles();
-                viewStatusTrue();
-              }}
-              onMouseEnter={() => handleMouseEnter("fileArchive")}
-              onMouseLeave={handleMouseLeave}
-            >
-              <FontAwesomeIcon
-                icon={faFileArchive}
-                className=" text-2xl text-cyan-600 "
-              />
-              {/* text-indigo-600 */}
+                {hoveredButton == "fileArchive" ? <p>View Files</p> : ""}
+              </button>
 
-              {hoveredButton == "fileArchive" ? <p>View Files</p> : ""}
-            </button>
+              <button
+                className="flex pe-10 pt-3 pl-2 hover:bg-slate-500 w-7"
+                onClick={handleBoldClick}
+                onMouseEnter={() => handleMouseEnter("bold")}
+                onMouseLeave={handleMouseLeave}
+              >
+                <FontAwesomeIcon
+                  icon={faBold}
+                  className="justify-center pl-2 text-slate-950 text-xl"
+                />
+                {hoveredButton == "bold" ? <p>Bold</p> : ""}
+              </button>
+              <button
+                className="flex pe-10 font-bold pt-3 pl-2 hover:bg-slate-500 w-7"
+                onClick={handleItalicClick}
+                onMouseEnter={() => handleMouseEnter("Italic")}
+                onMouseLeave={handleMouseLeave}
+              >
+                <FontAwesomeIcon
+                  icon={faItalic}
+                  className="justify-center pl-2 text-slate-950 text-xl"
+                />
+                {hoveredButton == "Italic" ? <p>Italic</p> : ""}
+              </button>
+              <button
+                className="flex pe-10 pt-3 pl-2 hover:bg-slate-500 w-7"
+                onClick={handleListClick}
+                onMouseEnter={() => handleMouseEnter("List")}
+                onMouseLeave={handleMouseLeave}
+              >
+                <FontAwesomeIcon
+                  icon={faListNumeric}
+                  className="justify-center pl-2 text-slate-950 text-xl"
+                />
+                {hoveredButton == "List" ? <p>List</p> : ""}
+              </button>
+              <button
+                className=" flex pe-10 pt-3 pl-2 hover:bg-slate-500 w-7 "
+                onClick={handleSubListClick}
+                onMouseEnter={() => handleMouseEnter("SubList")}
+                onMouseLeave={handleMouseLeave}
+              >
+                <FontAwesomeIcon
+                  icon={faListDots}
+                  className="justify-center pl-2 text-slate-950 text-xl"
+                />
+                {hoveredButton == "SubList" ? <p>SubList</p> : ""}
+              </button>
 
-            <button
-              className="flex pe-10 pt-3 hover:bg-slate-500 w-7"
-              onClick={handleBoldClick}
-              onMouseEnter={() => handleMouseEnter("bold")}
-              onMouseLeave={handleMouseLeave}
-            >
-              <FontAwesomeIcon icon={faBold} className="justify-center pl-2" />
-              {hoveredButton == "bold" ? <p>Bold</p> : ""}
-            </button>
-            <button
-              className="flex pe-10 font-bold pt-3 hover:bg-slate-500 w-7"
-              onClick={handleItalicClick}
-              onMouseEnter={() => handleMouseEnter("Italic")}
-              onMouseLeave={handleMouseLeave}
-            >
-              <FontAwesomeIcon
-                icon={faItalic}
-                className="justify-center pl-2"
-              />
-              {hoveredButton == "Italic" ? <p>Italic</p> : ""}
-            </button>
-            <button
-              className="flex pe-10 pt-3 hover:bg-slate-500 w-7"
-              onClick={handleListClick}
-              onMouseEnter={() => handleMouseEnter("List")}
-              onMouseLeave={handleMouseLeave}
-            >
-              <FontAwesomeIcon
-                icon={faListNumeric}
-                className="justify-center pl-2"
-              />
-              {hoveredButton == "List" ? <p>List</p> : ""}
-            </button>
-            <button
-              className=" flex pe-10 pt-3 hover:bg-slate-500 w-7 "
-              onClick={handleSubListClick}
-              onMouseEnter={() => handleMouseEnter("SubList")}
-              onMouseLeave={handleMouseLeave}
-            >
-              <FontAwesomeIcon
-                icon={faListDots}
-                className="justify-center pl-2"
-              />
-              {hoveredButton == "SubList" ? <p>SubList</p> : ""}
-            </button>
-
-            <button
-              className="flex pe-10 pt-3 hover:bg-slate-500 w-7"
-              onMouseEnter={() => handleMouseEnter("Quote")}
-              onMouseLeave={handleMouseLeave}
-            >
-              <FontAwesomeIcon
-                icon={faQuoteLeft}
-                className="justify-center pl-2"
-              />
-              {hoveredButton == "Quote" ? <p>Quote</p> : ""}
-            </button>
-            <button
-              className="flex pe-10 pt-3 hover:bg-slate-500 w-7"
-              onClick={handleCodeClick}
-              onMouseEnter={() => handleMouseEnter("Code")}
-              onMouseLeave={handleMouseLeave}
-            >
-              <FontAwesomeIcon icon={faCode} className="justify-center pl-2" />
-              {hoveredButton == "Code" ? <p>Code</p> : ""}
-            </button>
-            {/* <button
+              <button
+                className="flex pe-10 pt-3 pl-2 hover:bg-slate-500 w-7"
+                onMouseEnter={() => handleMouseEnter("Quote")}
+                onMouseLeave={handleMouseLeave}
+              >
+                <FontAwesomeIcon
+                  icon={faQuoteLeft}
+                  className="justify-center pl-2 text-slate-950 text-xl"
+                />
+                {hoveredButton == "Quote" ? <p>Quote</p> : ""}
+              </button>
+              <button
+                className="flex pe-10 pt-3 pl-2 hover:bg-slate-500 w-7"
+                onClick={handleCodeClick}
+                onMouseEnter={() => handleMouseEnter("Code")}
+                onMouseLeave={handleMouseLeave}
+              >
+                <FontAwesomeIcon
+                  icon={faCode}
+                  className="justify-center pl-2 text-slate-950 text-xl"
+                />
+                {hoveredButton == "Code" ? <p>Code</p> : ""}
+              </button>
+              {/* <button
               className="flex pe-10 pt-3 hover:bg-slate-500 w-7"
               onClick={handleTableClick}
               onMouseEnter={() => handleMouseEnter("Table")}
@@ -473,109 +477,118 @@ const Mainpage = () => {
               <FontAwesomeIcon icon={faTable} className="justify-center pl-2" />
               {hoveredButton == "Table" ? <p>Table</p> : ""}
             </button> */}
-            <button
-              className="flex pe-10 pt-3 hover:bg-slate-500 w-7"
-              onClick={handleLinkClick}
-              onMouseEnter={() => handleMouseEnter("Link")}
-              onMouseLeave={handleMouseLeave}
-            >
-              <FontAwesomeIcon icon={faLink} className="justify-center pl-2" />
-              {hoveredButton == "Link" ? <p>Link</p> : ""}
-            </button>
-            <button
-              className="flex pe-10 pt-3 hover:bg-slate-500 w-7"
-              onClick={handleDownload}
-              onMouseEnter={() => handleMouseEnter("Download")}
-              onMouseLeave={handleMouseLeave}
-            >
-              <FontAwesomeIcon
-                icon={faArrowDown}
-                className="justify-center pl-2"
-              />
-              {hoveredButton == "Download" ? <p>Download</p> : ""}
-            </button>
-            <button
-              className="flex pe-10 pt-3 hover:bg-slate-500 w-7"
-              onClick={editFile}
-              onMouseEnter={() => handleMouseEnter("Edit")}
-              onMouseLeave={handleMouseLeave}
-            >
-              <FontAwesomeIcon
-                icon={faPencil}
-                className="justify-center pl-2"
-              />
-              {hoveredButton == "Edit" ? <p>Edit File</p> : ""}
-            </button>
-          </div>
-        </p>
-
-        <div className="flex items-center justify-between  flex-wrap bg-slate-500">
-          <p className=" text-gray-300 text-3xl ml-4 font-bold font-serif ">
-            {currentFile}
+              <button
+                className="flex pe-10 pt-3 pl-2 hover:bg-slate-500 w-7"
+                onClick={handleLinkClick}
+                onMouseEnter={() => handleMouseEnter("Link")}
+                onMouseLeave={handleMouseLeave}
+              >
+                <FontAwesomeIcon
+                  icon={faLink}
+                  className="justify-center pl-2 text-slate-950 text-xl"
+                />
+                {hoveredButton == "Link" ? <p>Link</p> : ""}
+              </button>
+              <button
+                className="flex pe-10 pt-3 pl-2 hover:bg-slate-500 w-7"
+                onClick={handleDownload}
+                onMouseEnter={() => handleMouseEnter("Download")}
+                onMouseLeave={handleMouseLeave}
+              >
+                <FontAwesomeIcon
+                  icon={faArrowDown}
+                  className="justify-center pl-2 text-slate-950 text-xl"
+                />
+                {hoveredButton == "Download" ? <p>Download</p> : ""}
+              </button>
+              <button
+                className="flex pe-10 pt-3 pl-2 hover:bg-slate-500 hover:text-slate-50 w-7"
+                onClick={editFile}
+                onMouseEnter={() => handleMouseEnter("Edit")}
+                onMouseLeave={handleMouseLeave}
+              >
+                <FontAwesomeIcon
+                  icon={faPencil}
+                  className="justify-center pl-2 text-slate-950 text-xl"
+                />
+                {hoveredButton == "Edit" ? <p>Edit File</p> : ""}
+              </button>
+            </div>
           </p>
 
-          <div className="flex">
+          <div className="flex items-center justify-between  flex-wrap bg-slate-100 border-b-2 border-gray-200 border-solid p-2">
+            <p className=" text-gray-300 text-3xl ml-4 font-bold font-serif ">
+              {currentFile}
+            </p>
 
-            <button
-              onClick={editFile}
-              className="text-center bg-cyan-600 text-white hover:text-gray-100 p-2 rounded mr-8 "
-            >
-              Save File
-            </button>
+            <div className="flex">
+              <button
+                onClick={editFile}
+                className="text-center bg-cyan-600 text-white hover:text-gray-100 p-2 rounded mr-8 "
+              >
+                Save File
+              </button>
+            </div>
           </div>
         </div>
-       </div>
 
         <div className="flex w-auto">
-        {!currentFile.length < 1 ? (
-  <textarea
-    className="bg-slate-300 h-screen w-[50%] border-r-4 border-b-cyan-500 outline-none pl-12 pt-5 overflow-y-scroll"
-    placeholder="start writing here"
-    id="userInput"
-    value={userInput}
-    onChange={(e) => {
-      handleUserInputChange(e);
-    }}
-  />
-) : (
-  <textarea
-      className="bg-slate-300 h-screen w-[50%] border-r-4 border-b-cyan-500 outline-none pl-12 pt-5 overflow-y-scroll"
-      placeholder="start writing here"
-      id="userInput"
-      value={userInput}
-      onChange={handleUserInputChange}
-      
-     />
-)}
+          {!currentFile.length < 1 ? (
+            <textarea
+              className="bg-slate-100 h-screen w-[100%] border-r-4 border-b-cyan-500 outline-none pl-12 pt-5 overflow-y-scroll"
+              placeholder="start writing here"
+              id="userInput"
+              value={userInput}
+              onChange={(e) => {
+                handleUserInputChange(e);
+              }}
+            />
+          ) : (
+            <textarea
+              className="bg-slate-100 h-screen w-[100%] border-r-4 border-b-cyan-500 outline-none pl-12 pt-5 overflow-y-scroll"
+              placeholder="start writing here"
+              id="userInput"
+              value={userInput}
+              onChange={handleUserInputChange}
+            />
+          )}
           <div
-className={`bg-slate-300 h-screen overflow-y-scroll w-[50%] outline-none p-10 ${smallScreen ? 'show' : 'hide'}`}            id="htmlResponse"
+            className={`bg-slate-100 h-screen overflow-y-scroll outline-none p-10 ${
+              !smallScreen ? "show w-[100%]" : "hide w-[50%]"
+            }`}
+            id="htmlResponse"
             dangerouslySetInnerHTML={{ __html: htmlResponse }}
           />
 
-          <div className=" bg-slate-200 buttonContainer"><button className="responsiveView flex ml-auto text-gray-400 p-2 w-12 text-center items-center justify-center border-radius cur"  onClick={checkSmallScreen}> {!smallScreen? <FontAwesomeIcon
-                icon={faEye}
-                className="justify-center"
-              />:<FontAwesomeIcon
-                icon={faPenAlt}
-                className="justify-center text-xl"
-              />}</button>
-</div>
-
+<div className="bg-slate-200 buttonContainer fixed  right-0 h-full">
+    <button
+      className="responsiveView flex ml-auto text-gray-400 p-2 w-12 text-center items-center justify-center rounded cursor-pointer"
+      onClick={checkSmallScreen}
+    >
+      {smallScreen ? (
+        <FontAwesomeIcon icon={faPenAlt} className="text-xl" />
+      ) : (
+        <FontAwesomeIcon icon={faEye} />
+      )}
+    </button>
+  </div>
         </div>
-
       </div>
       {fileListStatus && (
-        <div className="bg-slate-500 py-3.5 pl-4 w-max h-screen flex flex-col overflow-y-scroll fixed">
-          <FontAwesomeIcon
-            icon={faArrowLeft}
-            onClick={viewStatusFalse}
-            className="flex bg-slate-600 w-6 h-6 text-xs p-5 rounded-full hover:bg-black hover:text-slate-100"
-          />
+        <div className="bg-slate-500 py-3.5  w-80 h-screen flex flex-col overflow-y-auto fixed p-4">
+          <div className="flex justify-between items-center pb-8">
+            <h2 className="flex text-4xl text-teal-100">{currentUserName}</h2>
+            <FontAwesomeIcon
+              icon={faArrowLeft}
+              onClick={viewStatusFalse}
+              className="flex w-6 h-6 text-xl p-5 rounded-xs hover:bg-slate-400 hover:text-slate-100 text-slate-50 cursor-pointer"
+            />
+          </div>
 
           {userFile.map((file) => (
             <div
               key={file._id}
-              className="mb-7 hover:bg-gray-600 text-gray-100 w-56 h-8 flex justify-between align-middle"
+              className="mb-7 hover:bg-gray-600 text-gray-100 w-88 h-16 flex justify-between items-center mb-4 p-2 border-b border-slate-400"
             >
               <ul
                 onClick={() => {
@@ -585,15 +598,12 @@ className={`bg-slate-300 h-screen overflow-y-scroll w-[50%] outline-none p-10 ${
                 }}
               >
                 <li> {file.fileName}</li>
-
               </ul>
               <FontAwesomeIcon
                 icon={faTrash}
                 onClick={() => {
                   if (
-                    window.confirm(
-                      "Are you sure you want to delete this file?"
-                    )
+                    window.confirm("Are you sure you want to delete this file?")
                   ) {
                     setMessageID(file._id);
                     setCurrentUserID(file.userId);
@@ -615,7 +625,7 @@ className={`bg-slate-300 h-screen overflow-y-scroll w-[50%] outline-none p-10 ${
               </div>
             )}
           </div>
-          <div className="flex">
+          <div className="flex mt-8 ml-auto">
             <button
               className="bg-slate-50 w-42 mr-auto pr-5 h-10"
               onClick={() => {
@@ -634,7 +644,6 @@ className={`bg-slate-300 h-screen overflow-y-scroll w-[50%] outline-none p-10 ${
           </div>
         </div>
       )}
-
     </div>
   );
 };
