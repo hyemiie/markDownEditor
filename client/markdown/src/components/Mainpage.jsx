@@ -381,7 +381,7 @@ const Mainpage = () => {
   }, []);
 
   return (
-    <div className="flex overflow-x-hidden overflow-y-hidden allPage">
+    <div className="flex overflow-hidden allPage">
       <div className="w-full">
         <div className=" this flex flex-col bg-orange-500 overflow-hidden ">
           <div className="flex flex-wrap  text-gray-50 w-screen flex-col items-center justify-center  ">
@@ -606,7 +606,7 @@ const Mainpage = () => {
         <div className="flex w-auto filesDiv ">
           {!currentFile.length < 1 ? (
             <textarea
-           className={`bg-slate-100 h-screen overflow-y-scroll outline-none p-10 text-xl font-thin w-[100%]  border-r border-black ${
+           className={`bg-slate-100 h-96  overflow-y-scroll outline-none p-10 text-xl font-thin w-[100%]  border-r border-black ${
               smallScreen ? "show"  :"hide"
             } ${darkScreen ? "bg-slate-600 text-slate-50" : "bg-slate-100 "}`}
               placeholder="start writing here"
@@ -618,7 +618,7 @@ const Mainpage = () => {
             />
           ) : (
             <textarea
-           className={`bg-slate-100 h-screen overflow-y-scroll outline-none p-10 text-xl font-thin w-[100%] border-r border-black  ${
+           className={`bg-slate-100  h-96  overflow-y-scroll outline-none p-10 text-xl  font-thin w-[100%] border-r border-black  ${
               smallScreen ? "show " :"hide"
             } ${darkScreen ? "bg-slate-600 text-slate-50" : "bg-slate-100 "}`}
               placeholder="start writing here"
@@ -628,7 +628,7 @@ const Mainpage = () => {
             />
           )}
           <div
-            className={`bg-slate-100 h-screen overflow-y-scroll outline-none p-10 text-xl font-thin w-[100%]  ${
+            className={`bg-slate-100  h-96 overflow-y-scroll outline-none p-10  text-xl font-thin w-[100%]  ${
               smallScreen ? "hide":'show' 
             } ${darkScreen ? "bg-slate-600 text-slate-50" : "bg-slate-100 "}`}
             id="htmlResponse"
