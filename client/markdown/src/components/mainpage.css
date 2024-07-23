@@ -31,42 +31,38 @@
   
 
 #htmlResponse h1{
-    font-size: 30px;
-    color: black;
+    font-size: 28px;
+    /* color: black; */
     font-weight: bold;
     text-transform: capitalize;
     margin-bottom: 30px;
 }
 
 #htmlResponse h2{
-    font-size: 25px;
-    color: black;
+    font-size: 22px;
+    /* color: black; */
     font-weight: bold;
-    margin-bottom: 15px;
+    margin-top: 30px;
+    margin-bottom: 20px;
 }
 
 #htmlResponse h3{
-    font-size: 15px;
-    color: black;
-    font-weight: bold;
+    font-size: 18px;
+    /* color: black; */
+    font-weight: 500;
+    margin-bottom: 30px;
+    
 }
 
-
-#htmlResponse h1{
-    font-size: 30px;
-    color: black;
-    font-weight: bold;
-    margin-bottom: 10px;
-}
 
 #htmlResponse code{
-    background-color: rgb(186, 190, 199);
+    background-color: rgb(213, 217, 222);
     font-family: 'Courier New', Courier, monospace;
     padding: 5px;
     font-size: 15px;
-    /* margin-bottom:120px ; */
     margin-top: 20px;
-    text-align: right;
+    width: 100%;
+    text-align: left;
 }
 
 #htmlResponse em{
@@ -95,6 +91,7 @@ text-decoration: underline;
 }
 
 #htmlResponse p {
+    margin-bottom: 20px;
     margin-top: 20px;
 }
 
@@ -129,31 +126,35 @@ text-decoration: underline;
     /* z-index: 1;
     top:0; */
 } 
+ 
+
 
 
   @media only screen and (max-width:770px) {
-
-    
-   .show{
-        /* display: none; */
-        /* width: 100%; */
-        position: absolute;
-        width: 100vw;
-        background-color: aqua;
-    }
+.filesDiv{
+  display: flex;
+}
 
 .hide{
-        display: none;
+  display: none;
 
-    }
+}
 
-    #userInput{
+
+.show{
+  display: block;
+}
+
+
+
+
+    /* #userInput{
         width: 100%;
-    }
+    } */
 
-    .responsiveView{
+    /* .responsiveView{
         display: block;
-      }
+      } */
 
       .buttonContainer{
         display: block;

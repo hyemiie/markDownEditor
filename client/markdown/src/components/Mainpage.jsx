@@ -383,11 +383,11 @@ const Mainpage = () => {
   return (
     <div className="flex overflow-x-hidden overflow-y-hidden allPage">
       <div className="w-full">
-        <div className=" flex flex-col bg-orange-500 fixed z-100 ">
+        <div className=" this flex flex-col bg-orange-500 overflow-hidden ">
           <div className="flex flex-wrap  text-gray-50 w-screen flex-col items-center justify-center  ">
             <div
               className={`flex pl-12 w-screen overflow-auto bg-slate-200 h-16 items-center ${
-                darkScreen ? "bg-slate-700 text-slate-50" : "bg-slate-300"
+                darkScreen ? "bg-slate-600 text-slate-50 border-b border-zinc-800" : "bg-slate-300"
               } `}
             >
               <button
@@ -584,7 +584,7 @@ const Mainpage = () => {
           </div>
 
           <div className={`flex items-center justify-between  flex-wrap bg-slate-100 border-b-2 border-gray-200 border-solid p-2  ${
-                    darkScreen ? "bg-slate-700 text-white" : ""
+                    darkScreen ? "bg-slate-600 text-white" : ""
                   } `}>
             <p className=" text-gray-300 text-3xl ml-4 font-bold font-serif ">
               {currentFile}
@@ -603,12 +603,12 @@ const Mainpage = () => {
 
 
 
-        <div className="flex w-auto   ">
+        <div className="flex w-auto filesDiv ">
           {!currentFile.length < 1 ? (
             <textarea
-              className={`bg-slate-100 h-screen w-[100%] border-r-4 border-b-cyan-500 outline-none pl-12 pt-8 overflow-y-scroll  ${
-                darkScreen ? "bg-slate-700 text-slate-50" : "bg-slate-100"
-              } `}
+           className={`bg-slate-100 h-screen overflow-y-scroll outline-none p-10 text-xl font-thin w-[100%]  border-r border-black ${
+              smallScreen ? "show"  :"hide"
+            } ${darkScreen ? "bg-slate-600 text-slate-50" : "bg-slate-100 "}`}
               placeholder="start writing here"
               id="userInput"
               value={userInput}
@@ -618,9 +618,9 @@ const Mainpage = () => {
             />
           ) : (
             <textarea
-            className={`bg-slate-100 h-screen overflow-y-scroll outline-none p-10  ${
-              !smallScreen ? "show w-[100%]" : "hide w-[50%]"
-            } ${darkScreen ? "bg-slate-700 text-slate-50" : "bg-slate-100 "}`}
+           className={`bg-slate-100 h-screen overflow-y-scroll outline-none p-10 text-xl font-thin w-[100%] border-r border-black  ${
+              smallScreen ? "show " :"hide"
+            } ${darkScreen ? "bg-slate-600 text-slate-50" : "bg-slate-100 "}`}
               placeholder="start writing here"
               id="userInput"
               value={userInput}
@@ -628,16 +628,16 @@ const Mainpage = () => {
             />
           )}
           <div
-            className={`bg-slate-100 h-screen overflow-y-scroll outline-none p-10 ${
-              !smallScreen ? "show w-[100%]" : "hide w-[50%]"
-            } ${darkScreen ? "bg-slate-700 text-slate-50" : "bg-slate-100 "}`}
+            className={`bg-slate-100 h-screen overflow-y-scroll outline-none p-10 text-xl font-thin w-[100%]  ${
+              smallScreen ? "hide":'show' 
+            } ${darkScreen ? "bg-slate-600 text-slate-50" : "bg-slate-100 "}`}
             id="htmlResponse"
             dangerouslySetInnerHTML={{ __html: htmlResponse }}
           />
 
           <div
             className={`bg-slate-200 buttonContainer absolute right-0 h-full ${
-              darkScreen ? "bg-slate-700" : "bg-transparent"
+              darkScreen ? "bg-slate-800" : "bg-transparent"
             }`}
           >
             <button
@@ -660,7 +660,7 @@ const Mainpage = () => {
             <FontAwesomeIcon
               icon={faArrowLeft}
               onClick={viewStatusFalse}
-              className="flex w-6 h-6 text-xl p-5 rounded-xs hover:bg-slate-400 hover:text-slate-100 text-slate-50 cursor-pointer"
+              className="flex w-6 h-6 text-xl p-5 rounded-xs hover:bg-slate-500 hover:text-slate-100 text-slate-50 cursor-pointer"
             />
           </div>
 
