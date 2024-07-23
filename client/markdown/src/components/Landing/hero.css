@@ -1,0 +1,72 @@
+.herDiv{
+}
+
+@media screen and (max-width:768px){
+    .herDiv{
+        flex-direction: column-reverse;
+        /* justify-content: center;
+        align-items: center; */
+
+
+    }
+    .subHerDiv{
+        width: 100%;
+        text-align: center;
+        /* background-color: yellow; */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        h2{
+            font-size: 28px;
+        }
+    }
+
+    .heroBtn{
+        /* margin-right: 0; */
+    }
+}
+
+@media screen and (max-width:428px){
+    .herDiv{
+        flex-direction: column-reverse;
+
+        height: 100%;
+        /* background-color: aquamarine; */
+
+        div{
+            /* background-color: pink; */
+            margin-top: 10px;
+            height: 400px;
+            width: 100%;
+
+            img{
+                margin-top: auto;
+                /* height: 100%; */
+            }
+        }
+    }
+    .subHerDiv{
+        h2{
+            font-size: 20px;
+        }
+    }
+
+    .heroBtn{
+        margin-right: 0;
+    }
+}
+
+@media screen and (max-width:380px) {
+
+    .subHerDiv{
+        h2{
+            font-size: 18px;
+        }
+
+        button{
+            margin-bottom: auto;
+        }
+    }
+    
+}

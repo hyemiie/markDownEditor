@@ -1,0 +1,34 @@
+.loginPage{
+    /* background-color: yellow; */
+}
+
+@media screen and (max-width:780px) {
+    
+
+    .loginPage{
+        flex-direction: column;
+
+        div{
+            height:50%;
+            width: 100%;
+
+            form{
+                h1{
+                    text-align: center;
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width:400px) {
+    
+
+    .loginPage{
+        flex-direction: column;
+
+        div{
+            height: 35%;
+        }
+    }
+}

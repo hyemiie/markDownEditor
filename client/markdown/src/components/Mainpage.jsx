@@ -23,9 +23,11 @@ import {
   faList12,
   faListDots,
   faListNumeric,
+  faMoon,
   faPenAlt,
   faPencil,
   faQuoteLeft,
+  faSun,
   faTable,
   faTimes,
   faTrash,
@@ -46,6 +48,7 @@ const Mainpage = () => {
   const [currentUserName, setCurrentUserName] = useState("");
   const [fileListStatus, setFileListStatus] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const [darkScreen, setDarkscreen] = useState(false);
   const [hoveredButton, setHoveredButton] = useState(null);
   const [messageID, setMessageID] = useState(null);
   const [currentUserID, setCurrentUserID] = useState(null);
@@ -340,6 +343,10 @@ const Mainpage = () => {
       console.log(" small screen false");
     }
   };
+
+  const changeTheme = () => {
+    setDarkscreen((prevState) => !prevState);
+  };
   useEffect(() => {
     if (selectedID.length < 1) {
       setUserInput(`Hello, I am your first markdown file.I'm here to guide you on the features of this app.
@@ -374,12 +381,17 @@ const Mainpage = () => {
   }, []);
 
   return (
-    <div className="flex overflow-x-hidden overflow-y-hidden">
-      <div className="w-full ">
-      <div className="sticky top-0 bg-red-400 ">          <p className="flex flex-wrap  text-gray-50 w-screen h-10 ">
-            <div className="flex pl-12 w-screen overflow-auto bg-slate-200 h-12">
+    <div className="flex overflow-x-hidden overflow-y-hidden allPage">
+      <div className="w-full">
+        <div className=" flex flex-col bg-orange-500 fixed z-100 ">
+          <div className="flex flex-wrap  text-gray-50 w-screen flex-col items-center justify-center  ">
+            <div
+              className={`flex pl-12 w-screen overflow-auto bg-slate-200 h-16 items-center ${
+                darkScreen ? "bg-slate-700 text-slate-50" : "bg-slate-300"
+              } `}
+            >
               <button
-                className="flex pe-10 pt-2 pl-4 hover:bg-slate-500 w-7  "
+                className="flex pe-10 pt-2 pl-4 hover:bg-slate-200 w-7  "
                 onClick={() => {
                   getFiles();
                   viewStatusTrue();
@@ -397,74 +409,110 @@ const Mainpage = () => {
               </button>
 
               <button
-                className="flex pe-10 pt-3 pl-2 hover:bg-slate-500 w-7"
+                className={`flex pe-10 pt-3 pl-2 hover:bg-slate-500 w-7 ${
+                  darkScreen
+                    ? "bg-transparent text-slate-50"
+                    : "bg-slate-transparent"
+                } `}
                 onClick={handleBoldClick}
                 onMouseEnter={() => handleMouseEnter("bold")}
                 onMouseLeave={handleMouseLeave}
               >
                 <FontAwesomeIcon
                   icon={faBold}
-                  className="justify-center pl-2 text-slate-950 text-xl"
+                  className={`justify-center pl-2 text-slate-950 text-xl  ${
+                    darkScreen ? "bg-transparent text-white" : ""
+                  } `}
                 />
                 {hoveredButton == "bold" ? <p>Bold</p> : ""}
               </button>
               <button
-                className="flex pe-10 font-bold pt-3 pl-2 hover:bg-slate-500 w-7"
+                className={`flex pe-10 pt-3 pl-2 hover:bg-slate-500 w-7 ${
+                  darkScreen
+                    ? "bg-transparent text-slate-50"
+                    : "bg-slate-transparent"
+                } `}
                 onClick={handleItalicClick}
                 onMouseEnter={() => handleMouseEnter("Italic")}
                 onMouseLeave={handleMouseLeave}
               >
                 <FontAwesomeIcon
                   icon={faItalic}
-                  className="justify-center pl-2 text-slate-950 text-xl"
+                  className={`justify-center pl-2 text-slate-950 text-xl  ${
+                    darkScreen ? "bg-transparent text-white" : ""
+                  } `}
                 />
                 {hoveredButton == "Italic" ? <p>Italic</p> : ""}
               </button>
               <button
-                className="flex pe-10 pt-3 pl-2 hover:bg-slate-500 w-7"
+                className={`flex pe-10 pt-3 pl-2 hover:bg-slate-500 w-7 ${
+                  darkScreen
+                    ? "bg-transparent text-slate-50"
+                    : "bg-slate-transparent"
+                } `}
                 onClick={handleListClick}
                 onMouseEnter={() => handleMouseEnter("List")}
                 onMouseLeave={handleMouseLeave}
               >
                 <FontAwesomeIcon
                   icon={faListNumeric}
-                  className="justify-center pl-2 text-slate-950 text-xl"
+                  className={`justify-center pl-2 text-slate-950 text-xl  ${
+                    darkScreen ? "bg-transparent text-white" : ""
+                  } `}
                 />
                 {hoveredButton == "List" ? <p>List</p> : ""}
               </button>
               <button
-                className=" flex pe-10 pt-3 pl-2 hover:bg-slate-500 w-7 "
+                className={`flex pe-10 pt-3 pl-2 hover:bg-slate-500 w-7 ${
+                  darkScreen
+                    ? "bg-transparent text-slate-50"
+                    : "bg-slate-transparent"
+                } `}
                 onClick={handleSubListClick}
                 onMouseEnter={() => handleMouseEnter("SubList")}
                 onMouseLeave={handleMouseLeave}
               >
                 <FontAwesomeIcon
                   icon={faListDots}
-                  className="justify-center pl-2 text-slate-950 text-xl"
+                  className={`justify-center pl-2 text-slate-950 text-xl  ${
+                    darkScreen ? "bg-transparent text-white" : ""
+                  } `}
                 />
                 {hoveredButton == "SubList" ? <p>SubList</p> : ""}
               </button>
 
               <button
-                className="flex pe-10 pt-3 pl-2 hover:bg-slate-500 w-7"
+                className={`flex pe-10 pt-3 pl-2 hover:bg-slate-500 w-7 ${
+                  darkScreen
+                    ? "bg-transparent text-slate-50"
+                    : "bg-slate-transparent"
+                } `}
                 onMouseEnter={() => handleMouseEnter("Quote")}
                 onMouseLeave={handleMouseLeave}
               >
                 <FontAwesomeIcon
                   icon={faQuoteLeft}
-                  className="justify-center pl-2 text-slate-950 text-xl"
+                  className={`justify-center pl-2 text-slate-950 text-xl  ${
+                    darkScreen ? "bg-transparent text-white" : ""
+                  } `}
                 />
                 {hoveredButton == "Quote" ? <p>Quote</p> : ""}
               </button>
               <button
-                className="flex pe-10 pt-3 pl-2 hover:bg-slate-500 w-7"
+                className={`flex pe-10 pt-3 pl-2 hover:bg-slate-500 w-7 ${
+                  darkScreen
+                    ? "bg-transparent text-slate-50"
+                    : "bg-slate-transparent"
+                } `}
                 onClick={handleCodeClick}
                 onMouseEnter={() => handleMouseEnter("Code")}
                 onMouseLeave={handleMouseLeave}
               >
                 <FontAwesomeIcon
                   icon={faCode}
-                  className="justify-center pl-2 text-slate-950 text-xl"
+                  className={`justify-center pl-2 text-slate-950 text-xl  ${
+                    darkScreen ? "bg-transparent text-white" : ""
+                  } `}
                 />
                 {hoveredButton == "Code" ? <p>Code</p> : ""}
               </button>
@@ -478,26 +526,38 @@ const Mainpage = () => {
               {hoveredButton == "Table" ? <p>Table</p> : ""}
             </button> */}
               <button
-                className="flex pe-10 pt-3 pl-2 hover:bg-slate-500 w-7"
+                className={`flex pe-10 pt-3 pl-2 hover:bg-slate-500 w-7 ${
+                  darkScreen
+                    ? "bg-transparent text-slate-50"
+                    : "bg-slate-transparent"
+                } `}
                 onClick={handleLinkClick}
                 onMouseEnter={() => handleMouseEnter("Link")}
                 onMouseLeave={handleMouseLeave}
               >
                 <FontAwesomeIcon
                   icon={faLink}
-                  className="justify-center pl-2 text-slate-950 text-xl"
+                  className={`justify-center pl-2 text-slate-950 text-xl  ${
+                    darkScreen ? "bg-transparent text-white" : ""
+                  } `}
                 />
                 {hoveredButton == "Link" ? <p>Link</p> : ""}
               </button>
               <button
-                className="flex pe-10 pt-3 pl-2 hover:bg-slate-500 w-7"
+                className={`flex pe-10 pt-3 pl-2 hover:bg-slate-500 w-7 ${
+                  darkScreen
+                    ? "bg-transparent text-slate-50"
+                    : "bg-slate-transparent"
+                } `}
                 onClick={handleDownload}
                 onMouseEnter={() => handleMouseEnter("Download")}
                 onMouseLeave={handleMouseLeave}
               >
                 <FontAwesomeIcon
                   icon={faArrowDown}
-                  className="justify-center pl-2 text-slate-950 text-xl"
+                  className={`justify-center pl-2 text-slate-950 text-xl  ${
+                    darkScreen ? "bg-transparent text-white" : ""
+                  } `}
                 />
                 {hoveredButton == "Download" ? <p>Download</p> : ""}
               </button>
@@ -509,14 +569,23 @@ const Mainpage = () => {
               >
                 <FontAwesomeIcon
                   icon={faPencil}
-                  className="justify-center pl-2 text-slate-950 text-xl"
+                  className={`justify-center pl-2 text-slate-950 text-xl  ${
+                    darkScreen ? "bg-transparent text-white" : ""
+                  } `}
                 />
                 {hoveredButton == "Edit" ? <p>Edit File</p> : ""}
               </button>
+              <div className="flex ml-auto w-24 p-6 items-center">
+                
+                <button onClick={changeTheme} className="flextext-3xl p-2 ">
+                { !darkScreen? <FontAwesomeIcon icon={faMoon} className="flex text-black"/> :  <FontAwesomeIcon icon={faSun} className="flex text-white"/>}</button>
+              </div>
             </div>
-          </p>
+          </div>
 
-          <div className="flex items-center justify-between  flex-wrap bg-slate-100 border-b-2 border-gray-200 border-solid p-2">
+          <div className={`flex items-center justify-between  flex-wrap bg-slate-100 border-b-2 border-gray-200 border-solid p-2  ${
+                    darkScreen ? "bg-slate-700 text-white" : ""
+                  } `}>
             <p className=" text-gray-300 text-3xl ml-4 font-bold font-serif ">
               {currentFile}
             </p>
@@ -532,10 +601,14 @@ const Mainpage = () => {
           </div>
         </div>
 
-        <div className="flex w-auto">
+
+
+        <div className="flex w-auto   ">
           {!currentFile.length < 1 ? (
             <textarea
-              className="bg-slate-100 h-screen w-[100%] border-r-4 border-b-cyan-500 outline-none pl-12 pt-5 overflow-y-scroll"
+              className={`bg-slate-100 h-screen w-[100%] border-r-4 border-b-cyan-500 outline-none pl-12 pt-8 overflow-y-scroll  ${
+                darkScreen ? "bg-slate-700 text-slate-50" : "bg-slate-100"
+              } `}
               placeholder="start writing here"
               id="userInput"
               value={userInput}
@@ -545,7 +618,9 @@ const Mainpage = () => {
             />
           ) : (
             <textarea
-              className="bg-slate-100 h-screen w-[100%] border-r-4 border-b-cyan-500 outline-none pl-12 pt-5 overflow-y-scroll"
+            className={`bg-slate-100 h-screen overflow-y-scroll outline-none p-10  ${
+              !smallScreen ? "show w-[100%]" : "hide w-[50%]"
+            } ${darkScreen ? "bg-slate-700 text-slate-50" : "bg-slate-100 "}`}
               placeholder="start writing here"
               id="userInput"
               value={userInput}
@@ -555,23 +630,27 @@ const Mainpage = () => {
           <div
             className={`bg-slate-100 h-screen overflow-y-scroll outline-none p-10 ${
               !smallScreen ? "show w-[100%]" : "hide w-[50%]"
-            }`}
+            } ${darkScreen ? "bg-slate-700 text-slate-50" : "bg-slate-100 "}`}
             id="htmlResponse"
             dangerouslySetInnerHTML={{ __html: htmlResponse }}
           />
 
-<div className="bg-slate-200 buttonContainer fixed  right-0 h-full">
-    <button
-      className="responsiveView flex ml-auto text-gray-400 p-2 w-12 text-center items-center justify-center rounded cursor-pointer"
-      onClick={checkSmallScreen}
-    >
-      {smallScreen ? (
-        <FontAwesomeIcon icon={faPenAlt} className="text-xl" />
-      ) : (
-        <FontAwesomeIcon icon={faEye} />
-      )}
-    </button>
-  </div>
+          <div
+            className={`bg-slate-200 buttonContainer absolute right-0 h-full ${
+              darkScreen ? "bg-slate-700" : "bg-transparent"
+            }`}
+          >
+            <button
+              className="responsiveView flex ml-auto text-gray-400 p-2 w-12 text-center items-center justify-center rounded cursor-pointer"
+              onClick={checkSmallScreen}
+            >
+              {smallScreen ? (
+                <FontAwesomeIcon icon={faPenAlt} className="text-xl" />
+              ) : (
+                <FontAwesomeIcon icon={faEye} />
+              )}
+            </button>
+          </div>
         </div>
       </div>
       {fileListStatus && (

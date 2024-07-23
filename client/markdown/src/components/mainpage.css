@@ -1,3 +1,35 @@
+/* mainpage.css */
+
+/* Light Theme */
+.light-theme {
+    --bg-color: #f0f0f0;
+    --text-color: #000;
+    --border-color: #ccc;
+  }
+  
+  /* Dark Theme */
+  .dark-theme {
+    --bg-color: #333;
+    --text-color: #fff;
+    --border-color: #555;
+  }
+  
+  /* Applying the theme */
+  .allPage {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+  }
+  
+  textarea,
+  button {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    border-color: var(--border-color);
+  }
+  
+  /* Other styles... */
+  
+
 #htmlResponse h1{
     font-size: 30px;
     color: black;
@@ -32,8 +64,9 @@
     font-family: 'Courier New', Courier, monospace;
     padding: 5px;
     font-size: 15px;
-    margin-bottom:120px ;
+    /* margin-bottom:120px ; */
     margin-top: 20px;
+    text-align: right;
 }
 
 #htmlResponse em{

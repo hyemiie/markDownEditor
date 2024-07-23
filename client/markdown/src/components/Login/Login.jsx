@@ -2,6 +2,10 @@ import axios from 'axios';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import heroGIF from "../../Images/heroImage.gif";
+import './Login.css'
+import Navbar from '../NavBar/Navbar';
+
 
 const Login = () => {
     const navigate = useNavigate();
@@ -32,7 +36,8 @@ const Login = () => {
     };
 
     return (
-        <div className="h-screen flex  bg-slate-500 align-middle justify-center">
+        <div className="loginPage h-screen flex  bg-white items-center justify-center flex-row">
+        <Navbar/>
             {/* <div className="w-1/2 bg-gradient-to-r from-cyan-600 to-slate-300 flex justify-center items-center p-10">
                 <div className="text-white text-center">
                     <h1 className="text-3xl font-semibold mb-4">Welcome Back!</h1>
@@ -49,8 +54,10 @@ const Login = () => {
     </ul></p>
                 </div>
             </div> */}
-            <div className="w-[100%] flex justify-center items-center ">
-                <form className="  w-[60%]">
+
+            <div className='w-[50%]'><img src={heroGIF}></img></div>
+            <div className="w-[50%] flex justify-center items-center ">
+                <form className="  w-[80%]">
                     <h1 className="text-4xl font-semibold text-left mb-6 font-light font-mono">Login</h1>
                     <div className="mb-4">
                         <input
