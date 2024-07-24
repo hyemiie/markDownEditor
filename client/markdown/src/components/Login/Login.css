@@ -6,7 +6,7 @@
     
 
     .loginPage{
-        flex-direction: column;
+        /* flex-direction: column; */
 
         div{
             height:50%;
@@ -14,7 +14,7 @@
 
             form{
                 h1{
-                    text-align: center;
+                    /* text-align: center; */
                 }
             }
         }
@@ -25,7 +25,7 @@
     
 
     .loginPage{
-        flex-direction: column;
+        /* flex-direction: column; */
 
         div{
             height: 35%;

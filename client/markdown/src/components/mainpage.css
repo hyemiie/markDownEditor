@@ -146,6 +146,11 @@ text-decoration: underline;
   display: block;
 }
 
+.responsiveBtns{
+  height: 40px !important;
+  background-color: pink;
+}
+
 
 
 
@@ -160,4 +165,18 @@ text-decoration: underline;
       .buttonContainer{
         display: block;
       }
+  }
+
+
+  @media screen  and(max-width:600px){
+    .responsiveBtns{
+      height: 30px !important;
+      
+      .font{
+        color: yellow !important;
+
+      
+        
+      }
+    }
   }

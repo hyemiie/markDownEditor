@@ -36,8 +36,11 @@ const Login = () => {
     };
 
     return (
-        <div className="loginPage h-screen flex  bg-white items-center justify-center flex-row">
-        <Navbar/>
+        <div className="flex flex-col bg-white min-h-screen">
+        {/* <Navbar/> */}
+        <div className="h-[1%]">
+        <Navbar />
+      </div>
             {/* <div className="w-1/2 bg-gradient-to-r from-cyan-600 to-slate-300 flex justify-center items-center p-10">
                 <div className="text-white text-center">
                     <h1 className="text-3xl font-semibold mb-4">Welcome Back!</h1>
@@ -55,13 +58,13 @@ const Login = () => {
                 </div>
             </div> */}
 
-            <div className='w-[50%]'><img src={heroGIF}></img></div>
-            <div className="w-[50%] flex justify-center items-center ">
+            {/* <div className='w-[50%]'><img src={heroGIF}></img></div> */}
+            <div className="w-[100%] flex justify-center items-center pt-20 bg-white h-[85vh] ">
                 <form className="  w-[80%]">
-                    <h1 className="text-4xl font-semibold text-left mb-6 font-light font-mono">Login</h1>
+                    <h1 className="text-3xl font-semibold text-left mb-6 font-light">Login</h1>
                     <div className="mb-4">
                         <input
-                            className="   w-full p-6 text-gray-900 leading-tight focus:outline-none focus:shadow-outline bg-transparent border-t-transparent border-l-transparent border-r-transparent   border-b border-white outline-none  border-solid font-mono"
+                            className="   w-full p-6 text-gray-900 leading-tight focus:outline-none focus:shadow-outline bg-transparent border-t-transparent border-l-transparent border-r-transparent   border-b border-slate-900 outline-none  border-solid font-mono"
                             id="email"
                             type="text"
                             placeholder="Email"
@@ -69,7 +72,7 @@ const Login = () => {
                     </div>
                     <div className="mb-6">
                         <input
-                            className="   w-full p-6 text-gray-900 leading-tight focus:outline-none focus:shadow-outline bg-transparent border-t-transparent border-l-transparent border-r-transparent   border-b border-white outline-none  border-solid font-mono"
+                            className="   w-full p-6 text-gray-900 leading-tight focus:outline-none focus:shadow-outline bg-transparent border-t-transparent border-l-transparent border-r-transparent   border-b border-slate-900 outline-none  border-solid font-mono"
                             id="password"
                             type="password"
                             placeholder="Password"
@@ -77,7 +80,7 @@ const Login = () => {
                     </div>
                     <div className="flex items-center justify-center">
                         <button
-                            className="bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
+                            className="bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full mt-12"
                             type="submit"
                             onClick={handleLogin}
                         >
