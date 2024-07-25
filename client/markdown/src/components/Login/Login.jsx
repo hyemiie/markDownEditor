@@ -59,7 +59,7 @@ const Login = () => {
             </div> */}
 
             {/* <div className='w-[50%]'><img src={heroGIF}></img></div> */}
-            <div className="w-[100%] flex justify-center items-center pt-20 bg-white h-[85vh] ">
+            <div className="w-[100%]   justify-center items-center pt-20 bg-white h-[85vh] ">
                 <form className="  w-[80%]">
                     <h1 className="text-3xl font-semibold text-left mb-6 font-light">Login</h1>
                     <div className="mb-4">
