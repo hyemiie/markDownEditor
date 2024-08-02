@@ -1,0 +1,20 @@
+.cursor {
+    display: inline-block;
+    background-color: rgb(225, 208, 208);
+    width: 2px;
+    margin-left: 2px;
+    animation: blink 1s step-end infinite;
+    color: #ffffff;
+  }
+  
+  @keyframes blink {
+    from, to {
+      background-color: transparent;
+      color: wheat;
+    }
+    50% {
+      background-color: rgb(200, 186, 186);
+      color: wheat;
+    }
+  }
+  

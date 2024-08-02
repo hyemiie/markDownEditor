@@ -5,10 +5,24 @@ import { useNavigate } from 'react-router-dom';
 import heroGIF from "../../Images/heroImage.gif";
 import './Login.css'
 import Navbar from '../NavBar/Navbar';
+import { useState } from 'react';
+import CustomAlert from '../CustomAlert/CustomAlert';
 
 
 const Login = () => {
     const navigate = useNavigate();
+    const [alertVisible, setAlertVisible] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
+
+    const showAlert = (message) => {
+        setAlertMessage(message);
+        setAlertVisible(true);
+      };
+    
+      const handleAlertClose = () => {
+        setAlertVisible(false);
+        setAlertMessage('');
+      }
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -25,18 +39,23 @@ const Login = () => {
             console.log("response", response);
             localStorage.setItem('token', response.data.token);
             localStorage.setItem('currentUser', response.data.userName);
-
-            alert('Login Successful')
+            showAlert('Logged In')
             navigate('/mainpage')
+            
 
 
         } catch (error) {
             console.log(error);
+            showAlert('Login failed')
+
         }
     };
 
     return (
         <div className="flex flex-col bg-white min-h-screen">
+         {alertVisible && (
+        <CustomAlert message={alertMessage} onClose={handleAlertClose} />
+      )}
         {/* <Navbar/> */}
         <div className="h-[1%]">
         <Navbar />
@@ -59,28 +78,33 @@ const Login = () => {
             </div> */}
 
             {/* <div className='w-[50%]'><img src={heroGIF}></img></div> */}
-            <div className="w-[100%] flex justify-center items-center pt-20 bg-white h-[85vh] ">
-                <form className="  w-[80%]">
-                    <h1 className="text-3xl font-semibold text-left mb-6 font-light">Login</h1>
-                    <div className="mb-4">
+
+            <div className="w-[100%] flex justify-center items-center pt-20 h-[85vh] p-30  ">
+                <form className="  min-w-96 flex flex-col items-center justify-center ">
+                <div className='loader'></div>
+
+                    <h1 className="text-2xl font-semibold text-left mb-6 font-light">Login to Simplify your format Process
+</h1>
+                    <div className="mb-4 w-full flex items-center justify-center">
                         <input
-                            className="   w-full p-6 text-gray-900 leading-tight focus:outline-none focus:shadow-outline bg-transparent border-t-transparent border-l-transparent border-r-transparent   border-b border-slate-900 outline-none  border-solid font-mono"
+                            className="pt-8 w-[100%] text-gray-900 leading-tight focus:outline-none focus:shadow-outline bg-transparent border-t-transparent border-l-transparent border-r-transparent   border-b border-slate-900 outline-none  border-solid "
                             id="email"
                             type="text"
                             placeholder="Email"
                         />
                     </div>
-                    <div className="mb-6">
+                    <div className="mb-4  w-full flex items-center justify-center">
                         <input
-                            className="   w-full p-6 text-gray-900 leading-tight focus:outline-none focus:shadow-outline bg-transparent border-t-transparent border-l-transparent border-r-transparent   border-b border-slate-900 outline-none  border-solid font-mono"
+                            className="   pt-8 w-[100%] text-gray-900 leading-tight focus:outline-none focus:shadow-outline bg-transparent border-t-transparent border-l-transparent border-r-transparent   border-b border-slate-900 outline-none  border-solid "
                             id="password"
                             type="password"
                             placeholder="Password"
                         />
                     </div>
-                    <div className="flex items-center justify-center">
+                    <div className="flex items-center justify-between  w-full flex-row mt-10">
+                    <a href='/register' className='flex decoration-none'>SIGN UP</a>
                         <button
-                            className="bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full mt-12"
+                            className="bg-slate-100 hover:bg-cyan-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline  text-slate-900 font-thin"
                             type="submit"
                             onClick={handleLogin}
                         >

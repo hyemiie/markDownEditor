@@ -31,11 +31,13 @@
   
 
 #htmlResponse h1{
-    font-size: 28px;
+    font-size: 32px;
     /* color: black; */
     font-weight: bold;
     text-transform: capitalize;
     margin-bottom: 30px;
+    border-bottom: 1px solid black;
+    padding-bottom: 10px;
 }
 
 #htmlResponse h2{
@@ -61,8 +63,10 @@
     padding: 5px;
     font-size: 15px;
     margin-top: 20px;
-    width: 100%;
+    padding-bottom: 20px;
+    /* max-width: 500px; */
     text-align: left;
+    color: #524747;
 }
 
 #htmlResponse em{
@@ -72,6 +76,7 @@
 
 #htmlResponse li{
     list-style:disc;
+    margin-top: 30px;
 }
 
 
