@@ -59,6 +59,8 @@ const Mainpage = () => {
   const [messageID, setMessageID] = useState(null);
   const [currentUserID, setCurrentUserID] = useState(null);
   const [smallScreen, setSmallScreen] = useState(null);
+  const fileInputRef = useRef(null);
+
 
   const pdfContentRef = useRef(null);
 
@@ -217,28 +219,28 @@ const Mainpage = () => {
     showAlert("file Downloaded");
   };
 
-
-  const downloadPDF = () => {
-    const pdf = new jsPDF();
-    
-    // Split the markdown into lines to add them to the PDF
-    const lines = htmlResponse.split('\n');
-    const pageHeight = pdf.internal.pageSize.height;
-    const margin = 10; // margin from the edges
-    let currentY = margin;
-
-    lines.forEach((line) => {
-      if (currentY + 10 > pageHeight) {
-        pdf.addPage();
-        currentY = margin; // reset Y position for the new page
-      }
-      pdf.text(line, margin, currentY);
-      currentY += 10; // move down for the next line
+  // import jsPDF from 'jspdf';
+  // import html2canvas from 'html2canvas';
+  
+  const downloadPDF = async () => {
+    const element = document.getElementById('htmlResponse'); // The div containing your rendered HTML
+    const canvas = await html2canvas(element);
+    const imgData = canvas.toDataURL('image/png');
+  
+    const pdf = new jsPDF({
+      orientation: 'portrait',
+      unit: 'px',
+      format: 'a4'
     });
-
+  
+    const imgProps = pdf.getImageProperties(imgData);
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+  
+    pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+  
     pdf.save('document.pdf');
   };
-
 
   const handleDownloadPdf = () => {
     const userDownload = document.getElementById("htmlResponse").innerHTML;
@@ -407,6 +409,36 @@ const Mainpage = () => {
     }
   };
 
+
+  
+  const handleImageUpload = async (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const formData = new FormData();
+      formData.append('image', file);
+  
+      try {
+        const response = await fetch('/upload-image', {
+          method: 'POST',
+          body: formData,
+        });
+        const data = await response.json();
+        const imageUrl = data.imageUrl;
+  
+        // Insert image URL into markdown text
+        const imageMarkdown = `![${file.name}](${imageUrl})`;
+        
+        setUserInput(prevInput => {
+          const updatedInput = prevInput + '\n\n' + imageMarkdown;
+          console.log('Updated input:', updatedInput);
+          return updatedInput;
+        });
+      } catch (error) {
+        console.error('Error uploading image:', error);
+      }
+    }
+  };
+
   const changeTheme = () => {
     setDarkscreen((prevState) => !prevState);
   };
@@ -455,14 +487,17 @@ const Mainpage = () => {
       <div className="w-full overflow-hidden">
         <div className=" this flex flex-col overflow-hidden top-0 absolute h-[18%] ">
           <div className={ `flex flex-wrap  text-gray-50 w-screen flex-col items-center justify-l ${
-                !darkScreen ? " bg-slate-700 text-slate-50 border-b border-zinc-00" : "bg-white"
+                darkScreen ? "dark-theme text-black border-b border-zinc-00" : "light-theme"
               }`}
+              id ={`darkScreen ? "dark-theme" : "light-theme"}`}
               >
-            <div
-              className={`flex pl-4 w-screen overflow-y-scroll bg-white h-16 items-center justify-center responsiveBtns border-b border-slate-600 ${
-                !darkScreen ? "bg-slate-700 text-slate-50 border-b border-zinc-00" : "bg-slate-700"
-              } `}
-            >
+          <div
+  className={`flex pl-4 w-screen overflow-y-scroll h-16 items-center justify-center responsiveBtns border-b ${
+    darkScreen 
+      ? "bg-dark-bg text-dark-text border-dark-border" 
+      : "bg-dark-bg text-dark-text border-light-border"
+  }`}
+>
               <button
                 className="flex pe-10 pt-2 pl-4   w-7  "
                 onClick={() => {
@@ -482,10 +517,10 @@ const Mainpage = () => {
               </button>
 
               <button
-                className={`flex pe-10 pt-6 pl-2   w-7  h-16 ${
+                className={`flex pe-10 pt-6 pl-2  w-7  h-16 ${
                   darkScreen
-                    ? "bg-transparent text-slate-50"
-                    : "bg-slate-transparent"
+                    ? " -transparent "
+                    : " -slate-transparent"
                 } `}
                 onClick={handleBoldClick}
                 onMouseEnter={() => handleMouseEnter("bold")}
@@ -493,17 +528,17 @@ const Mainpage = () => {
               >
                 <FontAwesomeIcon
                   icon={faBold}
-                  className={`font justify-center pl-2 text-slate-100 text-xl  ${
-                    darkScreen ? "bg-transparent text-white" : ""
+                  className={`font justify-center pl-2  text-xl  ${
+                    darkScreen ? " -transparent text-gray" : ""
                   } `}
                 />
                 {hoveredButton == "bold" ? <p>Bold</p> : ""}
               </button>
               <button
-                className={`flex pe-10 pt-6 pl-2   w-7  h-16 ${
+                className={`flex pe-10 pt-6 pl-2  w-7  h-16 ${
                   darkScreen
-                    ? "bg-transparent text-slate-50"
-                    : "bg-slate-transparent"
+                    ? " -transparent text-slate-50"
+                    : " -slate-transparent"
                 } `}
                 onClick={handleItalicClick}
                 onMouseEnter={() => handleMouseEnter("Italic")}
@@ -511,8 +546,8 @@ const Mainpage = () => {
               >
                 <FontAwesomeIcon
                   icon={faItalic}
-                  className={` font justify-center pl-2 text-slate-100 text-xl  ${
-                    darkScreen ? "bg-transparent text-white" : ""
+                  className={` font justify-center pl-2 text-xl  ${
+                    darkScreen ? " -transparent text-white" : ""
                   } `}
                 />
                 {hoveredButton == "Italic" ? <p>Italic</p> : ""}
@@ -520,8 +555,8 @@ const Mainpage = () => {
               <button
                 className={`flex pe-10 pt-6 pl-2  w-7  h-16 ${
                   darkScreen
-                    ? "bg-transparent text-slate-50"
-                    : "bg-slate-transparent"
+                    ? " -transparent text-slate-50"
+                    : " -slate-transparent"
                 } `}
                 onClick={handleListClick}
                 onMouseEnter={() => handleMouseEnter("List")}
@@ -529,8 +564,8 @@ const Mainpage = () => {
               >
                 <FontAwesomeIcon
                   icon={faListNumeric}
-                  className={`justify-center pl-2 text-slate-100 text-xl  ${
-                    darkScreen ? "bg-transparent text-white" : ""
+                  className={`justify-center pl-2  text-xl  ${
+                    darkScreen ? " -transparent text-white" : ""
                   } `}
                 />
                 {hoveredButton == "List" ? <p>List</p> : ""}
@@ -538,8 +573,8 @@ const Mainpage = () => {
               <button
                 className={`flex pe-10 pt-6 pl-2   w-7  h-16 ${
                   darkScreen
-                    ? "bg-transparent text-slate-50"
-                    : "bg-slate-transparent"
+                    ? " -transparent text-slate-50"
+                    : " -slate-transparent"
                 } `}
                 onClick={handleSubListClick}
                 onMouseEnter={() => handleMouseEnter("SubList")}
@@ -547,8 +582,8 @@ const Mainpage = () => {
               >
                 <FontAwesomeIcon
                   icon={faListDots}
-                  className={`justify-center pl-2 text-slate-100 text-xl  ${
-                    darkScreen ? "bg-transparent text-white" : ""
+                  className={`justify-center pl-2  text-xl  ${
+                    darkScreen ? " -transparent text-white" : ""
                   } `}
                 />
                 {hoveredButton == "SubList" ? <p>SubList</p> : ""}
@@ -557,16 +592,16 @@ const Mainpage = () => {
               <button
                 className={`flex pe-10 pt-6 pl-2   w-7  h-16 ${
                   darkScreen
-                    ? "bg-transparent text-slate-50"
-                    : "bg-slate-transparent"
+                    ? " -transparent text-slate-50"
+                    : " -slate-transparent"
                 } `}
                 onMouseEnter={() => handleMouseEnter("Quote")}
                 onMouseLeave={handleMouseLeave}
               >
                 <FontAwesomeIcon
                   icon={faQuoteLeft}
-                  className={`justify-center pl-2 text-slate-100 text-xl  ${
-                    darkScreen ? "bg-transparent text-white" : ""
+                  className={`justify-center pl-2 text-xl  ${
+                    darkScreen ? " -transparent text-white" : ""
                   } `}
                 />
                 {hoveredButton == "Quote" ? <p>Quote</p> : ""}
@@ -574,8 +609,8 @@ const Mainpage = () => {
               <button
                 className={`flex pe-10 pt-6 pl-2   w-7  h-16 ${
                   darkScreen
-                    ? "bg-transparent text-slate-50"
-                    : "bg-slate-transparent"
+                    ? " -transparent text-slate-50"
+                    : " -slate-transparent"
                 } `}
                 onClick={handleCodeClick}
                 onMouseEnter={() => handleMouseEnter("Code")}
@@ -583,14 +618,14 @@ const Mainpage = () => {
               >
                 <FontAwesomeIcon
                   icon={faCode}
-                  className={`justify-center pl-2 text-slate-100 text-xl  ${
-                    darkScreen ? "bg-transparent text-white" : ""
+                  className={`justify-center pl-2 text-xl  ${
+                    darkScreen ? " -transparent text-white" : ""
                   } `}
                 />
                 {hoveredButton == "Code" ? <p>Code</p> : ""}
               </button>
               {/* <button
-              className="flex pe-10 pt-3 hover:bg-slate-500 w-7"
+              className="flex pe-10 pt-3 hover: -slate-500 w-7"
               onClick={handleTableClick}
               onMouseEnter={() => handleMouseEnter("Table")}
               onMouseLeave={handleMouseLeave}
@@ -601,8 +636,8 @@ const Mainpage = () => {
               <button
                 className={`flex pe-10 pt-6 pl-2   w-7  h-16 ${
                   darkScreen
-                    ? "bg-transparent text-slate-50"
-                    : "bg-slate-transparent"
+                    ? " -transparent text-slate-50"
+                    : " -slate-transparent"
                 } `}
                 onClick={handleLinkClick}
                 onMouseEnter={() => handleMouseEnter("Link")}
@@ -610,8 +645,8 @@ const Mainpage = () => {
               >
                 <FontAwesomeIcon
                   icon={faLink}
-                  className={`justify-center pl-2 text-slate-100 text-xl  ${
-                    darkScreen ? "bg-transparent text-white" : ""
+                  className={`justify-center pl-2  text-xl  ${
+                    darkScreen ? " -transparent text-white" : ""
                   } `}
                 />
                 {hoveredButton == "Link" ? <p>Link</p> : ""}
@@ -619,17 +654,17 @@ const Mainpage = () => {
               <button
                 className={`flex pe-10 pt-6 pl-2  w-7  h-16 ${
                   darkScreen
-                    ? "bg-transparent text-slate-50"
-                    : "bg-slate-transparent"
+                    ? " -transparent text-slate-50"
+                    : " -slate-transparent"
                 } `}
-                onClick={handleDownload}
+                onClick={downloadPDF}
                 onMouseEnter={() => handleMouseEnter("Download")}
                 onMouseLeave={handleMouseLeave}
               >
                 <FontAwesomeIcon
                   icon={faArrowDown}
-                  className={`justify-center pl-2 text-slate-100 text-xl  ${
-                    darkScreen ? "bg-transparent text-white" : ""
+                  className={`justify-center pl-2  text-xl  ${
+                    darkScreen ? " -transparent text-white" : ""
                   } `}
                 />
                 {hoveredButton == "Download" ? <p>Download</p> : ""}
@@ -637,16 +672,16 @@ const Mainpage = () => {
               <button
   className={`flex pe-10 pt-6 pl-2  w-7  h-16 ${
                   darkScreen
-                    ? "bg-transparent text-slate-50"
-                    : "bg-slate-transparent"
+                    ? " -transparent text-slate-50"
+                    : " -slate-transparent"
                 } `}                onClick={editFile}
                 onMouseEnter={() => handleMouseEnter("Edit")}
                 onMouseLeave={handleMouseLeave}
               >
                 <FontAwesomeIcon
                   icon={faPencil}
-                  className={`justify-center pl-2 text-slate-100 text-xl  ${
-                    darkScreen ? "bg-transparent text-white" : ""
+                  className={`justify-center pl-2  text-xl  ${
+                    darkScreen ? " -transparent text-white" : ""
                   } `}
                 />
                 {hoveredButton == "Edit" ? <p>Edit File</p> : ""}
@@ -659,18 +694,27 @@ const Mainpage = () => {
             </div>
           </div>
 
-          <div className={`flex items-center justify-between  flex-wrap bg-white border-b-2 border-gray-200 border-solid p-2  ${
-                    darkScreen ? "  bg-slate-900 text-white" : ""
-
+          <div className={`flex items-center justify-between  flex-wrap  -white border-b-2 border-gray-200 border-solid p-2 w-[98.5%]  ${
+ darkScreen 
+      ? "bg-mid-dark-bg text-dark-text border-dark-border" 
+      : "bg-light-bg text-light-text border-light-border"
                   } `}>
             <p className=" text-gray-500 text-3xl ml-4 font-bold font-serif ">
               {currentFile}
             </p>
+            {/* <input
+        type="file"
+        accept="image/*"
+        onChange={handleImageUpload}
+        ref={fileInputRef}
+        style={{ display: 'none' }}
+      /> */}
+      {/* <button onClick={() => fileInputRef.current.click()}>Upload Image</button> */}
 
             <div className="flex">
               <button
                 onClick={editFile}
-                className="text-center bg-cyan-600 text-white hover:text-gray-100 p-2 rounded mr-8 "
+                className="text-center  bg-cyan-600 text-white hover:text-gray-100 p-2 rounded mr-8 "
               >
                 Save File
               </button>
@@ -683,9 +727,11 @@ const Mainpage = () => {
         <div className="flex w-auto filesDiv h-[80%] ">
           {!currentFile.length < 1 ? (
             <textarea
-           className={`bg-white h-svh  overflow-y-scroll outline-none pt-40  pl-10 pr-20 text-2xl  w-[100%]  border-r border-black font-outfit   ${
+           className={` -white h-svh  overflow-y-scroll outline-none pt-40  pl-10 pr-20 text-2xl  w-[100%]  border-r border-black font-outfit   ${
               smallScreen ? "show"  :"hide"
-            } ${darkScreen ? "bg-slate-700 text-slate-50" : "bg-slate-100 "}`}
+            } ${ darkScreen 
+      ? "bg-dark-bg text-dark-text border-dark-border" 
+      : "bg-light-bg text-light-text border-light-border"}`}
               placeholder="start writing here"
               id="userInput"
               value={userInput}
@@ -695,9 +741,11 @@ const Mainpage = () => {
             />
           ) : (
             <textarea
-           className={`bg-white  h-svh  overflow-y-scroll outline-none pt-40  pl-10 pr-20 text-2xl   w-[100%] border-r border-black font-grotesk font-light  ${
+           className={` -white  h-svh  overflow-y-scroll outline-none pt-40  pl-10 pr-20 text-2xl   w-[100%] border-r border-black font-grotesk font-light  ${
               smallScreen ? "show " :"hide"
-            } ${ darkScreen ? "bg-slate-700  text-slate-50" : "bg-slate-100 "}`}
+            } ${  darkScreen 
+      ? "bg-dark-bg text-dark-text border-dark-border" 
+      : "bg-light-bg text-light-text border-light-border"}`}
               placeholder="start writing here"
               id="userInput"
               value={userInput}
@@ -705,17 +753,19 @@ const Mainpage = () => {
             />
           )}
           <div
-            className={`bg-white  h-svh overflow-y-scroll outline-none pt-40 pl-10 pr-20   text-2xl  w-[100%] font-grotesk  ${
+            className={` -white  h-svh overflow-y-scroll outline-none pt-40 pl-10 pr-20   text-2xl  w-[100%] font-grotesk  ${
               smallScreen ? "hide":'show' 
-            } ${ darkScreen ? "bg-slate-700  text-slate-50" : "bg-slate-100 "}`}
+            } ${  darkScreen 
+      ? "bg-dark-bg text-dark-text border-dark-border" 
+      : "bg-light-bg text-light-text border-light-border"}`}
             id="htmlResponse"
             dangerouslySetInnerHTML={{ __html: htmlResponse }}
             ref={pdfContentRef}
           />
 
           <div
-            className={`bg-slate-200 buttonContainer absolute right-0 h-full ${
-              darkScreen ? "bg-gray-800" : "bg-transparent"
+            className={` -slate-200 buttonContainer absolute right-0 h-full ${
+              darkScreen ? " -gray-800" : " -transparent"
             }`}
           >
             <button
@@ -732,20 +782,20 @@ const Mainpage = () => {
         </div>
       </div>
       {fileListStatus && (
-        <div className="bg-slate-500 py-3.5  w-80 h-screen flex flex-col overflow-y-auto fixed p-4">
+        <div className=" bg-slate-500 py-3.5  w-80 h-screen flex flex-col overflow-y-auto fixed p-4">
           <div className="flex justify-between items-center pb-8">
             <h2 className="flex text-4xl text-teal-100">{currentUserName}</h2>
             <FontAwesomeIcon
               icon={faArrowLeft}
               onClick={viewStatusFalse}
-              className="flex w-6 h-6 text-xl p-5 rounded-xs hover:bg-slate-500 hover:text-slate-100 text-slate-50 cursor-pointer"
+              className="flex w-6 h-6 text-xl p-5 rounded-xs hover: -slate-500 hover:text-slate-100 text-slate-50 cursor-pointer"
             />
           </div>
 
           {userFile.map((file) => (
             <div
               key={file._id}
-              className="mb-7 hover:bg-gray-700 text-gray-100 w-88 h-16 flex justify-between items-center mb-4 p-2 border-b border-slate-400"
+              className="mb-7 hover: -gray-700 text-gray-100 w-88 h-16 flex justify-between items-center mb-4 p-2 border-b border-slate-400"
             >
               <ul
                 onClick={() => {
@@ -776,7 +826,7 @@ const Mainpage = () => {
                 <input
                   placeholder="File name"
                   id="fileName"
-                  className="flex bg-transparent border-white border-b-2 outline-none pl-5"
+                  className="flex  -transparent border-white border-b-2 outline-none pl-5"
                   onChange={createNewfile}
                 />
               </div>
@@ -784,7 +834,7 @@ const Mainpage = () => {
           </div>
           <div className="flex mt-8 ml-auto">
             <button
-              className="bg-slate-50 w-42 mr-auto pr-5 h-10"
+              className=" -slate-50 w-42 mr-auto pr-5 h-10"
               onClick={() => {
                 togglenewFile();
               }}
@@ -795,7 +845,7 @@ const Mainpage = () => {
               <FontAwesomeIcon
                 icon={faTimes}
                 onClick={cancelToggle}
-                className="bg-rose-700 text-gray-50 p-2 flex h-6"
+                className=" -rose-700 text-gray-50 p-2 flex h-6"
               />
             )}
           </div>

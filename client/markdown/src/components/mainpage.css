@@ -1,15 +1,15 @@
 /* mainpage.css */
 
 /* Light Theme */
-.light-theme {
-    --bg-color: #f0f0f0;
+#light-theme {
+    --bg-color: #962525;
     --text-color: #000;
     --border-color: #ccc;
   }
   
   /* Dark Theme */
-  .dark-theme {
-    --bg-color: #333;
+  #dark-theme {
+    --bg-color: #c87070;
     --text-color: #fff;
     --border-color: #555;
   }
@@ -153,7 +153,7 @@ text-decoration: underline;
 
 .responsiveBtns{
   height: 40px !important;
-  background-color: pink;
+  background-color: rgb(69, 4, 15);
 }
 
 

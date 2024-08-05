@@ -11,6 +11,15 @@ module.exports = {
         lexend:["Lexend", "sans-serif"],
         souseSans:["Source Sans 3", "sans-serif"]
       },
+      colors: {
+        'light-bg': '#fff',
+        'light-text': '#000',
+        'light-border': '#ccc',
+        'dark-bg': '#515d6a',
+        'mid-dark-bg': '#434d57',
+        'dark-text': '#fff',
+        'dark-border': '#555',
+      },
     },
   },
   plugins: [],
