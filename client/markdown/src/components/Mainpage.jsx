@@ -89,7 +89,7 @@ const Mainpage = () => {
 
   const getUserInput = async (inputText) => {
     try {
-      const response = await axios.post("http://localhost:5000/convertText", {
+      const response = await axios.post("https://markdowneditor-backend.onrender.com/convertText", {
         he: inputText,
       });
       console.log("response", response.data);
@@ -197,7 +197,7 @@ const Mainpage = () => {
     const userDownload = document.getElementById("htmlResponse").value;
     console.log(userDownload);
     try {
-      const response = await axios.post("http://localhost:5000/downloadFile", {
+      const response = await axios.post("https://markdowneditor-backend.onrender.com/downloadFile", {
         userContent: userDownload,
         fileName: "First Download",
       });
@@ -261,7 +261,7 @@ const Mainpage = () => {
     }
 
     try {
-      const response = await axios.post("http://localhost:5000/createContent", {
+      const response = await axios.post("https://markdowneditor-backend.onrender.com/createContent", {
         userContent: userInput,
         fileName: fileName,
         token: token,
@@ -286,7 +286,7 @@ const Mainpage = () => {
     const fileID = selectedID;
     console.log(fileID);
     try {
-      const response = await axios.post("http://localhost:5000/updateFile", {
+      const response = await axios.post("https://markdowneditor-backend.onrender.com/updateFile", {
         userEdit: userEdit,
         selectedID: selectedID,
       });
@@ -299,7 +299,7 @@ const Mainpage = () => {
     const fileID = selectedID;
     console.log("fileID", fileID);
     try {
-      const response = await axios.post("http://localhost:5000/deleteFile", {
+      const response = await axios.post("https://markdowneditor-backend.onrender.com/deleteFile", {
         selectedID: fileID,
       });
       console.log("Delete response:", response.data);
@@ -314,7 +314,7 @@ const Mainpage = () => {
   const deleteChat = async () => {
     if (!messageID) return;
     try {
-      const response = await axios.delete("http://localhost:5000/deleteFile", {
+      const response = await axios.delete("https://markdowneditor-backend.onrender.com/deleteFile", {
         params: { messageID, currentUserID },
       });
       console.log("details", messageID, currentUserID);
@@ -341,7 +341,7 @@ const Mainpage = () => {
     const token = localStorage.getItem("token");
 
     try {
-      const response = await axios.get("http://localhost:5000/getFiles", {
+      const response = await axios.get("https://markdowneditor-backend.onrender.com/getFiles", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -357,7 +357,7 @@ const Mainpage = () => {
 
   const viewFile = async () => {
     try {
-      const response = await axios.post("http://localhost:5000/viewFile", {
+      const response = await axios.post("https://markdowneditor-backend.onrender.com/viewFile", {
         selectedID: selectedID,
       });
       const fileText = response.data.file.userInput;
