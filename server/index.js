@@ -4,6 +4,7 @@ const cors = require('cors');
 const { getText, downloadFile, getAllFiles, createContent, updateFile , viewFile, deleteFile} = require('./controller/content.controller');
 const mongoose = require('mongoose')
 const {Login, Register, getCurrentUser,} = require('./controller/user.controller')
+require('dotenv').config();
 
 
 const app = express();
@@ -25,8 +26,7 @@ app.delete('/deleteFile', deleteFile);
 
 mongoose
   .connect(
-"mongodb+srv://yemiojedapo1:Appypie1@cluster0.2bh8wfa.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
-    )
+    process.env.MONGO_URI,    )
   .then(() => {
     console.log("Connected to database!");
   })
