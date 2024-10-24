@@ -132,6 +132,12 @@ text-decoration: underline;
     top:0; */
 } 
  
+/* .iconDiv{
+background-color: #962525 !important;
+height: 20px !important;
+
+
+} */
 
 
 
@@ -152,7 +158,7 @@ text-decoration: underline;
 }
 
 .responsiveBtns{
-  height: 40px !important;
+  height: 30px !important;
   background-color: rgb(69, 4, 15);
 }
 
@@ -175,7 +181,11 @@ text-decoration: underline;
 
   @media screen  and(max-width:600px){
     .responsiveBtns{
-      height: 30px !important;
+      /* height: 30px !important; */
+      background-color: #962525 !important;
+      button{
+        background: tomato !important;
+      }
       
       .font{
         color: yellow !important;

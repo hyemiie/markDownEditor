@@ -105,7 +105,7 @@ const Register = () => {
             <form className="  min-w-96 flex flex-col items-center justify-center ">
             {/* <div className='loader'></div> */}
 
-                <h1 className="text-2xl font-semibold text-left mb-6 font-light">Login to Simplify your format Process
+                <h1 className="text-2xl font-semibold text-left mb-6 font-light">Join to Simplify your format Process
 </h1>
                 <div className="mb-4 w-full flex items-center justify-center">
                     <input
