@@ -486,20 +486,20 @@ const Mainpage = () => {
       )}
       <div className="w-full overflow-hidden">
         <div className=" this flex flex-col overflow-hidden top-0 absolute h-[18%] ">
-          <div className={ `flex flex-wrap  text-gray-50 w-screen flex-col items-center justify-l ${
+          <div className={ `flex   flex-wrap  text-gray-50 w-screen flex-col items-center justify-l ${
                 darkScreen ? "dark-theme text-black border-b border-zinc-00" : "light-theme"
               }`}
               id ={`darkScreen ? "dark-theme" : "light-theme"}`}
               >
           <div
-  className={`flex pl-4 w-screen overflow-y-scroll h-16 items-center justify-center responsiveBtns border-b ${
+  className={`flex iconDiv pl-4 w-screen overflow-y-hidden items-center justify-center responsiveBtns sm:bg-red-500 sm:text-2xl md:bg-purple-800 md:h-56 lg:bg-lime-600 lg:h-12 border-b ${
     darkScreen 
       ? "bg-dark-bg text-dark-text border-dark-border" 
       : "bg-dark-bg text-dark-text border-light-border"
   }`}
 >
               <button
-                className="flex pe-10 pt-2 pl-4   w-7  "
+                className="flex pe-6 pt-2 pb-2 pl-4 w-7 "
                 onClick={() => {
                   getFiles();
                   viewStatusTrue();
@@ -517,7 +517,7 @@ const Mainpage = () => {
               </button>
 
               <button
-                className={`flex pe-10 pt-6 pl-2  w-7  h-16 ${
+                className={`flex pe-6 pt-6 pl-2  w-7  h-16 ${
                   darkScreen
                     ? " -transparent "
                     : " -slate-transparent"
@@ -528,14 +528,14 @@ const Mainpage = () => {
               >
                 <FontAwesomeIcon
                   icon={faBold}
-                  className={`font justify-center pl-2  text-xl  ${
+                  className={`font justify-center pl-2  text-xs md:text-sm ${
                     darkScreen ? " -transparent text-gray" : ""
                   } `}
                 />
                 {hoveredButton == "bold" ? <p>Bold</p> : ""}
               </button>
               <button
-                className={`flex pe-10 pt-6 pl-2  w-7  h-16 ${
+                className={`flex pe-6 pt-6 pl-2  w-2 h-16 ${
                   darkScreen
                     ? " -transparent text-slate-50"
                     : " -slate-transparent"
@@ -546,14 +546,14 @@ const Mainpage = () => {
               >
                 <FontAwesomeIcon
                   icon={faItalic}
-                  className={` font justify-center pl-2 text-xl  ${
+                  className={` font justify-center pl-2 text-xs md:text-sm   ${
                     darkScreen ? " -transparent text-white" : ""
                   } `}
                 />
                 {hoveredButton == "Italic" ? <p>Italic</p> : ""}
               </button>
               <button
-                className={`flex pe-10 pt-6 pl-2  w-7  h-16 ${
+                className={`flex pe-6 pt-6 pl-2 w-2 h-16 ${
                   darkScreen
                     ? " -transparent text-slate-50"
                     : " -slate-transparent"
@@ -564,14 +564,14 @@ const Mainpage = () => {
               >
                 <FontAwesomeIcon
                   icon={faListNumeric}
-                  className={`justify-center pl-2  text-xl  ${
+                  className={`justify-center pl-2 text-xs md:text-sm  ${
                     darkScreen ? " -transparent text-white" : ""
                   } `}
                 />
                 {hoveredButton == "List" ? <p>List</p> : ""}
               </button>
               <button
-                className={`flex pe-10 pt-6 pl-2   w-7  h-16 ${
+                className={`flex pe-6 pt-6 pl-2   w-7  h-16 ${
                   darkScreen
                     ? " -transparent text-slate-50"
                     : " -slate-transparent"
@@ -582,7 +582,7 @@ const Mainpage = () => {
               >
                 <FontAwesomeIcon
                   icon={faListDots}
-                  className={`justify-center pl-2  text-xl  ${
+                  className={`justify-center pl-2  text-xs md:text-sm  ${
                     darkScreen ? " -transparent text-white" : ""
                   } `}
                 />
@@ -590,7 +590,7 @@ const Mainpage = () => {
               </button>
 
               <button
-                className={`flex pe-10 pt-6 pl-2   w-7  h-16 ${
+                className={`flex pe-6 pt-6 pl-2   w-7  h-16 ${
                   darkScreen
                     ? " -transparent text-slate-50"
                     : " -slate-transparent"
@@ -600,14 +600,14 @@ const Mainpage = () => {
               >
                 <FontAwesomeIcon
                   icon={faQuoteLeft}
-                  className={`justify-center pl-2 text-xl  ${
+                  className={`justify-center pl-2 text-xs md:text-sm  ${
                     darkScreen ? " -transparent text-white" : ""
                   } `}
                 />
                 {hoveredButton == "Quote" ? <p>Quote</p> : ""}
               </button>
               <button
-                className={`flex pe-10 pt-6 pl-2   w-7  h-16 ${
+                className={`flex pe-6 pt-6 pl-2   w-7  h-16 ${
                   darkScreen
                     ? " -transparent text-slate-50"
                     : " -slate-transparent"
@@ -618,14 +618,14 @@ const Mainpage = () => {
               >
                 <FontAwesomeIcon
                   icon={faCode}
-                  className={`justify-center pl-2 text-xl  ${
+                  className={`justify-center pl-2 text-xs md:text-sm  ${
                     darkScreen ? " -transparent text-white" : ""
                   } `}
                 />
                 {hoveredButton == "Code" ? <p>Code</p> : ""}
               </button>
               {/* <button
-              className="flex pe-10 pt-3 hover: -slate-500 w-7"
+              className="flex pe-6 pt-3 hover: -slate-500 w-7"
               onClick={handleTableClick}
               onMouseEnter={() => handleMouseEnter("Table")}
               onMouseLeave={handleMouseLeave}
@@ -634,7 +634,7 @@ const Mainpage = () => {
               {hoveredButton == "Table" ? <p>Table</p> : ""}
             </button> */}
               <button
-                className={`flex pe-10 pt-6 pl-2   w-7  h-16 ${
+                className={`flex pe-6 pt-6 pl-2   w-7  h-16 ${
                   darkScreen
                     ? " -transparent text-slate-50"
                     : " -slate-transparent"
@@ -645,14 +645,14 @@ const Mainpage = () => {
               >
                 <FontAwesomeIcon
                   icon={faLink}
-                  className={`justify-center pl-2  text-xl  ${
+                  className={`justify-center pl-2  text-xs md:text-sm  ${
                     darkScreen ? " -transparent text-white" : ""
                   } `}
                 />
                 {hoveredButton == "Link" ? <p>Link</p> : ""}
               </button>
               <button
-                className={`flex pe-10 pt-6 pl-2  w-7  h-16 ${
+                className={`flex pe-6 pt-6 pl-2  w-7  h-16 ${
                   darkScreen
                     ? " -transparent text-slate-50"
                     : " -slate-transparent"
@@ -663,14 +663,14 @@ const Mainpage = () => {
               >
                 <FontAwesomeIcon
                   icon={faArrowDown}
-                  className={`justify-center pl-2  text-xl  ${
+                  className={`justify-center pl-2  text-xs md:text-sm  ${
                     darkScreen ? " -transparent text-white" : ""
                   } `}
                 />
                 {hoveredButton == "Download" ? <p>Download</p> : ""}
               </button>
               <button
-  className={`flex pe-10 pt-6 pl-2  w-7  h-16 ${
+  className={`flex pe-6 pt-6 pl-2  w-7  h-16 ${
                   darkScreen
                     ? " -transparent text-slate-50"
                     : " -slate-transparent"
@@ -680,7 +680,7 @@ const Mainpage = () => {
               >
                 <FontAwesomeIcon
                   icon={faPencil}
-                  className={`justify-center pl-2  text-xl  ${
+                  className={`justify-center pl-2  text-xs md:text-sm  ${
                     darkScreen ? " -transparent text-white" : ""
                   } `}
                 />
@@ -711,10 +711,10 @@ const Mainpage = () => {
       /> */}
       {/* <button onClick={() => fileInputRef.current.click()}>Upload Image</button> */}
 
-            <div className="flex">
+            <div className="flex ">
               <button
                 onClick={editFile}
-                className="text-center  bg-cyan-600 text-white hover:text-gray-100 p-2 rounded mr-8 "
+                className="text-center flex justify-center items-center bg-cyan-600 text-white hover:text-gray-100 p-2 rounded h-6 "
               >
                 Save File
               </button>
@@ -773,7 +773,7 @@ const Mainpage = () => {
               onClick={checkSmallScreen}
             >
               {smallScreen ? (
-                <FontAwesomeIcon icon={faPenAlt} className="text-xl" />
+                <FontAwesomeIcon icon={faPenAlt} className="text-xs" />
               ) : (
                 <FontAwesomeIcon icon={faEye} />
               )}
@@ -788,7 +788,7 @@ const Mainpage = () => {
             <FontAwesomeIcon
               icon={faArrowLeft}
               onClick={viewStatusFalse}
-              className="flex w-6 h-6 text-xl p-5 rounded-xs hover: -slate-500 hover:text-slate-100 text-slate-50 cursor-pointer"
+              className="flex w-6 h-6 text-xs p-5 rounded-xs hover: -slate-500 hover:text-slate-100 text-slate-50 cursor-pointer"
             />
           </div>
 

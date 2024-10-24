@@ -81,7 +81,7 @@ const Login = () => {
     
 
     return (
-        <div className="flex flex-col bg-white min-h-screen">
+        <div className="flex flex-col bg-white min-h-screen overflow-hidden">
          {alertVisible && (
         <CustomAlert message={alertMessage} onClose={handleAlertClose} />
       )}
@@ -108,8 +108,8 @@ const Login = () => {
 
             {/* <div className='w-[50%]'><img src={heroGIF}></img></div> */}
 
-            <div className="w-[100%] flex justify-center items-center pt-20 h-[85vh] p-30  ">
-                <form className="  min-w-96 flex flex-col items-center justify-center ">
+            <div className="w-[100%] flex justify-center items-center pt-20 h-[85vh] p-30 overflow-hidden">
+                <form className=" form min-w-96 flex flex-col items-center justify-center ">
                 {/* <div className='loader'></div> */}
 
                     <h1 className="text-2xl font-semibold text-left mb-6 font-light">Login to Simplify your format Process

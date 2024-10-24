@@ -1,6 +1,9 @@
 .loginPage{
     /* background-color: yellow; */
 }
+.form{
+  padding: 30px;
+}
 
 /* HTML: <div class="loader"></div> */
 .loader {
@@ -38,6 +41,7 @@
         div{
             height:50%;
             width: 100%;
+            padding: 20px;
 
             form{
                 h1{
@@ -48,11 +52,10 @@
     }
 }
 
-@media screen and (max-width:400px) {
+@media screen and (min-width:400px) {
     
 
     .loginPage{
-        /* flex-direction: column; */
 
         div{
             height: 35%;
