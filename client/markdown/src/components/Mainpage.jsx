@@ -1,6 +1,3 @@
-
-
-
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./mainpage.css";
@@ -38,9 +35,9 @@ import {
 import Login from "./Login/Login";
 import Register from "./Register/Register";
 import { saveAs } from "file-saver";
-import CustomAlert from './CustomAlert/CustomAlert';
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
+import CustomAlert from "./CustomAlert/CustomAlert";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 import { useRef } from "react";
 const Mainpage = () => {
   const [htmlResponse, setHtmlResponse] = useState("");
@@ -54,6 +51,9 @@ const Mainpage = () => {
   const [currentUserName, setCurrentUserName] = useState("");
   const [fileListStatus, setFileListStatus] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const [loadingSave, setLoadingSave] = useState(false);
+  const [loadingFiles, setIsLoadingFiles] = useState(false);
+  const [addingFiles, setAddingFiles] = useState(false);
   const [darkScreen, setDarkscreen] = useState(false);
   const [hoveredButton, setHoveredButton] = useState(null);
   const [messageID, setMessageID] = useState(null);
@@ -61,23 +61,20 @@ const Mainpage = () => {
   const [smallScreen, setSmallScreen] = useState(null);
   const fileInputRef = useRef(null);
 
-
   const pdfContentRef = useRef(null);
 
-
   const [alertVisible, setAlertVisible] = useState(false);
-  const [alertMessage, setAlertMessage] = useState('');
+  const [alertMessage, setAlertMessage] = useState("");
 
-    const showAlert = (message) => {
-        setAlertMessage(message);
-        setAlertVisible(true);
-      };
-    
-      const handleAlertClose = () => {
-        setAlertVisible(false);
-        setAlertMessage('');
-      }
+  const showAlert = (message) => {
+    setAlertMessage(message);
+    setAlertVisible(true);
+  };
 
+  const handleAlertClose = () => {
+    setAlertVisible(false);
+    setAlertMessage("");
+  };
 
   const handleMouseEnter = (buttonName) => {
     setHoveredButton(buttonName);
@@ -89,9 +86,12 @@ const Mainpage = () => {
 
   const getUserInput = async (inputText) => {
     try {
-      const response = await axios.post("https://markdowneditor-backend.onrender.com/convertText", {
-        he: inputText,
-      });
+      const response = await axios.post(
+        "https://markdowneditor-backend.onrender.com/convertText",
+        {
+          he: inputText,
+        }
+      );
       console.log("response", response.data);
 
       setHtmlResponse(response.data.html);
@@ -99,6 +99,13 @@ const Mainpage = () => {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    if (userInput) { // Only call getUserInput if userInput has content
+      getUserInput(userInput);
+    }
+  }, [userInput]);
+  
 
   useEffect(() => {
     const handleMouseUp = () => {
@@ -197,10 +204,13 @@ const Mainpage = () => {
     const userDownload = document.getElementById("htmlResponse").value;
     console.log(userDownload);
     try {
-      const response = await axios.post("https://markdowneditor-backend.onrender.com/downloadFile", {
-        userContent: userDownload,
-        fileName: "First Download",
-      });
+      const response = await axios.post(
+        "https://markdowneditor-backend.onrender.com/downloadFile",
+        {
+          userContent: userDownload,
+          fileName: "First Download",
+        }
+      );
       alert("File Downloaded");
     } catch (error) {
       console.log(error);
@@ -210,7 +220,7 @@ const Mainpage = () => {
   const handleDownload = () => {
     const userDownload = document.getElementById("htmlResponse").innerHTML;
     // const userDownload = document.getElementById("htmlResponse").innerHTML;
-    console.log('userDownload', htmlResponse)
+    console.log("userDownload", htmlResponse);
 
     const blob = new Blob([userDownload], {
       type: "text/markdown;charset=utf-8",
@@ -221,25 +231,25 @@ const Mainpage = () => {
 
   // import jsPDF from 'jspdf';
   // import html2canvas from 'html2canvas';
-  
+
   const downloadPDF = async () => {
-    const element = document.getElementById('htmlResponse'); // The div containing your rendered HTML
+    const element = document.getElementById("htmlResponse"); // The div containing your rendered HTML
     const canvas = await html2canvas(element);
-    const imgData = canvas.toDataURL('image/png');
-  
+    const imgData = canvas.toDataURL("image/png");
+
     const pdf = new jsPDF({
-      orientation: 'portrait',
-      unit: 'px',
-      format: 'a4'
+      orientation: "portrait",
+      unit: "px",
+      format: "a4",
     });
-  
+
     const imgProps = pdf.getImageProperties(imgData);
     const pdfWidth = pdf.internal.pageSize.getWidth();
     const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-  
-    pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-  
-    pdf.save('document.pdf');
+
+    pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+
+    pdf.save("document.pdf");
   };
 
   const handleDownloadPdf = () => {
@@ -261,11 +271,14 @@ const Mainpage = () => {
     }
 
     try {
-      const response = await axios.post("https://markdowneditor-backend.onrender.com/createContent", {
-        userContent: userInput,
-        fileName: fileName,
-        token: token,
-      });
+      const response = await axios.post(
+        "https://markdowneditor-backend.onrender.com/createContent",
+        {
+          userContent: userInput,
+          fileName: fileName,
+          token: token,
+        }
+      );
       console.log("Successful", fileName, token, userInput);
       showAlert("File created");
       console.log("new file response", response);
@@ -274,39 +287,53 @@ const Mainpage = () => {
     } catch (error) {
       console.error("An error occurred:", error);
       showAlert("Oooppsss...seems like there's a problem");
-
     }
 
     console.log("Function ended");
   };
-
   const editFile = async () => {
     const userEdit = userInput;
-
+    setLoadingSave(true);
     const fileID = selectedID;
     console.log(fileID);
+  
     try {
-      const response = await axios.post("https://markdowneditor-backend.onrender.com/updateFile", {
-        userEdit: userEdit,
-        selectedID: selectedID,
-      });
+      const response = await axios.post(
+        "https://markdowneditor-backend.onrender.com/updateFile",
+        {
+          userEdit: userEdit,
+          selectedID: selectedID,
+        }
+      );
+      setLoadingSave(false);
+
+     
+  
     } catch (error) {
+        setLoadingSave(false);
+      
       console.log(error);
     }
+    setLoadingSave(false);
+
   };
+  
 
   const deleteFile = async () => {
     const fileID = selectedID;
     console.log("fileID", fileID);
     try {
-      const response = await axios.post("https://markdowneditor-backend.onrender.com/deleteFile", {
-        selectedID: fileID,
-      });
+      const response = await axios.post(
+        "https://markdowneditor-backend.onrender.com/deleteFile",
+        {
+          selectedID: fileID,
+        }
+      );
       console.log("Delete response:", response.data);
-      showAlert('File Deleted successfuly')
+      showAlert("File Deleted successfuly");
     } catch (error) {
       console.error("Error deleting file:", error); // Log any errors to the console
-      showAlert('File Deletion failed')
+      showAlert("File Deletion failed");
 
       // Handle error: display a message to the user or perform other actions
     }
@@ -314,9 +341,12 @@ const Mainpage = () => {
   const deleteChat = async () => {
     if (!messageID) return;
     try {
-      const response = await axios.delete("https://markdowneditor-backend.onrender.com/deleteFile", {
-        params: { messageID, currentUserID },
-      });
+      const response = await axios.delete(
+        "https://markdowneditor-backend.onrender.com/deleteFile",
+        {
+          params: { messageID, currentUserID },
+        }
+      );
       console.log("details", messageID, currentUserID);
       console.log("Response:", response.data);
       showAlert("Message deleted");
@@ -338,28 +368,39 @@ const Mainpage = () => {
   }, [messageID]);
 
   const getFiles = async () => {
+    setIsLoadingFiles(true)
     const token = localStorage.getItem("token");
 
     try {
-      const response = await axios.get("https://markdowneditor-backend.onrender.com/getFiles", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axios.get(
+        "https://markdowneditor-backend.onrender.com/getFiles",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setIsLoadingFiles(false)
+
       console.log(response);
       setUserFile(response.data);
 
       // console.log("userFile", userFile);
     } catch (error) {
       console.log(error);
+      setIsLoadingFiles(false)
+
     }
   };
 
   const viewFile = async () => {
     try {
-      const response = await axios.post("https://markdowneditor-backend.onrender.com/viewFile", {
-        selectedID: selectedID,
-      });
+      const response = await axios.post(
+        "https://markdowneditor-backend.onrender.com/viewFile",
+        {
+          selectedID: selectedID,
+        }
+      );
       const fileText = response.data.file.userInput;
       console.log(response.data.file.userInput);
       setUserInput(fileText);
@@ -409,32 +450,30 @@ const Mainpage = () => {
     }
   };
 
-
-  
   const handleImageUpload = async (event) => {
     const file = event.target.files[0];
     if (file) {
       const formData = new FormData();
-      formData.append('image', file);
-  
+      formData.append("image", file);
+
       try {
-        const response = await fetch('/upload-image', {
-          method: 'POST',
+        const response = await fetch("/upload-image", {
+          method: "POST",
           body: formData,
         });
         const data = await response.json();
         const imageUrl = data.imageUrl;
-  
+
         // Insert image URL into markdown text
         const imageMarkdown = `![${file.name}](${imageUrl})`;
-        
-        setUserInput(prevInput => {
-          const updatedInput = prevInput + '\n\n' + imageMarkdown;
-          console.log('Updated input:', updatedInput);
+
+        setUserInput((prevInput) => {
+          const updatedInput = prevInput + "\n\n" + imageMarkdown;
+          console.log("Updated input:", updatedInput);
           return updatedInput;
         });
       } catch (error) {
-        console.error('Error uploading image:', error);
+        console.error("Error uploading image:", error);
       }
     }
   };
@@ -470,7 +509,6 @@ const Mainpage = () => {
   To start working, click on the file icon at the far right to choose or create files. Cheers!!!!`);
     }
   }, [selectedID]);
-  
 
   useEffect(() => {
     const userName = localStorage.getItem("currentUser");
@@ -486,18 +524,21 @@ const Mainpage = () => {
       )}
       <div className="w-full overflow-hidden">
         <div className=" this flex flex-col overflow-hidden top-0 absolute h-[18%] ">
-          <div className={ `flex   flex-wrap  text-gray-50 w-screen flex-col items-center justify-l ${
-                darkScreen ? "dark-theme text-black border-b border-zinc-00" : "light-theme"
-              }`}
-              id ={`darkScreen ? "dark-theme" : "light-theme"}`}
-              >
           <div
-  className={`flex iconDiv pl-4 w-screen overflow-y-hidden items-center justify-center responsiveBtns sm:bg-red-500 sm:text-2xl md:bg-purple-800 md:h-56 lg:bg-lime-600 lg:h-12 border-b ${
-    darkScreen 
-      ? "bg-dark-bg text-dark-text border-dark-border" 
-      : "bg-dark-bg text-dark-text border-light-border"
-  }`}
->
+            className={`flex   flex-wrap  text-gray-50 w-screen flex-col items-center justify-l ${
+              darkScreen
+                ? "dark-theme text-black border-b border-zinc-00"
+                : "light-theme"
+            }`}
+            id={`darkScreen ? "dark-theme" : "light-theme"}`}
+          >
+            <div
+              className={`flex iconDiv pl-4 w-screen overflow-y-hidden items-center justify-center responsiveBtns sm:text-2xl md:h-56 lg:h-12 border-b ${
+                darkScreen
+                  ? "bg-dark-bg text-dark-text border-dark-border"
+                  : "bg-dark-bg text-dark-text border-light-border"
+              }`}
+            >
               <button
                 className="flex pe-6 pt-2 pb-2 pl-4 w-7 "
                 onClick={() => {
@@ -513,14 +554,16 @@ const Mainpage = () => {
                 />
                 {/* text-indigo-600 */}
 
-                {hoveredButton == "fileArchive" ? <p>View Files</p> : ""}
+                {hoveredButton == "fileArchive" ? (
+                  <p className="flex text-sm">View Files</p>
+                ) : (
+                  ""
+                )}
               </button>
 
               <button
                 className={`flex pe-6 pt-6 pl-2  w-7  h-16 ${
-                  darkScreen
-                    ? " -transparent "
-                    : " -slate-transparent"
+                  darkScreen ? " -transparent " : " -slate-transparent"
                 } `}
                 onClick={handleBoldClick}
                 onMouseEnter={() => handleMouseEnter("bold")}
@@ -532,7 +575,11 @@ const Mainpage = () => {
                     darkScreen ? " -transparent text-gray" : ""
                   } `}
                 />
-                {hoveredButton == "bold" ? <p>Bold</p> : ""}
+                {hoveredButton == "bold" ? (
+                  <p className="flex text-sm">Bold</p>
+                ) : (
+                  ""
+                )}
               </button>
               <button
                 className={`flex pe-6 pt-6 pl-2  w-2 h-16 ${
@@ -550,7 +597,11 @@ const Mainpage = () => {
                     darkScreen ? " -transparent text-white" : ""
                   } `}
                 />
-                {hoveredButton == "Italic" ? <p>Italic</p> : ""}
+                {hoveredButton == "Italic" ? (
+                  <p className="flex text-sm">Italic</p>
+                ) : (
+                  ""
+                )}
               </button>
               <button
                 className={`flex pe-6 pt-6 pl-2 w-2 h-16 ${
@@ -568,7 +619,11 @@ const Mainpage = () => {
                     darkScreen ? " -transparent text-white" : ""
                   } `}
                 />
-                {hoveredButton == "List" ? <p>List</p> : ""}
+                {hoveredButton == "List" ? (
+                  <p className="flex text-sm">List</p>
+                ) : (
+                  ""
+                )}
               </button>
               <button
                 className={`flex pe-6 pt-6 pl-2   w-7  h-16 ${
@@ -586,7 +641,11 @@ const Mainpage = () => {
                     darkScreen ? " -transparent text-white" : ""
                   } `}
                 />
-                {hoveredButton == "SubList" ? <p>SubList</p> : ""}
+                {hoveredButton == "SubList" ? (
+                  <p className="flex text-sm">SubList</p>
+                ) : (
+                  ""
+                )}
               </button>
 
               <button
@@ -604,7 +663,11 @@ const Mainpage = () => {
                     darkScreen ? " -transparent text-white" : ""
                   } `}
                 />
-                {hoveredButton == "Quote" ? <p>Quote</p> : ""}
+                {hoveredButton == "Quote" ? (
+                  <p className="flex text-sm">Quote</p>
+                ) : (
+                  ""
+                )}
               </button>
               <button
                 className={`flex pe-6 pt-6 pl-2   w-7  h-16 ${
@@ -622,7 +685,11 @@ const Mainpage = () => {
                     darkScreen ? " -transparent text-white" : ""
                   } `}
                 />
-                {hoveredButton == "Code" ? <p>Code</p> : ""}
+                {hoveredButton == "Code" ? (
+                  <p className="flex text-sm">Code</p>
+                ) : (
+                  ""
+                )}
               </button>
               {/* <button
               className="flex pe-6 pt-3 hover: -slate-500 w-7"
@@ -649,7 +716,11 @@ const Mainpage = () => {
                     darkScreen ? " -transparent text-white" : ""
                   } `}
                 />
-                {hoveredButton == "Link" ? <p>Link</p> : ""}
+                {hoveredButton == "Link" ? (
+                  <p className="flex text-sm">Link</p>
+                ) : (
+                  ""
+                )}
               </button>
               <button
                 className={`flex pe-6 pt-6 pl-2  w-7  h-16 ${
@@ -667,14 +738,19 @@ const Mainpage = () => {
                     darkScreen ? " -transparent text-white" : ""
                   } `}
                 />
-                {hoveredButton == "Download" ? <p>Download</p> : ""}
+                {hoveredButton == "Download" ? (
+                  <p className="flex text-sm">Download</p>
+                ) : (
+                  ""
+                )}
               </button>
               <button
-  className={`flex pe-6 pt-6 pl-2  w-7  h-16 ${
+                className={`flex pe-6 pt-6 pl-2  w-7  h-16 ${
                   darkScreen
                     ? " -transparent text-slate-50"
                     : " -slate-transparent"
-                } `}                onClick={editFile}
+                } `}
+                onClick={editFile}
                 onMouseEnter={() => handleMouseEnter("Edit")}
                 onMouseLeave={handleMouseLeave}
               >
@@ -684,22 +760,35 @@ const Mainpage = () => {
                     darkScreen ? " -transparent text-white" : ""
                   } `}
                 />
-                {hoveredButton == "Edit" ? <p>Edit File</p> : ""}
+                {hoveredButton == "Edit" ? (
+                  <p className="flex text-sm">Edit File</p>
+                ) : (
+                  ""
+                )}
               </button>
               <div className="flex ml-auto w-24 p-6 items-center">
-                
                 <button onClick={changeTheme} className="flextext-3xl p-2 ">
-                { !darkScreen? <FontAwesomeIcon icon={faMoon} className="flex text-white"/> :  <FontAwesomeIcon icon={faSun} className="flex text-white"/>}</button>
+                  {!darkScreen ? (
+                    <FontAwesomeIcon
+                      icon={faMoon}
+                      className="flex text-white"
+                    />
+                  ) : (
+                    <FontAwesomeIcon icon={faSun} className="flex text-white" />
+                  )}
+                </button>
               </div>
             </div>
           </div>
 
-          <div className={`flex items-center justify-between  flex-wrap  -white border-b-2 border-gray-200 border-solid p-2 w-[98.5%]  ${
- darkScreen 
-      ? "bg-mid-dark-bg text-dark-text border-dark-border" 
-      : "bg-light-bg text-light-text border-light-border"
-                  } `}>
-            <p className=" text-gray-500 text-3xl ml-4 font-bold font-serif ">
+          <div
+            className={`flex items-center justify-between  flex-wrap  -white border-b-2 border-gray-200 border-solid p-2 w-[98.5%]  ${
+              darkScreen
+                ? "bg-mid-dark-bg text-dark-text border-dark-border"
+                : "bg-light-bg text-light-text border-light-border"
+            } `}
+          >
+            <p className=" text-gray-500 text-xl ml-4 font-bold font-serif ">
               {currentFile}
             </p>
             {/* <input
@@ -709,29 +798,32 @@ const Mainpage = () => {
         ref={fileInputRef}
         style={{ display: 'none' }}
       /> */}
-      {/* <button onClick={() => fileInputRef.current.click()}>Upload Image</button> */}
-
+            {/* <button onClick={() => fileInputRef.current.click()}>Upload Image</button> */}
             <div className="flex ">
-              <button
-                onClick={editFile}
-                className="text-center flex justify-center items-center bg-cyan-600 text-white hover:text-gray-100 p-2 rounded h-6 "
-              >
-                Save File
-              </button>
+              {!loadingSave ? (
+                <button
+                  onClick={editFile}
+                  className="text-center flex justify-center items-center bg-cyan-600 text-white hover:text-gray-100 p-4 rounded h-6 "
+                >
+                  Save File
+                </button>
+              ) : (
+                <span class="loading"></span>
+              )}
             </div>
           </div>
         </div>
 
-
-
         <div className="flex w-auto filesDiv h-[80%] ">
           {!currentFile.length < 1 ? (
             <textarea
-           className={` -white h-svh  overflow-y-scroll outline-none pt-40  pl-10 pr-20 text-2xl  w-[100%]  border-r border-black font-outfit   ${
-              smallScreen ? "show"  :"hide"
-            } ${ darkScreen 
-      ? "bg-dark-bg text-dark-text border-dark-border" 
-      : "bg-light-bg text-light-text border-light-border"}`}
+              className={` h-svh  overflow-y-scroll outline-none pt-40  pl-10 pr-20 text-s  w-[100%]  border-r border-black font-outfit   ${
+                smallScreen ? "show" : "hide"
+              } ${
+                darkScreen
+                  ? "bg-dark-bg text-dark-text border-dark-border"
+                  : "bg-light-bg text-light-text border-light-border"
+              }`}
               placeholder="start writing here"
               id="userInput"
               value={userInput}
@@ -741,11 +833,13 @@ const Mainpage = () => {
             />
           ) : (
             <textarea
-           className={` -white  h-svh  overflow-y-scroll outline-none pt-40  pl-10 pr-20 text-2xl   w-[100%] border-r border-black font-grotesk font-light  ${
-              smallScreen ? "show " :"hide"
-            } ${  darkScreen 
-      ? "bg-dark-bg text-dark-text border-dark-border" 
-      : "bg-light-bg text-light-text border-light-border"}`}
+              className={`   h-svh  overflow-y-scroll outline-none pt-40  pl-10 pr-20 text-s   w-[100%] border-r border-black font-grotesk font-light  ${
+                smallScreen ? "show " : "hide"
+              } ${
+                darkScreen
+                  ? "bg-dark-bg text-dark-text border-dark-border"
+                  : "bg-light-bg text-light-text border-light-border"
+              }`}
               placeholder="start writing here"
               id="userInput"
               value={userInput}
@@ -753,11 +847,13 @@ const Mainpage = () => {
             />
           )}
           <div
-            className={` -white  h-svh overflow-y-scroll outline-none pt-40 pl-10 pr-20   text-2xl  w-[100%] font-grotesk  ${
-              smallScreen ? "hide":'show' 
-            } ${  darkScreen 
-      ? "bg-dark-bg text-dark-text border-dark-border" 
-      : "bg-light-bg text-light-text border-light-border"}`}
+            className={`   h-svh overflow-y-scroll outline-none pt-40 pl-10 pr-20   text-s  w-[100%] font-grotesk  ${
+              smallScreen ? "hide" : "show"
+            } ${
+              darkScreen
+                ? "bg-dark-bg text-dark-text border-dark-border"
+                : "bg-light-bg text-light-text border-light-border"
+            }`}
             id="htmlResponse"
             dangerouslySetInnerHTML={{ __html: htmlResponse }}
             ref={pdfContentRef}
@@ -784,49 +880,59 @@ const Mainpage = () => {
       {fileListStatus && (
         <div className=" bg-slate-500 py-3.5  w-80 h-screen flex flex-col overflow-y-auto fixed p-4">
           <div className="flex justify-between items-center pb-8">
-            <h2 className="flex text-4xl text-teal-100">{currentUserName}</h2>
+            <h2 className="flex text-2xl text-teal-100">
+              Username: {currentUserName}
+            </h2>
             <FontAwesomeIcon
               icon={faArrowLeft}
               onClick={viewStatusFalse}
-              className="flex w-6 h-6 text-xs p-5 rounded-xs hover: -slate-500 hover:text-slate-100 text-slate-50 cursor-pointer"
+              className="flex w-6 h-6 p-2 rounded-xs hover: -slate-500 hover:text-slate-100 text-slate-50 cursor-pointer"
             />
           </div>
+          {
+  !loadingFiles ? (
+    userFile.map((file) => (
+      <div
+        key={file._id}
+        className="hover:-gray-700 text-gray-100 w-88 h-16 flex justify-between items-center p-2 border-b border-slate-400"
+      >
+        <ul
+          onClick={() => {
+            getFileId(file._id);
+            getCurrentFile(file.fileName);
+            viewFile();
+          }}
+        >
+          <li className="flex hover:cursor-pointer">{file.fileName}</li>
+        </ul>
+        <FontAwesomeIcon
+          icon={faTrash}
+          onClick={() => {
+            if (window.confirm("Are you sure you want to delete this file?")) {
+              setMessageID(file._id);
+              setCurrentUserID(file.userId);
+            }
+          }}
+        />
+      </div>
+    ))
+  ) : (
+    <div class="custom-loader"></div>
+  )
+}
 
-          {userFile.map((file) => (
-            <div
-              key={file._id}
-              className="mb-7 hover: -gray-700 text-gray-100 w-88 h-16 flex justify-between items-center mb-4 p-2 border-b border-slate-400"
-            >
-              <ul
-                onClick={() => {
-                  getFileId(file._id);
-                  getCurrentFile(file.fileName);
-                  viewFile();
-                }}
-              >
-                <li> {file.fileName}</li>
-              </ul>
-              <FontAwesomeIcon
-                icon={faTrash}
-                onClick={() => {
-                  if (
-                    window.confirm("Are you sure you want to delete this file?")
-                  ) {
-                    setMessageID(file._id);
-                    setCurrentUserID(file.userId);
-                  }
-                }}
-              />
-            </div>
-          ))}
           <div>
             {fileStatus && (
-              <div className="flex mb-7 text-gray-100 w-48">
-                <FontAwesomeIcon icon={faCheck} onClick={newFile} />
+              <div className="flex mb-7 text-gray-800 flex-row-reverse bg-purple-500 w-full justify-between">
+                <FontAwesomeIcon
+                  icon={faCheck}
+                  onClick={newFile}
+                  className="flex bg-cyan-600 w-[15%] p-2"
+                />
                 <input
                   placeholder="File name"
                   id="fileName"
-                  className="flex  -transparent border-white border-b-2 outline-none pl-5"
+                  className="flex  border-white border-b-2 outline-none pl-5 w-[80%]"
                   onChange={createNewfile}
                 />
               </div>
@@ -834,12 +940,12 @@ const Mainpage = () => {
           </div>
           <div className="flex mt-8 ml-auto">
             <button
-              className=" -slate-50 w-42 mr-auto pr-5 h-10"
+              className=" bg-slate-50 w-42 mr-auto p-2 h-10  flex items-center justify-center rounded-lg"
               onClick={() => {
                 togglenewFile();
               }}
             >
-              Add a new File
+              <h3 className="text-center">Add a new File</h3>
             </button>
             {fileStatus && (
               <FontAwesomeIcon
@@ -856,7 +962,3 @@ const Mainpage = () => {
 };
 
 export default Mainpage;
-
-
-
-
