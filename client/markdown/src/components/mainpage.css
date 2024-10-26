@@ -1,6 +1,34 @@
-/* mainpage.css */
+.loading{
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  padding:1px;
+  background:conic-gradient(#0000 10%,rgb(35, 130, 130)) content-box;
+  -webkit-mask:
+    repeating-conic-gradient(#0000 0deg,#000 1deg 20deg,#0000 21deg 36deg),
+    radial-gradient(farthest-side,#0000 calc(100% - 9px),#000 calc(100% - 8px));
+  -webkit-mask-composite: destination-in;
+  mask-composite: intersect;
+  animation:s4 1s infinite steps(10);
+}
+@keyframes s4 {to{transform: rotate(1turn)}}
 
-/* Light Theme */
+
+.custom-loader {
+  width:calc(800px / 1.677);
+  height:14px;
+  background: 
+    repeating-linear-gradient(135deg, #0A7F98 0 15px,#0000 0 20px) left top,
+    repeating-linear-gradient( 45deg, #0A7F98 0 15px,#0000 0 20px) left bottom;
+  background-size:  200% 50%;
+  background-repeat: no-repeat;
+  animation:i4 9s infinite linear;
+}
+@keyframes i4 {
+    100% {background-position:top right,bottom right}
+}
+
+
 #light-theme {
     --bg-color: #962525;
     --text-color: #000;
