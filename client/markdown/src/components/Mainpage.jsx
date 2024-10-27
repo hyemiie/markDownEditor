@@ -429,7 +429,7 @@ const Mainpage = () => {
 
   const getCurrentFile = (fileName) => {
     setCurrentFile(fileName);
-    console.log("done", currentFile);
+    console.log("dones", currentFile);
   };
 
   const togglenewFile = () => {
