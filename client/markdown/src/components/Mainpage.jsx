@@ -39,6 +39,7 @@ import CustomAlert from "./CustomAlert/CustomAlert";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import { useRef } from "react";
+import { useNavigate, useNavigation } from "react-router";
 const Mainpage = () => {
   const [htmlResponse, setHtmlResponse] = useState("");
   const [highlightedText, setHighlightedText] = useState("");
@@ -70,6 +71,8 @@ const Mainpage = () => {
     setAlertMessage(message);
     setAlertVisible(true);
   };
+
+  const navigate = useNavigate();
 
   const handleAlertClose = () => {
     setAlertVisible(false);
@@ -414,6 +417,15 @@ const Mainpage = () => {
     console.log("done", selectedID);
     setUserInput("");
   };
+
+  const handleLogout = () => {
+    localStorage.setItem('token', " ");
+    alert('Logged out');
+    
+    navigate('/'); 
+  };
+   
+  
 
   const getCurrentFile = (fileName) => {
     setCurrentFile(fileName);
@@ -954,6 +966,17 @@ const Mainpage = () => {
                 className=" -rose-700 text-gray-50 p-2 flex h-6"
               />
             )}
+          </div>
+          <div className="flex">
+            <button
+              className=" bg-slate-50 w-42 mr-auto p-2 h-10  flex items-center justify-center rounded-lg"
+              onClick={() => {
+                handleLogout();
+              }}
+            >
+              <h3 className="text-center">Logout</h3>
+            </button>
+          
           </div>
         </div>
       )}
