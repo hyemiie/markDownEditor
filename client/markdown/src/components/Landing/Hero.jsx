@@ -13,12 +13,13 @@ const Hero = () => {
 
       <div className="flex justify-center mt-10 items-center h-[80vh] flex-col">
       <div className='flexw-[100%] h-[50%] align-middle justify-center'>
-      <h1 className='flex text-7xl font-outfit font-extralight mt-12'>tier</h1>
+      <h1 className='flex text-4xl font-outfit font-extralight mt-12 title'>Tier</h1>
 </div>
-        <div className="text-black text-xl absolute font-outfit font-thin uppercase">
+        <div className="text-black text-lg absolute font-outfit font-thin uppercase mt-2 heroDiv">
           <Typewriter
             words={[
-              "Simplify your format Process:Your texts,Our Syntax",
+              "Simplify your format Process",
+              "Your texts,Our Syntax",
               "Redefining markdown editing",
             ]}
             loop={0}

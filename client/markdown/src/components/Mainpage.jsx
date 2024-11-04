@@ -829,7 +829,7 @@ const Mainpage = () => {
         <div className="flex w-auto filesDiv h-[80%] ">
           {!currentFile.length < 1 ? (
             <textarea
-              className={` h-svh  overflow-y-scroll outline-none pt-40  pl-10 pr-20 text-s  w-[100%]  border-r border-black font-outfit   ${
+              className={` h-svh overflow-y-scroll outline-none pt-40  pl-5 pr-4 text-s w-[100%]  border-r border-black font-outfit   ${
                 smallScreen ? "show" : "hide"
               } ${
                 darkScreen
@@ -845,7 +845,7 @@ const Mainpage = () => {
             />
           ) : (
             <textarea
-              className={`   h-svh  overflow-y-scroll outline-none pt-40  pl-10 pr-20 text-s   w-[100%] border-r border-black font-grotesk font-light  ${
+              className={`   h-svh  overflow-y-scroll outline-none pt-40  pl-2 pr-4text-s   w-[100%] border-r border-black font-grotesk font-light  ${
                 smallScreen ? "show " : "hide"
               } ${
                 darkScreen
@@ -859,7 +859,7 @@ const Mainpage = () => {
             />
           )}
           <div
-            className={`   h-svh overflow-y-scroll outline-none pt-40 pl-10 pr-20   text-s  w-[100%] font-grotesk  ${
+            className={`   h-svh overflow-y-scroll outline-none pt-40 pl-5 pr-4   text-s  w-[100%] font-grotesk  ${
               smallScreen ? "hide" : "show"
             } ${
               darkScreen

@@ -1,11 +1,12 @@
-.herDiv{
+.heroDiv{
 }
 
 @media screen and (max-width:768px){
-    .herDiv{
-        flex-direction: column-reverse;
-        /* justify-content: center;
-        align-items: center; */
+    .title{
+        font-size: 30px !important;
+    }
+    .heroDiv{
+   font-size: 15px !important;
 
 
     }
