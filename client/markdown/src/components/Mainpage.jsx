@@ -23,7 +23,9 @@ import {
   faList12,
   faListDots,
   faListNumeric,
+  faMars,
   faMoon,
+  faMosquitoNet,
   faPenAlt,
   faPencil,
   faQuoteLeft,
@@ -48,7 +50,7 @@ const Mainpage = () => {
   const [selectedID, setSelectedID] = useState([]);
   const [fileStatus, setFileStatus] = useState(false);
   const [fileName, setFileName] = useState("");
-  const [currentFile, setCurrentFile] = useState("");
+  const [currentFile, setCurrentFile] = useState("New Document");
   const [currentUserName, setCurrentUserName] = useState("");
   const [fileListStatus, setFileListStatus] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
@@ -535,9 +537,9 @@ const Mainpage = () => {
         <CustomAlert message={alertMessage} onClose={handleAlertClose} />
       )}
       <div className="w-full overflow-hidden">
-        <div className=" this flex flex-col overflow-hidden top-0 absolute h-[18%] ">
+        <div className=" this flex flex-col overflow-hidden top-0 absolute h-[20%] ">
           <div
-            className={`flex   flex-wrap  text-gray-50 w-screen flex-col items-center justify-l ${
+            className={`flexflex-wrap  text-gray-50 w-screen flex-col items-center justify-l ${
               darkScreen
                 ? "dark-theme text-black border-b border-zinc-00"
                 : "light-theme"
@@ -545,7 +547,7 @@ const Mainpage = () => {
             id={`darkScreen ? "dark-theme" : "light-theme"}`}
           >
             <div
-              className={`flex iconDiv pl-4 w-screen overflow-y-hidden items-center justify-center responsiveBtns sm:text-2xl md:h-56 lg:h-12 border-b ${
+              className={`flex iconDiv pl-4 w-screen overflow-y-hidden items-center responsiveBtns sm:text-2xl md:h-14 lg:h-12 border-b ${
                 darkScreen
                   ? "bg-dark-bg text-dark-text border-dark-border"
                   : "bg-dark-bg text-dark-text border-light-border"
@@ -778,7 +780,7 @@ const Mainpage = () => {
                   ""
                 )}
               </button>
-              <div className="flex ml-auto w-24 p-6 items-center">
+              {/* <div className="flex ml-auto w-24 p-6 items-center">
                 <button onClick={changeTheme} className="flextext-3xl p-2 ">
                   {!darkScreen ? (
                     <FontAwesomeIcon
@@ -789,27 +791,35 @@ const Mainpage = () => {
                     <FontAwesomeIcon icon={faSun} className="flex text-white" />
                   )}
                 </button>
-              </div>
+              </div> */}
             </div>
           </div>
 
           <div
-            className={`flex items-center justify-between  flex-wrap  -white border-b-2 border-gray-200 border-solid p-2 w-[98.5%]  ${
+            className={`flex justify-between  border-b-2 border-gray-200 border-solid p-2 w-[98.5%] h-14 
+             ${
               darkScreen
                 ? "bg-mid-dark-bg text-dark-text border-dark-border"
                 : "bg-light-bg text-light-text border-light-border"
-            } `}
+            }
+            `} 
+            
           >
-            <p className=" text-gray-500 text-xl ml-4 font-bold font-serif ">
+            <p className=" text-gray-500 text-s mt-4 ml-4 font-bold font-serif ">
               {currentFile}
             </p>
-            {/* <input
-        type="file"
-        accept="image/*"
-        onChange={handleImageUpload}
-        ref={fileInputRef}
-        style={{ display: 'none' }}
-      /> */}
+            <div className="flex ml-auto pr-8">
+                <button onClick={changeTheme} className="flex text-2xl p-2 ">
+                  {!darkScreen ? (
+                    <FontAwesomeIcon
+                      icon={faMoon}
+                      className="flex text-slate-600 "
+                    />
+                  ) : (
+                    <FontAwesomeIcon icon={faSun} className="flex text-white" />
+                  )}
+                </button>
+              </div>
             {/* <button onClick={() => fileInputRef.current.click()}>Upload Image</button> */}
             <div className="flex ">
               {!loadingSave ? (
@@ -859,7 +869,7 @@ const Mainpage = () => {
             />
           )}
           <div
-            className={`   h-svh overflow-y-scroll outline-none pt-40 pl-5 pr-4   text-s  w-[100%] font-grotesk  ${
+            className={`   h-svh overflow-y-scroll outline-none pt-40 pl-5 pr-4  text-s  w-[100%] font-grotesk  ${
               smallScreen ? "hide" : "show"
             } ${
               darkScreen
@@ -872,18 +882,18 @@ const Mainpage = () => {
           />
 
           <div
-            className={` -slate-200 buttonContainer absolute right-0 h-full ${
+            className={` buttonContainer z-50 right-0 mt-auto absolute bg-slate-800 ${
               darkScreen ? " -gray-800" : " -transparent"
             }`}
           >
             <button
-              className="responsiveView flex ml-auto text-gray-400 p-2 w-12 text-center items-center justify-center rounded cursor-pointer"
+              className="responsiveView flex ml-auto text-gray-100 p-2 w-12 text-center items-center justify-center rounded cursor-pointer"
               onClick={checkSmallScreen}
             >
               {smallScreen ? (
                 <FontAwesomeIcon icon={faPenAlt} className="text-xs" />
               ) : (
-                <FontAwesomeIcon icon={faEye} />
+                <FontAwesomeIcon icon={faEye} className="text-xs" />
               )}
             </button>
           </div>
@@ -967,9 +977,9 @@ const Mainpage = () => {
               />
             )}
           </div>
-          <div className="flex">
+          <div className="flex mt-auto">
             <button
-              className=" bg-slate-50 w-42 mr-auto p-2 h-10  flex items-center justify-center rounded-lg"
+              className=" bg-slate-50 w-42 ml-auto p-2 h-10  flex items-center justify-center rounded-lg"
               onClick={() => {
                 handleLogout();
               }}
