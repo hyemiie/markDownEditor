@@ -421,7 +421,7 @@ const Mainpage = () => {
   };
 
   const handleLogout = () => {
-    localStorage.setItem('token', " ");
+    localStorage.removeItem('token');
     alert('Logged out');
     
     navigate('/'); 
@@ -805,23 +805,23 @@ const Mainpage = () => {
             `} 
             
           >
-            <p className=" text-gray-500 text-s mt-4 ml-4 font-bold font-serif ">
-              {currentFile}
+<p className={`text-2xl pl-4 font-bold font-serif ${darkScreen ? 'text-gray-200' : 'text-gray-600'}`}>
+{currentFile}
             </p>
-            <div className="flex ml-auto pr-8">
-                <button onClick={changeTheme} className="flex text-2xl p-2 ">
+            <div className="flex  w-8 ml-auto  p-2 mr-30 h-9 mt-0">
+                <button onClick={changeTheme} className="flex text-2xl w-full">
                   {!darkScreen ? (
                     <FontAwesomeIcon
                       icon={faMoon}
-                      className="flex text-slate-600 "
+                      className="flex text-slate-600 ml-auto"
                     />
                   ) : (
-                    <FontAwesomeIcon icon={faSun} className="flex text-white" />
+                    <FontAwesomeIcon icon={faSun} className="flex text-slate-400 mr-auto" />
                   )}
                 </button>
               </div>
             {/* <button onClick={() => fileInputRef.current.click()}>Upload Image</button> */}
-            <div className="flex ">
+            <div className="flex ml-4 ">
               {!loadingSave ? (
                 <button
                   onClick={editFile}

@@ -112,7 +112,7 @@ const Login = () => {
                 <form className=" form min-w-96 flex flex-col items-center justify-center ">
                 {/* <div className='loader'></div> */}
 
-                    <h1 className="text-2xl font-semibold text-left mb-6 font-light">Login to Simplify your format Process
+                    <h1 className="loginHeader text-xl text-left mb-6 font-medium ">Login to Simplify your format Process
 </h1>
                     <div className="mb-4 w-full flex items-center justify-center">
                         <input
@@ -122,15 +122,15 @@ const Login = () => {
                             placeholder="Email"
                         />
                     </div>
-                    <div className="mb-4  w-full flex items-center justify-center">
+                    <div className="mb-4  w-full flex items-center justify-center  border-b border-slate-900">
                         <input
-                            className="   pt-8 w-[100%] text-gray-900 leading-tight focus:outline-none focus:shadow-outline bg-transparent border-t-transparent border-l-transparent border-r-transparent   border-b border-slate-900 outline-none  border-solid "
+                            className="   pt-8 w-[100%] text-gray-900 leading-tight focus:outline-none focus:shadow-outline bg-transparent border-t-transparent border-l-transparent border-r-transparent  outline-none  border-solid "
                             id="password"
                             type={passwordView ? 'text' : 'password'} // Toggle between text and password
                             placeholder="Password"
                         />
                            <div
-                className="inset-y-0 right-0 pr-3 flex items-center text-gray-700 cursor-pointer"
+                className="inset-y-0 right-0 pr-3 flex items-center text-gray-700 cursor-pointer  mt-auto"
                 onClick={togglePasswordView}
             >
                 {passwordView ?   <FontAwesomeIcon
@@ -143,10 +143,10 @@ const Login = () => {
             </div>
                     </div>
                     {loading? <Preloader/> : 
-                    <div className="flex items-center justify-between  w-full flex-row mt-10">
-                    <a href='/register' className='flex decoration-none'>SIGN UP</a>
+                    <div className="flex  justify-between  w-full flex-row mt-10 flex-col-reverse">
+                    <a href='/register' className='flex decoration-none mt-6  hover:text-slate-500'>New here? Join the clurb</a>
                         <button
-                            className="bg-slate-100 hover:bg-cyan-700 hover:text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline  text-slate-900 font-thin"
+                            className="bg-slate-500 hover:bg-slate-900 hover:text-white py-2 px-4 rounded focus:outline-none focus:shadow-outline  text-slate-200 font-medium w-full"
                             type="submit"
                             onClick={handleLogin}
                         >
