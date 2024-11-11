@@ -14,10 +14,12 @@
   .custom-alert-content {
     background-color: rgb(255, 255, 255);
     padding: 20px;
-    border-radius: 5px;
+    border-bottom-left-radius: 1px;
+    border-bottom-right-radius: 1px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     text-align: center;
-    width: 400px;
+    max-width: 500px;
+    min-width: 350px;
     height: 200px;
     font-size: 12px;
     text-transform: uppercase;
@@ -30,16 +32,19 @@
   .custom-alert-content span {
     display: block;
     margin-bottom: 20px;
+    font-size: 20px;
+    text-transform: capitalize;
   }
   
   .custom-alert-content button {
     /* padding: 10px 20px; */
-    background-color: #74a9a8;
+    background-color: rgb(80, 86, 86);
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    width: 60%;
+    width: 40%;
+    font-size: 18px;
     height: 30px;
    
     /* margin-top: 30px; */

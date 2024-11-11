@@ -36,7 +36,6 @@
     
 
     .loginPage{
-        /* flex-direction: column; */
 
         div{
             height:50%;
@@ -44,16 +43,23 @@
             padding: 20px;
 
             form{
-                h1{
-                    /* text-align: center; */
-                }
+                
             }
         }
     }
+
+    .loginHeader{
+      text-align: center;
+      font-size: 21px !important;
+  }
 }
 
-@media screen and (min-width:400px) {
-    
+@media screen and (max-width:400px) {
+  .loginHeader{
+    text-align: center;
+    font-size: 18px !important;
+
+}
 
     .loginPage{
 

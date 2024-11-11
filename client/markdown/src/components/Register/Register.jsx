@@ -105,7 +105,7 @@ const Register = () => {
             <form className="  min-w-96 flex flex-col items-center justify-center ">
             {/* <div className='loader'></div> */}
 
-                <h1 className="text-2xl font-semibold text-left mb-6 font-light">Join to Simplify your format Process
+                <h1 className="text-xl font-semibold mb-6">Join to Simplify your format Process
 </h1>
                 <div className="mb-4 w-full flex items-center justify-center">
                     <input
@@ -123,9 +123,9 @@ const Register = () => {
                         placeholder="Username"
                     />
                 </div>
-                <div className="mb-4  w-full flex items-center justify-center">
+                <div className="mb-4  w-full flex items-center justify-center border-b border-slate-900">
                     <input
-                        className="   pt-8 w-[100%] text-gray-900 leading-tight focus:outline-none focus:shadow-outline bg-transparent border-t-transparent border-l-transparent border-r-transparent   border-b border-slate-900 outline-none  border-solid "
+                        className="   pt-8 w-[100%] text-gray-900 leading-tight focus:outline-none focus:shadow-outline bg-transparent border-t-transparent border-l-transparent border-r-transparent   outline-none  border-solid "
                         id="password"
                         type={passwordView ? 'text' : 'password'} // Toggle between text and password
                         placeholder="Password"
@@ -144,11 +144,11 @@ const Register = () => {
             </div>
                 </div>
                 {loading ? <Preloader/>:
-                <div className="flex items-center justify-between  w-full flex-row mt-10">
-                <a href='/login' className='flex decoration-none'> Already have an account? Login</a>
+                <div className="flex items-center justify-between  w-full flex-col-reverse mt-10">
+                <a href='/login' className='flex decoration-none hover:text-slate-500'> Already have an account? Login</a>
 
                     <button
-                        className="bg-slate-100 hover:bg-cyan-700 hover:text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline  text-slate-900 font-thin"
+                        className="bg-slate-500 hover:bg-slate-900 hover:text-white font-medium py-2 px-4 rounded focus:outline-none focus:shadow-outline  text-slate-200  w-full"
                         type="submit"
                         onClick={handleRegister}
                     >
