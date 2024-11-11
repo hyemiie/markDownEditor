@@ -15,11 +15,11 @@
 
 
 .custom-loader {
-  width:calc(800px / 1.677);
+  width:calc(480px / 1.677);
   height:14px;
   background: 
-    repeating-linear-gradient(135deg, #0A7F98 0 15px,#0000 0 20px) left top,
-    repeating-linear-gradient( 45deg, #0A7F98 0 15px,#0000 0 20px) left bottom;
+    repeating-linear-gradient(135deg, #cadfe4 0 15px,#0000 0 20px) left top,
+    repeating-linear-gradient( 45deg, #cadfe4 0 15px,#0000 0 20px) left bottom;
   background-size:  200% 50%;
   background-repeat: no-repeat;
   animation:i4 9s infinite linear;
@@ -144,7 +144,7 @@ text-decoration: underline;
 
 
   .responsiveView{
-    display: none;
+    /* display: none; */
   }
 
   .buttonContainer{
@@ -187,7 +187,7 @@ height: 20px !important;
 
 .responsiveBtns{
   height: 30px !important;
-  background-color: rgb(69, 4, 15);
+  /* background-color: rgb(69, 4, 15); */
 }
 
 
