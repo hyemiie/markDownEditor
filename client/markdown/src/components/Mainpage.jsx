@@ -296,34 +296,27 @@ const Mainpage = () => {
 
     console.log("Function ended");
   };
-
   const editFile = async () => {
     const userEdit = userInput;
-    setLoadingSave(true);
     const fileID = selectedID;
+    console.log('hellooo');
   
     try {
       const response = await axios.post(
         "https://markdowneditor-backend.onrender.com/updateFile",
         {
           userEdit: userEdit,
-          selectedID: selectedID,
+          selectedID: fileID, // Be sure to send `fileID` if that’s what you want
         }
       );
-      setTimeout(() => {
-        setLoadingSave(false);
-
-      }, 3000);
-      console.log('save response', response)
-
-     
+  
+      console.log('save response', response);
+      setLoadingSave(false);
   
     } catch (error) {
-        setLoadingSave(false);
-      console.log(error);
+      console.error(error);
+      setLoadingSave(false);
     }
-    setLoadingSave(false);
-
   };
   
 
