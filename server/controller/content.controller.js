@@ -146,20 +146,30 @@ const userId = userToken.userId
   }
 };
 
-const updateFile = async (req, res) =>{
+const updateFile = async (req, res) => {
   const { userEdit, selectedID } = req.body;
-const _id =selectedID 
+  const _id = selectedID;
+  
   try {
     const updatedFile = await Content.findOneAndUpdate(
-      { _id: _id }, // Filter by _id
-      { userInput: userEdit }, // Update operation
-      { new: true } // Return the updated document
+      { _id: _id },               // Filter by _id
+      { userInput: userEdit },     // Update operation
+      { new: true }                // Return the updated document
     );
-    console.log("newFile", updatedFile);
+
+    if (updatedFile) {
+      console.log("Updated File:", updatedFile);
+      res.status(200).json({ message: "File updated successfully", updatedFile });
+    } else {
+      console.log("No file found with that ID");
+      res.status(404).json({ message: "File not found" });
+    }
+
   } catch (error) {
-    console.log(error);
+    console.error("Update error:", error);
+    res.status(500).json({ message: "An error occurred while updating the file", error });
   }
-}
+};
 
 // const deleteFile = async (req, res) => {
 //   const { selectedID } = req.body;
