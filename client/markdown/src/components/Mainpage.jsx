@@ -296,11 +296,11 @@ const Mainpage = () => {
 
     console.log("Function ended");
   };
+
   const editFile = async () => {
     const userEdit = userInput;
     setLoadingSave(true);
     const fileID = selectedID;
-    console.log(fileID);
   
     try {
       const response = await axios.post(
@@ -310,13 +310,16 @@ const Mainpage = () => {
           selectedID: selectedID,
         }
       );
-      setLoadingSave(false);
+      setTimeout(() => {
+        setLoadingSave(false);
+
+      }, 3000);
+      console.log('save response', response)
 
      
   
     } catch (error) {
         setLoadingSave(false);
-      
       console.log(error);
     }
     setLoadingSave(false);
@@ -758,7 +761,7 @@ const Mainpage = () => {
                   ""
                 )}
               </button>
-              <button
+              {/* <button
                 className={`flex pe-6 pt-6 pl-2  w-7  h-16 ${
                   darkScreen
                     ? " -transparent text-slate-50"
@@ -779,7 +782,7 @@ const Mainpage = () => {
                 ) : (
                   ""
                 )}
-              </button>
+              </button> */}
               {/* <div className="flex ml-auto w-24 p-6 items-center">
                 <button onClick={changeTheme} className="flextext-3xl p-2 ">
                   {!darkScreen ? (
@@ -805,7 +808,7 @@ const Mainpage = () => {
             `} 
             
           >
-<p className={`text-2xl pl-4 font-bold font-serif ${darkScreen ? 'text-gray-200' : 'text-gray-600'}`}>
+<p className={`text-xl pl-4 font-bold font-serif ${darkScreen ? 'text-gray-200' : 'text-gray-600'}`}>
 {currentFile}
             </p>
             <div className="flex  w-8 ml-auto  p-2 mr-30 h-9 mt-0">
