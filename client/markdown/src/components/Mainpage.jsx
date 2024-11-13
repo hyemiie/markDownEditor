@@ -297,6 +297,7 @@ const Mainpage = () => {
     console.log("Function ended");
   };
   const editFile = async () => {
+    setLoadingSave(true)
     const userEdit = userInput;
     const fileID = selectedID;
     console.log('hellooo');
@@ -394,21 +395,39 @@ const Mainpage = () => {
     }
   };
 
-  const viewFile = async () => {
-    try {
-      const response = await axios.post(
-        "https://markdowneditor-backend.onrender.com/viewFile",
-        {
-          selectedID: selectedID,
-        }
-      );
-      const fileText = response.data.file.userInput;
-      console.log(response.data.file.userInput);
-      setUserInput(fileText);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+
+
+
+const viewFile = async (currentID) => {
+  console.log("viewFile");
+
+  try {
+    const response = await axios.post(
+      "https://markdowneditor-backend.onrender.com/viewFile",
+      {
+        selectedID: currentID,
+      }
+    );
+    const fileText = response.data.file.userInput;
+    console.log(response.data.file.userInput);
+    
+    setUserInput(fileText); 
+    console.log("setUserInput triggered"); // Log after state change
+  } catch (error) {
+    console.log(error);
+  }
+};
+useEffect(() => {
+  // This will run whenever `userInput` changes
+  console.log("Updated userInput:", userInput);
+}, [userInput]); // Dependency on `userInput`
+
+
+useEffect(() => {
+  if (selectedID) {
+    viewFile(); 
+  }
+}, [selectedID]); 
 
   const getFileId = (fileId) => {
     setSelectedID(fileId);
@@ -918,7 +937,7 @@ const Mainpage = () => {
           onClick={() => {
             getFileId(file._id);
             getCurrentFile(file.fileName);
-            viewFile();
+            viewFile(file._id);
           }}
         >
           <li className="flex hover:cursor-pointer">{file.fileName}</li>
