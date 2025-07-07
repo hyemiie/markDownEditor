@@ -44,7 +44,7 @@ npm install
 Backend
 ```bash
 cd ../server
-npm install'
+npm install
 
 ```
 
