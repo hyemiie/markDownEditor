@@ -1,18 +1,18 @@
-# 📝 Tier Markdown Editor
+# Tier Markdown Editor
 
 Tier Markdown is a simple markdown editor that lets you write and preview your content in real time.  
 It’s fast, minimal, and built for writers, devs, and anyone who wants a smooth markdown writing experience and is powered by a simple backend for exporting files.
-It’s built with **React** on the frontend and **Node/Express** on the backendso you can run everything together without extra setup.
+It’s built with **React** on the frontend and **Node/Express** on the backend so you can run everything together without extra setup.
 
 
 ---
 
 ## ⚡ What It Does
 
-- 🖊️ Live markdown editing with side-by-side preview  
-- 📥 Export markdown content as `.md` file via backend  
-- 📱  Clean, responsive UI  
-- 🔗 Simple client-server setup for local or production use
+- Live markdown editing with side-by-side preview  
+- Export markdown content as `.md` file via backend  
+- Clean, responsive UI  
+- Simple client-server setup for local or production use
 
 ---
 
@@ -43,7 +43,7 @@ npm install
 
 Backend
 ```bash
-cd ../server
+cd server
 npm install
 
 ```
@@ -68,9 +68,9 @@ Frontend runs on `http://localhost:3000`
 ---
 
 ## 💡 Why I Built This
-I write technical articles often, and I wanted a tool that felt light, fast, and focused.
-Something that didn’t get in the way of my writing, but helped me get my markdown out smoothly.
-So, I built Tier Markdown.
+As someone who writes technical articles regularly, I got curious about what it'd take to build a markdown editor that's clean and fast as well.
+That curiosity pushed me to build Tier Markdown, a lightweight, personal editor designed to make writing feel calm and focused.
+
 
 ---
 ## 🙌 Contributing
