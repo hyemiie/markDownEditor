@@ -38,9 +38,15 @@ const Register = () => {
     useEffect(() => {
         const token = localStorage.getItem('token');
         
+<<<<<<< HEAD
         // if (token) {
         //     navigate('/mainpage'); 
         // }
+=======
+        if (token) {
+            navigate('/mainpage'); // Redirect to your main page or dashboard
+        }
+>>>>>>> 2623caa6748c6199bddd8d7e5b311f98bbbb3079
     }, [navigate]);
 
   const handleRegister = async (e) => {
@@ -72,7 +78,11 @@ const Register = () => {
   };
 
   return (
+<<<<<<< HEAD
     <div className="flex flex-col bg-zinc-200 min-h-screen">
+=======
+    <div className="flex flex-col bg-white min-h-screen">
+>>>>>>> 2623caa6748c6199bddd8d7e5b311f98bbbb3079
     {/* <Navbar/> */}
     {alertVisible && (
         <CustomAlert message={alertMessage} onClose={handleAlertClose} />
@@ -80,7 +90,11 @@ const Register = () => {
     <div className="h-[1%]">
 
     {/* <Navbar /> */}
+<<<<<<< HEAD
     {/* <Navbar/> */}
+=======
+    <Navbar/>
+>>>>>>> 2623caa6748c6199bddd8d7e5b311f98bbbb3079
   </div>
         {/* <div className="w-1/2 bg-gradient-to-r from-cyan-600 to-slate-300 flex justify-center items-center p-10">
             <div className="text-white text-center">
@@ -100,6 +114,7 @@ const Register = () => {
         </div> */}
 
         {/* <div className='w-[50%]'><img src={heroGIF}></img></div> */}
+<<<<<<< HEAD
       <div className="w-[100%] flex justify-center items-center pt-20 h-[85vh] p-30 overflow-hidden">
                 <form className="form min-w-96 flex flex-col items-center justify-center border-solid border border-slate-200 rounded-2xl">
                 {/* <div className='loader'></div> */}
@@ -109,6 +124,15 @@ const Register = () => {
 </h2>
                 <a href='/login' className='flex decoration-none hover:text-slate-500 mt-12'> Already have an account? Login</a>
 
+=======
+
+        <div className="w-[100%] flex justify-center items-center pt-20 h-[85vh] p-30  ">
+            <form className="  min-w-96 flex flex-col items-center justify-center ">
+            {/* <div className='loader'></div> */}
+
+                <h1 className="text-xl font-semibold mb-6">Join to Simplify your format Process
+</h1>
+>>>>>>> 2623caa6748c6199bddd8d7e5b311f98bbbb3079
                 <div className="mb-4 w-full flex items-center justify-center">
                     <input
                         className="pt-8 w-[100%] text-gray-900 leading-tight focus:outline-none focus:shadow-outline bg-transparent border-t-transparent border-l-transparent border-r-transparent   border-b border-slate-900 outline-none  border-solid "
@@ -147,9 +171,16 @@ const Register = () => {
                 </div>
                 {loading ? <Preloader/>:
                 <div className="flex items-center justify-between  w-full flex-col-reverse mt-10">
+<<<<<<< HEAD
 
                     <button
                         className="bg-black hover:bg-slate-900 hover:text-white font-medium py-2 px-4 rounded focus:outline-none focus:shadow-outline  text-slate-200  w-full"
+=======
+                <a href='/login' className='flex decoration-none hover:text-slate-500'> Already have an account? Login</a>
+
+                    <button
+                        className="bg-slate-500 hover:bg-slate-900 hover:text-white font-medium py-2 px-4 rounded focus:outline-none focus:shadow-outline  text-slate-200  w-full"
+>>>>>>> 2623caa6748c6199bddd8d7e5b311f98bbbb3079
                         type="submit"
                         onClick={handleRegister}
                     >

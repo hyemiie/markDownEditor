@@ -1,5 +1,11 @@
+<<<<<<< HEAD
 // models/content.model.js
 const mongoose = require("mongoose");
+=======
+/* eslint-disable no-undef */
+const mongoose = require("mongoose");
+const User = require('./user.model')
+>>>>>>> 2623caa6748c6199bddd8d7e5b311f98bbbb3079
 
 const ContentSchema = new mongoose.Schema({
   fileName: {
@@ -13,6 +19,7 @@ const ContentSchema = new mongoose.Schema({
   },
   userInput: {
     type: String,
+<<<<<<< HEAD
     default: ""
   },
   collaborators: [{
@@ -22,6 +29,9 @@ const ContentSchema = new mongoose.Schema({
   lastModified: {
     type: Date,
     default: Date.now
+=======
+    // required: [true, "Please provide the user input"],
+>>>>>>> 2623caa6748c6199bddd8d7e5b311f98bbbb3079
   },
   date: {
     type: Date,
@@ -29,4 +39,10 @@ const ContentSchema = new mongoose.Schema({
   }
 });
 
+<<<<<<< HEAD
 module.exports = mongoose.model("Content", ContentSchema);
+=======
+const Content = mongoose.model("Content", ContentSchema);
+
+module.exports = Content;
+>>>>>>> 2623caa6748c6199bddd8d7e5b311f98bbbb3079

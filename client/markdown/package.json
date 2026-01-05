@@ -14,7 +14,10 @@
     "file-saver": "^2.0.5",
     "html2canvas": "^1.4.1",
     "jspdf": "^2.5.1",
+<<<<<<< HEAD
     "lucide-react": "^0.561.0",
+=======
+>>>>>>> 2623caa6748c6199bddd8d7e5b311f98bbbb3079
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-icons": "^5.2.1",
@@ -23,7 +26,10 @@
     "react-scripts": "5.0.1",
     "react-simple-typewriter": "^5.0.1",
     "react-typed": "^2.0.12",
+<<<<<<< HEAD
     "socket.io-client": "^4.8.1",
+=======
+>>>>>>> 2623caa6748c6199bddd8d7e5b311f98bbbb3079
     "web-vitals": "^2.1.4"
   },
   "scripts": {
