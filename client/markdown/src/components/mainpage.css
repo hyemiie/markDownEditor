@@ -1,0 +1,225 @@
+.loading{
+  width:30px;
+  height:30px;
+  border-radius:50%;
+  padding:1px;
+  background:conic-gradient(#0000 10%,rgb(35, 130, 130)) content-box;
+  -webkit-mask:
+    repeating-conic-gradient(#0000 0deg,#000 1deg 20deg,#0000 21deg 36deg),
+    radial-gradient(farthest-side,#0000 calc(100% - 9px),#000 calc(100% - 8px));
+  -webkit-mask-composite: destination-in;
+  mask-composite: intersect;
+  animation:s4 1s infinite steps(10);
+}
+@keyframes s4 {to{transform: rotate(1turn)}}
+
+
+.custom-loader {
+  width:calc(480px / 1.677);
+  height:12px;
+  background: 
+    repeating-linear-gradient(135deg, #cadfe4 0 15px,#0000 0 20px) left top,
+    repeating-linear-gradient( 45deg, #cadfe4 0 15px,#0000 0 20px) left bottom;
+  background-size:  200% 50%;
+  background-repeat: no-repeat;
+  animation:i4 9s infinite linear;
+}
+@keyframes i4 {
+    100% {background-position:top right,bottom right}
+}
+
+
+#light-theme {
+    --bg-color: #962525;
+    --text-color: #000;
+    --border-color: #ccc;
+  }
+  
+  /* Dark Theme */
+  #dark-theme {
+    --bg-color: #c87070;
+    --text-color: #fff;
+    --border-color: #555;
+  }
+  
+  /* Applying the theme */
+  .allPage {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+  }
+  
+  textarea,
+  button {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    border-color: var(--border-color);
+  }
+  
+  /* Other styles... */
+  
+
+#htmlResponse h1{
+    font-size: 32px;
+    /* color: black; */
+    font-weight: bold;
+    text-transform: capitalize;
+    margin-bottom: 30px;
+    border-bottom: 1px solid black;
+    padding-bottom: 10px;
+}
+
+#htmlResponse h2{
+    font-size: 22px;
+    /* color: black; */
+    font-weight: bold;
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+#htmlResponse h3{
+    font-size: 18px;
+    /* color: black; */
+    font-weight: 500;
+    margin-bottom: 30px;
+    
+}
+
+
+#htmlResponse code{
+    background-color: rgb(213, 217, 222);
+    font-family: 'Courier New', Courier, monospace;
+    padding: 5px;
+    font-size: 15px;
+    margin-top: 20px;
+    padding-bottom: 20px;
+    /* max-width: 500px; */
+    text-align: left;
+    color: #524747;
+}
+
+#htmlResponse em{
+    font-size: 17px;
+    font-style: oblique;
+}
+
+#htmlResponse li{
+    list-style:disc;
+    margin-top: 30px;
+}
+
+
+#htmlResponse a{
+color: rgb(36, 36, 36);
+font-weight: lighter;
+text-decoration: underline;
+}
+
+#htmlResponse a:hover{
+    color: blueviolet;
+}
+
+#htmlResponse ul li{
+    list-style:decimal;
+    margin-left: 10px;
+}
+
+#htmlResponse p {
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+/* mainpage.css */
+
+
+  button p{
+    background-color: rgb(218, 218, 218);
+    margin-top: 25px;
+    position: absolute;
+    width: fit-content;
+    padding: 3px;
+    color: black;
+    font-weight: normal;
+    border-radius: 3px;
+  }
+
+
+  .responsiveView{
+    /* display: none; */
+  }
+
+  .buttonContainer{
+    display: none;
+  }
+
+
+.topHeading{
+    /* background-color: yellow;
+    height: 100px; */
+    /* position: absolute; */
+    /* z-index: 1;
+    top:0; */
+} 
+ 
+/* .iconDiv{
+background-color: #962525 !important;
+height: 20px !important;
+
+
+} */
+
+
+
+  @media only screen and (max-width:770px) {
+.filesDiv{
+  display: flex;
+  /* overflow: hidden; */
+}
+
+.hide{
+  display: none;
+
+}
+
+
+.show{
+  display: block;
+}
+
+.responsiveBtns{
+  height: 30px !important;
+  /* background-color: rgb(69, 4, 15); */
+}
+
+
+
+
+    /* #userInput{
+        width: 100%;
+    } */
+
+    /* .responsiveView{
+        display: block;
+      } */
+
+      .buttonContainer{
+        display: block;
+      }
+  }
+
+
+  @media screen  and(max-width:600px){
+    .responsiveBtns{
+      /* height: 30px !important; */
+      background-color: #962525 !important;
+      button{
+        background: tomato !important;
+      }
+      
+      .font{
+        color: yellow !important;
+
+      
+        
+      }
+    }
+  }
