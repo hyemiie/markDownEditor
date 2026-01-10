@@ -42,7 +42,6 @@ const Login = () => {
         const token = localStorage.getItem('token');
         
         // If the token exists, redirect to the main page or another protected route
-<<<<<<< HEAD
         // if (token) {
         //     navigate('/mainpage'); // Redirect to your main page or dashboard
         // }
@@ -50,15 +49,6 @@ const Login = () => {
 
       const handleLogin = async (e) => {
         setLoading(true); 
-=======
-        if (token) {
-            navigate('/mainpage'); // Redirect to your main page or dashboard
-        }
-    }, [navigate]);
-
-      const handleLogin = async (e) => {
-        setLoading(true); // Set loading to true
->>>>>>> 2623caa6748c6199bddd8d7e5b311f98bbbb3079
         e.preventDefault();
         
         const userMail = document.getElementById('email').value;
@@ -91,22 +81,13 @@ const Login = () => {
     
 
     return (
-<<<<<<< HEAD
         <div className="flex flex-col bg-zinc-200 min-h-screen overflow-hidden ">
-=======
-        <div className="flex flex-col bg-white min-h-screen overflow-hidden">
->>>>>>> 2623caa6748c6199bddd8d7e5b311f98bbbb3079
          {alertVisible && (
         <CustomAlert message={alertMessage} onClose={handleAlertClose} />
       )}
         {/* <Navbar/> */}
-<<<<<<< HEAD
         <div>
         {/* <Navbar /> */}
-=======
-        <div className="h-[1%]">
-        <Navbar />
->>>>>>> 2623caa6748c6199bddd8d7e5b311f98bbbb3079
       </div>
             {/* <div className="w-1/2 bg-gradient-to-r from-cyan-600 to-slate-300 flex justify-center items-center p-10">
                 <div className="text-white text-center">
@@ -128,7 +109,6 @@ const Login = () => {
             {/* <div className='w-[50%]'><img src={heroGIF}></img></div> */}
 
             <div className="w-[100%] flex justify-center items-center pt-20 h-[85vh] p-30 overflow-hidden">
-<<<<<<< HEAD
                 <form className="form w-[30%] min-w-96 flex flex-col items-center justify-center border-solid border border-slate-200 rounded-2xl">
                 {/* <div className='loader'></div> */}
                     <h1 className="loginHeader text-3xl text-left mb-6 font-medium">CollabMD</h1>
@@ -136,13 +116,6 @@ const Login = () => {
 </h2>
                     <a href='/register' className='flex decoration-none mt-6  hover:text-slate-500 p-4'>New here? Join the clurb</a>
 
-=======
-                <form className=" form min-w-96 flex flex-col items-center justify-center ">
-                {/* <div className='loader'></div> */}
-
-                    <h1 className="loginHeader text-xl text-left mb-6 font-medium ">Login to Simplify your format Process
-</h1>
->>>>>>> 2623caa6748c6199bddd8d7e5b311f98bbbb3079
                     <div className="mb-4 w-full flex items-center justify-center">
                         <input
                             className="pt-8 w-[100%] text-gray-900 leading-tight focus:outline-none focus:shadow-outline bg-transparent border-t-transparent border-l-transparent border-r-transparent   border-b border-slate-900 outline-none  border-solid "
@@ -153,7 +126,6 @@ const Login = () => {
                     </div>
                     <div className="mb-4  w-full flex items-center justify-center  border-b border-slate-900">
                         <input
-<<<<<<< HEAD
                             className="pt-8 w-[100%] text-gray-900 leading-tight focus:outline-none focus:shadow-outline bg-transparent border-t-transparent border-l-transparent border-r-transparent  outline-none  border-solid "
                             id="password"
                             type={passwordView ? 'text' : 'password'} 
@@ -161,15 +133,6 @@ const Login = () => {
                         />
                            <div
                 className="inset-y-0 right-0 pr-3 flex items-center text-gray-700 cursor-pointer mt-8"
-=======
-                            className="   pt-8 w-[100%] text-gray-900 leading-tight focus:outline-none focus:shadow-outline bg-transparent border-t-transparent border-l-transparent border-r-transparent  outline-none  border-solid "
-                            id="password"
-                            type={passwordView ? 'text' : 'password'} // Toggle between text and password
-                            placeholder="Password"
-                        />
-                           <div
-                className="inset-y-0 right-0 pr-3 flex items-center text-gray-700 cursor-pointer  mt-auto"
->>>>>>> 2623caa6748c6199bddd8d7e5b311f98bbbb3079
                 onClick={togglePasswordView}
             >
                 {passwordView ?   <FontAwesomeIcon
@@ -183,14 +146,8 @@ const Login = () => {
                     </div>
                     {loading? <Preloader/> : 
                     <div className="flex  justify-between  w-full flex-row mt-10 flex-col-reverse">
-<<<<<<< HEAD
                         <button
                             className="bg-black hover:bg-slate-900 hover:text-white py-2 px-4 rounded-md focus:outline-none focus:shadow-outline  text-slate-200 font-medium w-full"
-=======
-                    <a href='/register' className='flex decoration-none mt-6  hover:text-slate-500'>New here? Join the clurb</a>
-                        <button
-                            className="bg-slate-500 hover:bg-slate-900 hover:text-white py-2 px-4 rounded focus:outline-none focus:shadow-outline  text-slate-200 font-medium w-full"
->>>>>>> 2623caa6748c6199bddd8d7e5b311f98bbbb3079
                             type="submit"
                             onClick={handleLogin}
                         >

@@ -33,11 +33,6 @@ const email= userMail;
 
 const getCurrentUser = async (req, res) => {
   try {
-<<<<<<< HEAD
-=======
-    const localStorageItem = req.body;
-
->>>>>>> 2623caa6748c6199bddd8d7e5b311f98bbbb3079
     const user = req.headers["authorization"]; // Extract user ID from JWT payload
 
     const token = user.split(" ")[1]; // Extract the token
@@ -47,11 +42,7 @@ const getCurrentUser = async (req, res) => {
     const userId = decodedToken.userId;
 
     const signedInUser = await UserSchema.findOne({
-<<<<<<< HEAD
       _id: userId,
-=======
-      email: "yemiojedapo1@gmail.com",
->>>>>>> 2623caa6748c6199bddd8d7e5b311f98bbbb3079
     });
 
     if (!signedInUser) {
@@ -60,11 +51,7 @@ const getCurrentUser = async (req, res) => {
 
     const username = signedInUser.username;
 
-<<<<<<< HEAD
     res.status(200).json({ signedInUser });
-=======
-    res.status(200).json({ username });
->>>>>>> 2623caa6748c6199bddd8d7e5b311f98bbbb3079
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
   }

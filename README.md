@@ -1,23 +1,6 @@
-<<<<<<< HEAD
 # CollabMd Markdown Editor
 
 CollabMd Markdown is a simple markdown editor that lets you write and preview your content in real time.  
-=======
-# Tier Markdown Editor
-
-Tier Markdown is a simple markdown editor that lets you write and preview your content in real time.  
->>>>>>> 2623caa6748c6199bddd8d7e5b311f98bbbb3079
-It’s fast, minimal, and built for writers, devs, and anyone who wants a smooth markdown writing experience and is powered by a simple backend for exporting files.
-It’s built with **React** on the frontend and **Node/Express** on the backend so you can run everything together without extra setup.
-
-
----
-
-<<<<<<< HEAD
-##  What It Does
-=======
-## ⚡ What It Does
->>>>>>> 2623caa6748c6199bddd8d7e5b311f98bbbb3079
 
 - Live markdown editing with side-by-side preview  
 - Export markdown content as `.md` file via backend  
@@ -26,11 +9,7 @@ It’s built with **React** on the frontend and **Node/Express** on the backend 
 
 ---
 
-<<<<<<< HEAD
 ##  Tech Stack
-=======
-## 🧰 Tech Stack
->>>>>>> 2623caa6748c6199bddd8d7e5b311f98bbbb3079
 
 - **Frontend:** React, CSS Modules, Marked.js  
 - **Backend:** Node.js, Express  
@@ -38,11 +17,7 @@ It’s built with **React** on the frontend and **Node/Express** on the backend 
 
 ---
 
-<<<<<<< HEAD
 ##  Getting Started
-=======
-## 🚀 Getting Started
->>>>>>> 2623caa6748c6199bddd8d7e5b311f98bbbb3079
 
 ### 1. Clone the repo
 

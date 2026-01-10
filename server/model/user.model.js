@@ -1,11 +1,5 @@
-<<<<<<< HEAD
 // models/user.model.js
 const mongoose = require("mongoose");
-=======
-/* eslint-disable no-undef */
-const mongoose = require("mongoose");
-const Content = require("./content.model");  // Use the schema, not the model
->>>>>>> 2623caa6748c6199bddd8d7e5b311f98bbbb3079
 
 const UserSchema = new mongoose.Schema({
   username: {
@@ -20,7 +14,6 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please enter your password"],
   },
-<<<<<<< HEAD
   avatarColor: {
     type: String,
     default: function() {
@@ -31,11 +24,3 @@ const UserSchema = new mongoose.Schema({
 });
 
 module.exports = mongoose.model("User", UserSchema);
-=======
-  content: [Content]  // Embedding the Content schema
-});
-
-const User = mongoose.model("User", UserSchema);
-
-module.exports = User;
->>>>>>> 2623caa6748c6199bddd8d7e5b311f98bbbb3079
