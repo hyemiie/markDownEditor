@@ -14,6 +14,8 @@ import {
   Trash,
   DeleteIcon,
   Trash2Icon,
+  CircleArrowDown,
+  RefreshCcw,
 } from "lucide-react";
 import axios from "axios";
 import PageName from "./PageName";
@@ -30,10 +32,12 @@ const MarkdownWorkspace = ({ sharedDocumentId }) => {
   const editorRef = useRef(null);
   const updateTimeout = useRef(null);
   const [highlightRange, setHighlightRange] = useState(null);
+  const [showPreview, setShowPreview] = useState(true);
+
 
   const [showShareModal, setShowShareModal] = useState(false);
 
-  const BACKEND = "http://localhost:5000";
+  const BACKEND = "https://md-backend-dul2.onrender.com";
   const token = localStorage.getItem("token");
 
   // Get current user info
@@ -432,8 +436,12 @@ const MarkdownWorkspace = ({ sharedDocumentId }) => {
     }
   }, [sharedDocumentId]);
 
+  const reload = () =>{
+    window.location.reload()
+  }
+
   return (
-    <div className="flex h-screen bg-gray-50">
+    <div className="flex h-screen bg-gray-0">
       {/* Sidebar - Pages */}
       <div className="w-64 bg-white border-r border-gray-200 flex flex-col">
         <div className="p-4 border-b border-gray-200">
@@ -549,6 +557,7 @@ const MarkdownWorkspace = ({ sharedDocumentId }) => {
           <div className="flex-1"></div>
 
           {/* Active Collaborators */}
+          <RefreshCcw onClick={reload}/>
           {currentPage && (
             <div className="flex items-center gap-2">
               <Users size={20} className="text-gray-600" />
@@ -598,110 +607,125 @@ const MarkdownWorkspace = ({ sharedDocumentId }) => {
         </div>
 
         {/* Editor Area */}
-        {!currentPage ? (
-          <div className="flex-1 flex items-center justify-center text-gray-500">
-            <div className="text-center">
-              <FileText size={64} className="mx-auto mb-4 opacity-50" />
-              <p className="text-xl">Select a document to start editing</p>
-              <p className="text-sm mt-2">or create a new one</p>
-            </div>
+      {!currentPage ? (
+  <div className="flex-1 flex items-center justify-center text-gray-500">
+    <div className="text-center px-4">
+      <FileText size={64} className="mx-auto mb-4 opacity-50" />
+      <p className="text-xl">Select a document to start editing</p>
+      <p className="text-sm mt-2">or create a new one</p>
+    </div>
+  </div>
+) : (
+  <div className="flex-1 flex overflow-hidden flex-col lg:flex-row">
+    {/* Editor + Preview */}
+    <div className="flex-1 flex overflow-hidden flex-col md:flex-row">
+      {/* Text Editor */}
+      <div className="flex-1 p-4 md:p-8 overflow-y-auto min-h-[40vh] md:min-h-full">
+        <textarea
+          ref={editorRef}
+          value={getCurrentPageContent()}
+          onChange={(e) => updatePageContent(e.target.value)}
+          onSelect={handleTextSelect}
+          onMouseUp={handleTextSelect}
+          className="w-full h-full min-h-full p-4 border border-gray-200 rounded-lg focus:outline-none font-mono text-sm resize-none"
+          placeholder="Start typing with Markdown support..."
+        />
+      </div>
+
+      {/* Mobile Preview Toggle */}
+      <div className="md:hidden px-4 pb-2">
+        <button
+          onClick={() => setShowPreview((p) => !p)}
+          className="text-sm text-blue-600 underline"
+        >
+          {showPreview ? "Hide Preview" : "Show Preview"}
+        </button>
+      </div>
+
+      {/* Live Preview */}
+      {showPreview && (
+        <div className="flex-1 p-4 md:p-8 overflow-y-auto bg-white border-t md:border-t-0 md:border-l border-gray-200 min-h-[40vh] md:min-h-full">
+          <div className="max-w-3xl mx-auto">
+            <h3 className="text-sm font-bold text-gray-500 mb-4 uppercase">
+              Preview
+            </h3>
+            <div
+              className="prose prose-sm max-w-none"
+              dangerouslySetInnerHTML={{
+                __html: renderMarkdown(getCurrentPageContent()),
+              }}
+            />
           </div>
+        </div>
+      )}
+    </div>
+
+    {/* Comments Panel */}
+    {showComments && (
+      <div className="w-full lg:w-80 bg-white border-t lg:border-t-0 lg:border-l border-gray-200 p-4 overflow-y-auto max-h-[50vh] lg:max-h-full">
+        <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
+          <MessageSquare size={20} />
+          Comments ({comments.length})
+        </h3>
+
+        {comments.length === 0 ? (
+          <p className="text-gray-500 text-sm">
+            No comments yet. Select text and click "Comment" to add one.
+          </p>
         ) : (
-          <div className="flex-1 flex overflow-hidden">
-            {/* Text Editor */}
-            <div className="flex-1 flex overflow-hidden">
-              <div className="flex-1 p-8 overflow-y-auto">
-                <textarea
-                  ref={editorRef}
-                  value={getCurrentPageContent()}
-                  onChange={(e) => updatePageContent(e.target.value)}
-                  onSelect={handleTextSelect}
-                  onMouseUp={handleTextSelect}
-                  className="w-full h-full min-h-full p-4 border border-gray-200 rounded-lg focus:outline-none font-mono text-sm resize-none"
-                  placeholder="Start typing with Markdown support..."
-                />
-              </div>
-
-              {/* Live Preview */}
-              <div className="flex-1 p-8 overflow-y-auto bg-white border-l border-gray-200">
-                <div className="max-w-3xl mx-auto">
-                  <h3 className="text-sm font-bold text-gray-500 mb-4 uppercase">
-                    Preview
-                  </h3>
-                  <div
-                    className="prose prose-sm max-w-none"
-                    dangerouslySetInnerHTML={{
-                      __html: renderMarkdown(getCurrentPageContent()),
-                    }}
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* Comments Panel */}
-            {showComments && (
-              <div className="w-80 bg-white border-l border-gray-200 p-4 overflow-y-auto">
-                <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
-                  <MessageSquare size={20} />
-                  Comments ({comments.length})
-                </h3>
-                {comments.length === 0 ? (
-                  <p className="text-gray-500 text-sm">
-                    No comments yet. Select text and click "Comment" to add one.
-                  </p>
-                ) : (
-                  <div className="space-y-4">
-                    {comments.map((comment) => (
-                      <div
-                        key={comment._id}
-                        className="p-3 bg-zinc-200 border border-blue-200 rounded-lg"
-                      >
-                        {/* <div className="flex items-start justify-between mb-2" onClick={highlightText}> */}
-                        <div
-                          className="flex items-start justify-between mb-2 cursor-pointer"
-                          onClick={() => {
-                            setHighlightRange({
-                              start: comment.selectionStart,
-                              end: comment.selectionEnd,
-                            });
-                          }}
-                        >
-                          <div className="flex items-center gap-2">
-                            <div
-                              className="w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-bold"
-                              style={{
-                                backgroundColor:
-                                  comment.userId?.avatarColor || "#gray",
-                              }}
-                            >
-                              {comment.userId?.username?.[0]?.toUpperCase() ||
-                                "?"}
-                            </div>
-                            <span className="font-bold text-sm text-gray-800">
-                              {comment.userId?.username || "Unknown"}
-                            </span>
-                          </div>
-                          <button
-                            onClick={() => deleteComment(comment._id)}
-                            className="text-gray-400 hover:text-red-500 text-xs"
-                          >
-                            ✕
-                          </button>
-                        </div>
-                        <p className="text-sm text-gray-700 mb-2">
-                          {comment.commentText}
-                        </p>
-                        <span className="text-xs text-gray-500">
-                          {new Date(comment.createdAt).toLocaleString()}
-                        </span>
-                      </div>
-                    ))}
+          <div className="space-y-4">
+            {comments.map((comment) => (
+              <div
+                key={comment._id}
+                className="p-3 bg-zinc-200 border border-blue-200 rounded-lg"
+              >
+                <div
+                  className="flex items-start justify-between mb-2 cursor-pointer"
+                  onClick={() =>
+                    setHighlightRange({
+                      start: comment.selectionStart,
+                      end: comment.selectionEnd,
+                    })
+                  }
+                >
+                  <div className="flex items-center gap-2">
+                    <div
+                      className="w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-bold"
+                      style={{
+                        backgroundColor:
+                          comment.userId?.avatarColor || "#6b7280",
+                      }}
+                    >
+                      {comment.userId?.username?.[0]?.toUpperCase() || "?"}
+                    </div>
+                    <span className="font-bold text-sm text-gray-800">
+                      {comment.userId?.username || "Unknown"}
+                    </span>
                   </div>
-                )}
+                  <button
+                    onClick={() => deleteComment(comment._id)}
+                    className="text-gray-400 hover:text-red-500 text-xs"
+                  >
+                    ✕
+                  </button>
+                </div>
+
+                <p className="text-sm text-gray-700 mb-2">
+                  {comment.commentText}
+                </p>
+
+                <span className="text-xs text-gray-500">
+                  {new Date(comment.createdAt).toLocaleString()}
+                </span>
               </div>
-            )}
+            ))}
           </div>
         )}
+      </div>
+    )}
+  </div>
+)}
+
       </div>
     </div>
   );

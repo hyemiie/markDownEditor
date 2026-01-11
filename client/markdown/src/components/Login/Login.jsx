@@ -60,7 +60,7 @@ const Login = () => {
         };
     
         try {
-            const response = await axios.post('https://markdowneditor-backend.onrender.com/login', data);
+            const response = await axios.post('https://md-backend-dul2.onrender.com/api/user/login', data);
             console.log("response", response);
             localStorage.setItem('token', response.data.token);
             localStorage.setItem('currentUser', response.data.userName);

@@ -10,7 +10,7 @@ const SharedDocument = () => {
   const [hasAccess, setHasAccess] = useState(null);
   const [loading, setLoading] = useState(true);
   
-  const BACKEND = "http://localhost:5000";
+  const BACKEND = "https://md-backend-dul2.onrender.com";
   const token = localStorage.getItem("token");
 
   useEffect(() => {

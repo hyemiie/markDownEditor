@@ -11,7 +11,7 @@ const EditorPage = () => {
   const getFile = async () => {
     try {
       const res = await axios.post(
-        "https://markdowneditor-backend.onrender.com/viewFile",
+        "https://md-backend-dul2.onrender.com/api/content/viewFile",
         { selectedID: fileId }
       );
       setUserInput(res.data.file.userInput);
@@ -30,7 +30,7 @@ const EditorPage = () => {
 
     try {
       const res = await axios.post(
-        "https://markdowneditor-backend.onrender.com/convertText",
+        "https://md-backend-dul2.onrender.com/api/content/convertText",
         { he: text }
       );
       setHtmlResponse(res.data.html);
@@ -42,7 +42,7 @@ const EditorPage = () => {
   const saveFile = async () => {
     try {
       await axios.post(
-        "https://markdowneditor-backend.onrender.com/updateFile",
+        "https://md-backend-dul2.onrender.com/api/content/updateFile",
         { userEdit: userInput, selectedID: fileId }
       );
       navigate(`/preview/${fileId}`);

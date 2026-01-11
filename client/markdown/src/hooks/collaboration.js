@@ -10,7 +10,7 @@ export const useCollaboration = (contentId, userId, username, avatarColor) => {
     if (!contentId || !userId) return;
 
     const connectWebSocket = () => {
-      const websocket = new WebSocket('ws://localhost:5000');
+      const websocket = new WebSocket('ws://https://md-backend-dul2.onrender.com');
 
       websocket.onopen = () => {
         console.log('✅ Connected to collaboration server');

@@ -53,7 +53,7 @@ const Register = () => {
     const data = { username, password, email };
 
     try {
-      const response = await axios.post("https://markdowneditor-backend.onrender.com/register", data);
+      const response = await axios.post("https://md-backend-dul2.onrender.com/api/user/register", data);
       console.log("response", response);
      
      setTimeout(() => {
