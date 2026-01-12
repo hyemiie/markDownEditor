@@ -16,11 +16,14 @@ import {
   Trash2Icon,
   CircleArrowDown,
   RefreshCcw,
+  ChevronRight,
+  ChevronLeft,
 } from "lucide-react";
 import axios from "axios";
 import PageName from "./PageName";
 import { useCollaboration } from "../src/hooks/collaboration";
 import ShareModal from "./ShareModal";
+import { Menu, X } from "lucide-react";
 
 const MarkdownWorkspace = ({ sharedDocumentId }) => {
   const [pages, setPages] = useState([]);
@@ -33,7 +36,7 @@ const MarkdownWorkspace = ({ sharedDocumentId }) => {
   const updateTimeout = useRef(null);
   const [highlightRange, setHighlightRange] = useState(null);
   const [showPreview, setShowPreview] = useState(true);
-
+const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const [showShareModal, setShowShareModal] = useState(false);
 
@@ -440,295 +443,333 @@ const MarkdownWorkspace = ({ sharedDocumentId }) => {
     window.location.reload()
   }
 
-  return (
-    <div className="flex h-screen bg-gray-0">
-      {/* Sidebar - Pages */}
-      <div className="w-64 bg-white border-r border-gray-200 flex flex-col">
-        <div className="p-4 border-b border-gray-200">
-          <h2 className="text-lg font-bold text-gray-800 flex items-center gap-2">
-            <FileText size={20} />
-            Documents
-          </h2>
-        </div>
+return (
+  <div className="flex h-screen bg-gray-0 overflow-hidden">
+    {/* Mobile Menu Button */}
+    <button
+      onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+      className="lg:hidden fixed z-50 p-2  text-blue-900 rounded-lg shadow-lg"
+    >
+      {!mobileMenuOpen ? <ChevronLeft size={16} /> : null }
+    </button>
 
-        <div className="flex-1 overflow-y-auto p-2">
-          {pages.length === 0 ? (
-            <p className="text-gray-500 text-sm p-3">
-              No documents yet. Create one to get started!
-            </p>
-          ) : (
-            pages.map((page) => (
-              <div
-                key={page._id}
-                className={`p-3 mb-2 rounded-lg cursor-pointer transition-all ${
-                  currentPage === page._id
-                    ? "bg-blue-50 border-2 border-blue-200"
-                    : "bg-gray-50 hover:bg-gray-100 border-2 border-transparent"
-                }`}
-              >
-                <div onClick={() => setCurrentPage(page._id)}>
-                  <PageName page={page} onRename={updateFileName} />
-                  <div className="text-xs text-gray-500 mt-1">
-                    {(page.userInput || "").split("\n")[0].substring(0, 20)}...
-                  </div>
-                </div>
-                <div className="text-right">
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      if (window.confirm("Delete this document?")) {
-                        deletePage(page._id);
-                      }
-                    }}
-                    className="text-xs text-red-700 hover:text-red-900 mt-2 ml-auto text-right"
-                  >
-                    <Trash2Icon size={12} />
-                  </button>
-                </div>
-              </div>
-            ))
-          )}
-        </div>
+    {/* Sidebar - Pages */}
+    <div className={`
+      fixed lg:static inset-y-0 left-0 z-40
+      w-64 bg-white border-r border-gray-200 flex flex-col
+      transform transition-transform duration-300 ease-in-out
+      ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+    `}>
+      <div className="p-4 border-b border-gray-200 flex justify-between">
+        <h2 className="text-lg font-bold text-gray-800 flex items-center gap-2">
+          <FileText size={20} />
+          Documents
+        </h2>
+          <button
+      onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+      className="lg:hidden bottom-4 z-50 p-2  text-blue-900 rounded-lg shadow-lg "
+    >
+      {mobileMenuOpen ? <ChevronLeft size={16} /> : <ChevronRight size={16} />}
+    </button>
 
-        <button
-          onClick={addNewPage}
-          className="m-4 p-3 bg-blue-950 text-white rounded-lg hover:bg-blue-600 flex items-center justify-center gap-2 transition-colors"
-        >
-          <Plus size={20} />
-          New Document
-        </button>
       </div>
 
-      {showShareModal && (
-        <ShareModal
-          contentId={currentPage}
-          onClose={() => setShowShareModal(false)}
-        />
-      )}
-      <div className="flex-1 flex flex-col">
-        <div className="bg-white border-b border-gray-200 p-4 flex items-center gap-4">
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => applyFormat("bold")}
-              disabled={!selection}
-              className={`p-2 rounded hover:bg-gray-100 ${
-                !selection ? "opacity-50 cursor-not-allowed" : ""
-              }`}
-              title="Bold"
-            >
-              <Bold size={20} />
-            </button>
-            <button
-              onClick={() => applyFormat("italic")}
-              disabled={!selection}
-              className={`p-2 rounded hover:bg-gray-100 ${
-                !selection ? "opacity-50 cursor-not-allowed" : ""
-              }`}
-              title="Italic"
-            >
-              <Italic size={20} />
-            </button>
-            <button
-              onClick={() => applyFormat("underline")}
-              disabled={!selection}
-              className={`p-2 rounded hover:bg-gray-100 ${
-                !selection ? "opacity-50 cursor-not-allowed" : ""
-              }`}
-              title="Underline"
-            >
-              <Underline size={20} />
-            </button>
-          </div>
-
-          <div className="h-6 w-px bg-gray-300"></div>
-
-          <button
-            onClick={addComment}
-            disabled={!selection || !currentPage}
-            className={`p-2 rounded hover:bg-gray-100 flex items-center gap-2 ${
-              !selection || !currentPage ? "opacity-50 cursor-not-allowed" : ""
-            }`}
-            title="Add Comment"
-          >
-            <MessageSquare size={20} />
-            <span className="text-sm">Comment</span>
-          </button>
-
-          <div className="flex-1"></div>
-
-          {/* Active Collaborators */}
-          <RefreshCcw onClick={reload}/>
-          {currentPage && (
-            <div className="flex items-center gap-2">
-              <Users size={20} className="text-gray-600" />
-              {currentUser && (
-                <div
-                  className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold relative"
-                  style={{ backgroundColor: currentUser.avatarColor }}
-                  title={`${currentUser.username} (You)`}
-                >
-                  {currentUser.username.toUpperCase()}
-                  <span className="absolute bottom-0 right-0 w-2 h-2 bg-green-400 rounded-full border border-white"></span>
-                </div>
-              )}
-              {activeUsers.map((user) => (
-                <div
-                  key={user.id}
-                  className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold relative"
-                  style={{ backgroundColor: user.avatarColor }}
-                  title={user.username}
-                >
-                  {user.username[0].toUpperCase()}
-                  {user.active && (
-                    <span className="absolute bottom-0 right-0 w-2 h-2 bg-green-400 rounded-full border border-white"></span>
-                  )}
-                </div>
-              ))}
-            </div>
-          )}
-
-          <button
-            onClick={() => setShowComments(!showComments)}
-            className="p-2 rounded hover:bg-gray-100"
-            title={showComments ? "Hide Comments" : "Show Comments"}
-          >
-            {showComments ? <EyeOff size={20} /> : <Eye size={20} />}
-          </button>
-
-          <button
-            onClick={() => setShowShareModal(true)}
-            disabled={!currentPage}
-            className="p-2 rounded hover:bg-gray-100 flex items-center gap-2"
-            title="Share Document"
-          >
-            <Share size={20} />
-            <span className="text-sm">Share</span>
-          </button>
-        </div>
-
-        {/* Editor Area */}
-      {!currentPage ? (
-  <div className="flex-1 flex items-center justify-center text-gray-500">
-    <div className="text-center px-4">
-      <FileText size={64} className="mx-auto mb-4 opacity-50" />
-      <p className="text-xl">Select a document to start editing</p>
-      <p className="text-sm mt-2">or create a new one</p>
-    </div>
-  </div>
-) : (
-  <div className="flex-1 flex overflow-hidden flex-col lg:flex-row">
-    {/* Editor + Preview */}
-    <div className="flex-1 flex overflow-hidden flex-col md:flex-row">
-      {/* Text Editor */}
-      <div className="flex-1 p-4 md:p-8 overflow-y-auto min-h-[40vh] md:min-h-full">
-        <textarea
-          ref={editorRef}
-          value={getCurrentPageContent()}
-          onChange={(e) => updatePageContent(e.target.value)}
-          onSelect={handleTextSelect}
-          onMouseUp={handleTextSelect}
-          className="w-full h-full min-h-full p-4 border border-gray-200 rounded-lg focus:outline-none font-mono text-sm resize-none"
-          placeholder="Start typing with Markdown support..."
-        />
-      </div>
-
-      {/* Mobile Preview Toggle */}
-      <div className="md:hidden px-4 pb-2">
-        <button
-          onClick={() => setShowPreview((p) => !p)}
-          className="text-sm text-blue-600 underline"
-        >
-          {showPreview ? "Hide Preview" : "Show Preview"}
-        </button>
-      </div>
-
-      {/* Live Preview */}
-      {showPreview && (
-        <div className="flex-1 p-4 md:p-8 overflow-y-auto bg-white border-t md:border-t-0 md:border-l border-gray-200 min-h-[40vh] md:min-h-full">
-          <div className="max-w-3xl mx-auto">
-            <h3 className="text-sm font-bold text-gray-500 mb-4 uppercase">
-              Preview
-            </h3>
-            <div
-              className="prose prose-sm max-w-none"
-              dangerouslySetInnerHTML={{
-                __html: renderMarkdown(getCurrentPageContent()),
-              }}
-            />
-          </div>
-        </div>
-      )}
-    </div>
-
-    {/* Comments Panel */}
-    {showComments && (
-      <div className="w-full lg:w-80 bg-white border-t lg:border-t-0 lg:border-l border-gray-200 p-4 overflow-y-auto max-h-[50vh] lg:max-h-full">
-        <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
-          <MessageSquare size={20} />
-          Comments ({comments.length})
-        </h3>
-
-        {comments.length === 0 ? (
-          <p className="text-gray-500 text-sm">
-            No comments yet. Select text and click "Comment" to add one.
+      <div className="flex-1 overflow-y-auto p-2">
+        {pages.length === 0 ? (
+          <p className="text-gray-500 text-sm p-3">
+            No documents yet. Create one to get started!
           </p>
         ) : (
-          <div className="space-y-4">
-            {comments.map((comment) => (
-              <div
-                key={comment._id}
-                className="p-3 bg-zinc-200 border border-blue-200 rounded-lg"
-              >
-                <div
-                  className="flex items-start justify-between mb-2 cursor-pointer"
-                  onClick={() =>
-                    setHighlightRange({
-                      start: comment.selectionStart,
-                      end: comment.selectionEnd,
-                    })
-                  }
-                >
-                  <div className="flex items-center gap-2">
-                    <div
-                      className="w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-bold"
-                      style={{
-                        backgroundColor:
-                          comment.userId?.avatarColor || "#6b7280",
-                      }}
-                    >
-                      {comment.userId?.username?.[0]?.toUpperCase() || "?"}
-                    </div>
-                    <span className="font-bold text-sm text-gray-800">
-                      {comment.userId?.username || "Unknown"}
-                    </span>
-                  </div>
-                  <button
-                    onClick={() => deleteComment(comment._id)}
-                    className="text-gray-400 hover:text-red-500 text-xs"
-                  >
-                    ✕
-                  </button>
+          pages.map((page) => (
+            <div
+              key={page._id}
+              className={`p-3 mb-2 rounded-lg cursor-pointer transition-all ${
+                currentPage === page._id
+                  ? "bg-blue-50 border-2 border-blue-200"
+                  : "bg-gray-50 hover:bg-gray-100 border-2 border-transparent"
+              }`}
+            >
+              <div onClick={() => {
+              setCurrentPage(page._id);
+              setMobileMenuOpen(false);
+            }}>
+                <PageName page={page} onRename={updateFileName} />
+                <div className="text-xs text-gray-500 mt-1">
+                  {(page.userInput || "").split("\n")[0].substring(0, 20)}...
                 </div>
+              </div>
+              <div className="text-right">
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (window.confirm("Delete this document?")) {
+                      deletePage(page._id);
+                    }
+                  }}
+                  className="text-xs text-red-700 hover:text-red-900 mt-2 ml-auto text-right"
+                >
+                  <Trash2Icon size={12} />
+                </button>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
 
-                <p className="text-sm text-gray-700 mb-2">
-                  {comment.commentText}
-                </p>
+      <button
+        onClick={addNewPage}
+        className="m-4 p-3 bg-blue-950 text-white rounded-lg hover:bg-blue-600 flex items-center justify-center gap-2 transition-colors"
+      >
+        <Plus size={20} />
+        <span className="hidden sm:inline">New Document</span>
+        <span className="sm:hidden">New</span>
+      </button>
+    </div>
 
-                <span className="text-xs text-gray-500">
-                  {new Date(comment.createdAt).toLocaleString()}
-                </span>
+    {/* Overlay for mobile menu */}
+    {mobileMenuOpen && (
+      <div
+        className="lg:hidden fixed inset-0 bg-black bg-opacity-50 z-30"
+        onClick={() => setMobileMenuOpen(false)}
+      />
+    )}
+
+    {showShareModal && (
+      <ShareModal
+        contentId={currentPage}
+        onClose={() => setShowShareModal(false)}
+      />
+    )}
+
+    <div className="flex-1 flex flex-col min-w-0">
+      {/* Toolbar */}
+      <div className="bg-white border-b border-gray-200 p-2 sm:p-4 flex items-center gap-2 sm:gap-4 overflow-x-auto">
+        <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
+          <button
+            onClick={() => applyFormat("bold")}
+            disabled={!selection}
+            className={`p-1.5 sm:p-2 rounded hover:bg-gray-100 ${
+              !selection ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+            title="Bold"
+          >
+            <Bold size={18} className="sm:w-5 sm:h-5" />
+          </button>
+          <button
+            onClick={() => applyFormat("italic")}
+            disabled={!selection}
+            className={`p-1.5 sm:p-2 rounded hover:bg-gray-100 ${
+              !selection ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+            title="Italic"
+          >
+            <Italic size={18} className="sm:w-5 sm:h-5" />
+          </button>
+          <button
+            onClick={() => applyFormat("underline")}
+            disabled={!selection}
+            className={`p-1.5 sm:p-2 rounded hover:bg-gray-100 ${
+              !selection ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+            title="Underline"
+          >
+            <Underline size={18} className="sm:w-5 sm:h-5" />
+          </button>
+        </div>
+
+        <div className="h-6 w-px bg-gray-300 hidden sm:block"></div>
+
+        <button
+          onClick={addComment}
+          disabled={!selection || !currentPage}
+          className={`p-1.5 sm:p-2 rounded hover:bg-gray-100 flex items-center gap-1 sm:gap-2 flex-shrink-0 ${
+            !selection || !currentPage ? "opacity-50 cursor-not-allowed" : ""
+          }`}
+          title="Add Comment"
+        >
+          <MessageSquare size={18} className="sm:w-5 sm:h-5" />
+          <span className="text-xs sm:text-sm hidden md:inline">Comment</span>
+        </button>
+
+        <div className="flex-1"></div>
+
+        {/* Active Collaborators */}
+        <RefreshCcw 
+          onClick={reload} 
+          className="cursor-pointer flex-shrink-0" 
+          size={18}
+        />
+        
+        {currentPage && (
+          <div className="hidden md:flex items-center gap-2 flex-shrink-0">
+            <Users size={20} className="text-gray-600" />
+            {currentUser && (
+              <div
+                className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold relative"
+                style={{ backgroundColor: currentUser.avatarColor }}
+                title={`${currentUser.username} (You)`}
+              >
+                {currentUser.username.toUpperCase()}
+                <span className="absolute bottom-0 right-0 w-2 h-2 bg-green-400 rounded-full border border-white"></span>
+              </div>
+            )}
+            {activeUsers.map((user) => (
+              <div
+                key={user.id}
+                className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold relative"
+                style={{ backgroundColor: user.avatarColor }}
+                title={user.username}
+              >
+                {user.username[0].toUpperCase()}
+                {user.active && (
+                  <span className="absolute bottom-0 right-0 w-2 h-2 bg-green-400 rounded-full border border-white"></span>
+                )}
               </div>
             ))}
           </div>
         )}
-      </div>
-    )}
-  </div>
-)}
 
+        <button
+          onClick={() => setShowComments(!showComments)}
+          className="p-1.5 sm:p-2 rounded hover:bg-gray-100 flex-shrink-0"
+          title={showComments ? "Hide Comments" : "Show Comments"}
+        >
+          {showComments ? <EyeOff size={18} className="sm:w-5 sm:h-5" /> : <Eye size={18} className="sm:w-5 sm:h-5" />}
+        </button>
+
+        <button
+          onClick={() => setShowShareModal(true)}
+          disabled={!currentPage}
+          className="p-1.5 sm:p-2 rounded hover:bg-gray-100 flex items-center gap-1 sm:gap-2 flex-shrink-0"
+          title="Share Document"
+        >
+          <Share size={18} className="sm:w-5 sm:h-5" />
+          <span className="text-xs sm:text-sm hidden md:inline">Share</span>
+        </button>
       </div>
+
+      {/* Editor Area */}
+      {!currentPage ? (
+        <div className="flex-1 flex items-center justify-center text-gray-500 p-4">
+          <div className="text-center">
+            <FileText size={48} className="sm:w-16 sm:h-16 mx-auto mb-4 opacity-50" />
+            <p className="text-lg sm:text-xl">Select a document to start editing</p>
+            <p className="text-sm mt-2">or create a new one</p>
+          </div>
+        </div>
+      ) : (
+        <div className="flex-1 flex overflow-hidden flex-col lg:flex-row min-h-0">
+          {/* Editor + Preview */}
+          <div className="flex-1 flex overflow-hidden flex-col">
+            {/* Text Editor */}
+            <div className="flex-1 p-2 sm:p-4 md:p-8 overflow-y-auto">
+              <textarea
+                ref={editorRef}
+                value={getCurrentPageContent()}
+                onChange={(e) => updatePageContent(e.target.value)}
+                onSelect={handleTextSelect}
+                onMouseUp={handleTextSelect}
+                className="w-full h-full min-h-full p-2 sm:p-4 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono text-xs sm:text-sm resize-none"
+                placeholder="Start typing with Markdown support..."
+              />
+            </div>
+
+            {/* Mobile Preview Toggle */}
+            <div className="px-2 sm:px-4 pb-2 border-t lg:hidden">
+              <button
+                onClick={() => setShowPreview((p) => !p)}
+                className="text-sm text-blue-600 underline py-2"
+              >
+                {showPreview ? "Hide Preview" : "Show Preview"}
+              </button>
+            </div>
+
+            {/* Live Preview */}
+            {showPreview && (
+              <div className="flex-1 p-2 sm:p-4 md:p-8 overflow-y-auto bg-white border-t lg:border-t-0 lg:border-l border-gray-200 min-h-0 max-h-[50vh] lg:max-h-full">
+                <div className="max-w-3xl mx-auto">
+                  <h3 className="text-xs sm:text-sm font-bold text-gray-500 mb-2 sm:mb-4 uppercase">
+                    Preview
+                  </h3>
+                  <div
+                    className="prose prose-sm sm:prose max-w-none"
+                    dangerouslySetInnerHTML={{
+                      __html: renderMarkdown(getCurrentPageContent()),
+                    }}
+                  />
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Comments Panel */}
+          {showComments && (
+            <div className="w-full lg:w-80 bg-white border-t lg:border-t-0 lg:border-l border-gray-200 p-2 sm:p-4 overflow-y-auto max-h-[40vh] lg:max-h-full">
+              <h3 className="font-bold text-base sm:text-lg mb-2 sm:mb-4 flex items-center gap-2">
+                <MessageSquare size={18} className="sm:w-5 sm:h-5" />
+                Comments ({comments.length})
+              </h3>
+
+              {comments.length === 0 ? (
+                <p className="text-gray-500 text-xs sm:text-sm">
+                  No comments yet. Select text and click "Comment" to add one.
+                </p>
+              ) : (
+                <div className="space-y-2 sm:space-y-4">
+                  {comments.map((comment) => (
+                    <div
+                      key={comment._id}
+                      className="p-2 sm:p-3 bg-zinc-200 border border-blue-200 rounded-lg"
+                    >
+                      <div
+                        className="flex items-start justify-between mb-2 cursor-pointer"
+                        onClick={() =>
+                          setHighlightRange({
+                            start: comment.selectionStart,
+                            end: comment.selectionEnd,
+                          })
+                        }
+                      >
+                        <div className="flex items-center gap-2">
+                          <div
+                            className="w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-bold"
+                            style={{
+                              backgroundColor:
+                                comment.userId?.avatarColor || "#6b7280",
+                            }}
+                          >
+                            {comment.userId?.username?.[0]?.toUpperCase() || "?"}
+                          </div>
+                          <span className="font-bold text-xs sm:text-sm text-gray-800">
+                            {comment.userId?.username || "Unknown"}
+                          </span>
+                        </div>
+                        <button
+                          onClick={() => deleteComment(comment._id)}
+                          className="text-gray-400 hover:text-red-500 text-xs"
+                        >
+                          ✕
+                        </button>
+                      </div>
+
+                      <p className="text-xs sm:text-sm text-gray-700 mb-2">
+                        {comment.commentText}
+                      </p>
+
+                      <span className="text-xs text-gray-500">
+                        {new Date(comment.createdAt).toLocaleString()}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      )}
     </div>
-  );
+  </div>
+);
 };
 
 export default MarkdownWorkspace;
