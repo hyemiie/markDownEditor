@@ -78,9 +78,11 @@ const Register = async (req, res) => {
   }
 };
 
-const Test = async (res, req) =>{
-  console.log("Test completed")
-}
+const Test = async (req, res) => {
+  console.log("Test completed");
+  res.send("Test completed");
+};
+
 
 module.exports = {
   Login,
