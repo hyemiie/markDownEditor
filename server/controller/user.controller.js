@@ -78,8 +78,13 @@ const Register = async (req, res) => {
   }
 };
 
+const Test = async (res, req) =>{
+  console.log("Test completed")
+}
+
 module.exports = {
   Login,
   Register,
   getCurrentUser,
+  Test
 };
