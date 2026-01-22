@@ -31,7 +31,7 @@ The editor includes advanced text editing tools, and in the collaborative-change
 
 
 ---
-Technologies I Used
+## Technologies I Used
 
 - **Frontend**: React, CSS Modules, Marked.js.
 
