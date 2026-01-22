@@ -8,8 +8,7 @@
   Write markdown syntax while instantly seeing it rendered as formatted, readable content.
 
 - **User authentication and access control**  
-  - Users register and log in to access the application.  
-  - Only authenticated users can create, view, edit, or share documents, ensuring controlled access to files and collaborative features.
+ Users have to register and log in to access the application. Only authenticated users can create, view, edit, or share documents, ensuring controlled access to files and collaborative features.
 
 - **Split editor and preview view**  
   Edit content and view the rendered output side by side for fast feedback while writing.
