@@ -1,18 +1,41 @@
-# Tier Markdown Editor
+# CollabMD Markdown Editor
 
-Tier Markdown is a simple markdown editor that lets you write and preview your content in real time.  
-It’s fast, minimal, and built for writers, devs, and anyone who wants a smooth markdown writing experience and is powered by a simple backend for exporting files.
-It’s built with **React** on the frontend and **Node/Express** on the backend so you can run everything together without extra setup.
+
+
+## Features
+
+- **Real-time markdown editing and rendering**  
+  Write markdown syntax while instantly seeing it rendered as formatted, readable content.
+
+- **User authentication and access control**  
+  - Users register and log in to access the application.  
+  - Only authenticated users can create, view, edit, or share documents, ensuring controlled access to files and collaborative features.
+
+- **Split editor and preview view**  
+  Edit content and view the rendered output side by side for fast feedback while writing.
+
+- **Export documents as `.md` files**  
+  Download markdown files through the backend for local use or sharing.
+
+
+### Real-time collaboration (collaborative-change branch)
+
+- ** Document sharing**: Share files with other authenticated users to work on the same document.
+
+- **Simultaneous editing** : Multiple users can edit a document at the same time, with changes reflected in real time.
+
+- **Comments and discussions**: Users can write and view comments on a document, working like a chat session tied to the file.
+
 
 
 ---
 
-## ⚡ What It Does
+CollabMD is a markdown editor that lets you write and preview your content in real time.You can use the demo app at https://mark-down-editor-qxuh-git-collaborative-change-hyemies-projects.vercel.app/. It's built with React on the frontend and Node.js/Express on the backend, so you can run everything together without extra setup.
 
-- Live markdown editing with side-by-side preview  
-- Export markdown content as `.md` file via backend  
-- Clean, responsive UI  
-- Simple client-server setup for local or production use
+The collaborative-change branch includes collaborative features where two or more users can edit the same document and share comments.
+
+It’s built with **React** on the frontend and **Node/Express** on the backend so you can run everything together without extra setup.
+
 
 ---
 
