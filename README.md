@@ -1,6 +1,8 @@
 # CollabMD Markdown Editor
 
-<a href="https://ibb.co/1fKwM8MT"><img src="https://i.ibb.co/XZpvDSDt/git-chat-login.png" alt="git-chat-login" border="0" /></a>
+<a href="https://imgbb.com/"><img src="https://i.ibb.co/fz1pTRzw/collabmd-demo.gif" alt="collabmd demo" border="0"></a>
+<a href="https://ibb.co/WN5S4MKx"><img src="https://i.ibb.co/Q7Qs3Tmb/markdoen-Demo.png" alt="markdoen-Demo" border="0" /></a>
+
 ## Features
 
 - **Real-time markdown editing and rendering**  
