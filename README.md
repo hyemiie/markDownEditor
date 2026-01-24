@@ -1,7 +1,6 @@
 # CollabMD Markdown Editor
 
-
-
+<img src="https://i.ibb.co/XZpvDSDt/git-chat-login.png" alt="git-chat-login" border="0" />
 ## Features
 
 - **Real-time markdown editing and rendering**  
