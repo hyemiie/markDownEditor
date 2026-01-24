@@ -329,57 +329,12 @@ const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     }
   };
 
-    // const renderMarkdown = (text) => {
-    //   let html = text;
-
-    //   html = html.replace(/^### (.*$)/gim, '<h3 class="text-xl font-bold mt-4 mb-2">$1</h3>');
-    //   html = html.replace(/^## (.*$)/gim, '<h2 class="text-2xl font-bold mt-4 mb-2">$1</h2>');
-    //   html = html.replace(/^# (.*$)/gim, '<h1 class="text-3xl font-bold mt-4 mb-2">$1</h1>');
-    //   html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-    //   html = html.replace(/\*(.*?)\*/g, '<em>$1</em>');
-    //   html = html.replace(/\n/g, '<br />');
-
-    //   return html;
-    // };
-
-  // const renderMarkdown = (text) => {
-  //   if (!text) return "";
-
-  //   let html = text;
-
-  //   if (highlightRange) {
-  //     const { start, end } = highlightRange;
-
-  //     const before = html.slice(0, start);
-  //     const highlighted = html.slice(start, end);
-  //     const after = html.slice(end);
-
-  //     html =
-  //       before +
-  //       `<mark style="background-color:#fde68a; padding:2px; border-radius:3px;">` +
-  //       highlighted +
-  //       `</mark>` +
-  //       after;
-  //   }
-
-  //   // markdown rules
-  //   html = html.replace(/^### (.*$)/gim, "<h3>$1</h3>");
-  //   html = html.replace(/^## (.*$)/gim, "<h2>$1</h2>");
-  //   html = html.replace(/^# (.*$)/gim, "<h1>$1</h1>");
-  //   html = html.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
-  //   html = html.replace(/\*(.*?)\*/g, "<em>$1</em>");
-  //   html = html.replace(/\n/g, "<br />");
-
-  //   return html;
-  // };
-
 
   const renderMarkdown = (text) => {
   if (!text) return "";
 
   let html = text;
 
-  // 1️⃣ Insert stable highlight markers (no HTML yet)
   if (highlightRange) {
     const { start, end } = highlightRange;
 
@@ -391,7 +346,6 @@ const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
       html.slice(end);
   }
 
-  // 2️⃣ Apply markdown rules
   html = html.replace(/^### (.*$)/gim, '<h3 class="text-xl font-bold mt-4 mb-2">$1</h3>');
   html = html.replace(/^## (.*$)/gim, '<h2 class="text-2xl font-bold mt-4 mb-2">$1</h2>');
   html = html.replace(/^# (.*$)/gim, '<h1 class="text-3xl font-bold mt-4 mb-2">$1</h1>');
@@ -399,7 +353,6 @@ const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   html = html.replace(/\*(.*?)\*/g, '<em>$1</em>');
   html = html.replace(/\n/g, '<br />');
 
-  // 3️⃣ Convert markers → actual highlight HTML
   html = html
     .replace("%%HIGHLIGHT_START%%", '<mark class="bg-yellow-200 px-1 rounded">')
     .replace("%%HIGHLIGHT_END%%", "</mark>");
@@ -409,20 +362,17 @@ const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const loadSharedDocument = async (id) => {
     try {
-      // Change to GET request with the new endpoint
       const res = await axios.get(`${BACKEND}/api/content/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      // Update to match new response structure
-      const document = res.data.data; // Changed from res.data.file
+      const document = res.data.data; 
 
       console.log("Loaded shared document:", document);
 
       setPages([document]);
       setCurrentPage(id);
 
-      // Also load comments for this document
       loadComments(id);
     } catch (err) {
       console.error("Error loading shared document:", err);
@@ -445,7 +395,6 @@ const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
 return (
   <div className="flex h-screen bg-gray-0 overflow-hidden">
-    {/* Mobile Menu Button */}
     <button
       onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
       className="lg:hidden fixed z-50 p-2  text-blue-900 rounded-lg shadow-lg"
@@ -453,7 +402,6 @@ return (
       {!mobileMenuOpen ? <ChevronLeft size={16} /> : null }
     </button>
 
-    {/* Sidebar - Pages */}
     <div className={`
       fixed lg:static inset-y-0 left-0 z-40
       w-64 bg-white border-r border-gray-200 flex flex-col
@@ -526,7 +474,6 @@ return (
       </button>
     </div>
 
-    {/* Overlay for mobile menu */}
     {mobileMenuOpen && (
       <div
         className="lg:hidden fixed inset-0 bg-black bg-opacity-50 z-30"
@@ -542,7 +489,6 @@ return (
     )}
 
     <div className="flex-1 flex flex-col min-w-0">
-      {/* Toolbar */}
       <div className="bg-white border-b border-gray-200 p-2 sm:p-4 flex items-center gap-2 sm:gap-4 overflow-x-auto">
         <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
           <button
@@ -593,7 +539,6 @@ return (
 
         <div className="flex-1"></div>
 
-        {/* Active Collaborators */}
         <RefreshCcw 
           onClick={reload} 
           className="cursor-pointer flex-shrink-0" 
@@ -648,7 +593,6 @@ return (
         </button>
       </div>
 
-      {/* Editor Area */}
       {!currentPage ? (
         <div className="flex-1 flex items-center justify-center text-gray-500 p-4">
           <div className="text-center">
@@ -659,9 +603,7 @@ return (
         </div>
       ) : (
         <div className="flex-1 flex overflow-hidden flex-col lg:flex-row min-h-0">
-          {/* Editor + Preview */}
-          <div className="flex-1 flex overflow-hidden flex-col">
-            {/* Text Editor */}
+<div className="flex-1 flex overflow-hidden flex-col lg:flex-row">
             <div className="flex-1 p-2 sm:p-4 md:p-8 overflow-y-auto">
               <textarea
                 ref={editorRef}
@@ -674,7 +616,6 @@ return (
               />
             </div>
 
-            {/* Mobile Preview Toggle */}
             <div className="px-2 sm:px-4 pb-2 border-t lg:hidden">
               <button
                 onClick={() => setShowPreview((p) => !p)}
@@ -684,7 +625,6 @@ return (
               </button>
             </div>
 
-            {/* Live Preview */}
             {showPreview && (
               <div className="flex-1 p-2 sm:p-4 md:p-8 overflow-y-auto bg-white border-t lg:border-t-0 lg:border-l border-gray-200 min-h-0 max-h-[50vh] lg:max-h-full">
                 <div className="max-w-3xl mx-auto">
